@@ -1,28 +1,26 @@
 var express = require('express');
 var router = express.Router();
+const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require('../controllers/products.controller');
 
-const Product = require('../modules/Product');
+/* ******************
+ * Get routes
+ * ******************/
+router.get('/', getAllProducts);
+router.get('/:id', getProductById);
 
-/* Routes */
-router.get('/', function (req, res, next) {
-  res.send('This should return all products?? I guess');
-});
+/* ******************
+ * Post routes
+ * ******************/
+router.post('/', createProduct);
 
-router.post('/save-test', async function (req, res, next) {
-  try {
-    // Create a new document
-    const newProduct = new Product({ name: "Another Weesley333" });
-    console.log(newProduct);
+/* ******************
+ * Put routes
+ * ******************/
+router.put('/:id', updateProduct);
 
-    // Save the document
-    const savedProduct = await newProduct.save();
-    console.log('Document saved:', savedProduct);
-
-    res.status(201).send('Test product name saved successfully');
-  } catch (err) {
-    console.error('Error saving document:', err);
-    res.status(500).send('Error saving document');
-  }
-});
+/* ******************
+ * Delete routes
+ * ******************/
+router.delete('/:id', deleteProduct);
 
 module.exports = router;
