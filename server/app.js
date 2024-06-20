@@ -8,7 +8,18 @@ var usersRouter = require('./routes/users');
 var productsRouter = require('./routes/product');
 var mongooseRouter = require("./routes/mongoose");
 
-var app = express();
+//Using cors to avois CORS restrictions during an API call
+const cors = require('cors'); 
+
+const app = express();
+
+// Use CORS middleware
+app.use(cors({
+  origin: '*', // Allow all origins (this is for development, be cautious with this setting in production)
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Allow credentials
+  allowedHeaders: 'Content-Type,Authorization'
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
