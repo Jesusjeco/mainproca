@@ -18,10 +18,16 @@ const getAllProducts = async (req, res, next) => {
 
 const getProductById = async (req, res, next) => {
   try {
-    const productsById = await Product.findById(req.params.id);
-    //res.status(200).send('List of all the products');
-    res.status(200).json(productsById);
-    //console.log(productsById);
+    const productById = await Product.findById(req.params.id);
+    
+    if (!productById) {
+      // If no product is found, send a 404 status and error message
+      console.log("Error 404 detected");
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    
+    res.status(200).json(productById);
+    //console.log(productById);
   } catch (err) {
     console.error('Error fetching product by ID:', err);
     res.status(500).send('Error fetching product by ID');
