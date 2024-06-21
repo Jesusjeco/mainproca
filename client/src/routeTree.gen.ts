@@ -14,7 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as BoilerplateImport } from './routes/boilerplate'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
-import { Route as ProductsProductsImport } from './routes/products/products'
+import { Route as ProductsCreateImport } from './routes/products/create'
 import { Route as ProductsProductIdImport } from './routes/products/$productId'
 
 // Create/Update Routes
@@ -34,8 +34,8 @@ const ProductsIndexRoute = ProductsIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProductsProductsRoute = ProductsProductsImport.update({
-  path: '/products/products',
+const ProductsCreateRoute = ProductsCreateImport.update({
+  path: '/products/create',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -69,11 +69,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsProductIdImport
       parentRoute: typeof rootRoute
     }
-    '/products/products': {
-      id: '/products/products'
-      path: '/products/products'
-      fullPath: '/products/products'
-      preLoaderRoute: typeof ProductsProductsImport
+    '/products/create': {
+      id: '/products/create'
+      path: '/products/create'
+      fullPath: '/products/create'
+      preLoaderRoute: typeof ProductsCreateImport
       parentRoute: typeof rootRoute
     }
     '/products/': {
@@ -92,7 +92,7 @@ export const routeTree = rootRoute.addChildren({
   IndexRoute,
   BoilerplateRoute,
   ProductsProductIdRoute,
-  ProductsProductsRoute,
+  ProductsCreateRoute,
   ProductsIndexRoute,
 })
 
@@ -107,7 +107,7 @@ export const routeTree = rootRoute.addChildren({
         "/",
         "/boilerplate",
         "/products/$productId",
-        "/products/products",
+        "/products/create",
         "/products/"
       ]
     },
@@ -120,8 +120,8 @@ export const routeTree = rootRoute.addChildren({
     "/products/$productId": {
       "filePath": "products/$productId.tsx"
     },
-    "/products/products": {
-      "filePath": "products/products.tsx"
+    "/products/create": {
+      "filePath": "products/create.tsx"
     },
     "/products/": {
       "filePath": "products/index.tsx"
