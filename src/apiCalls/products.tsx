@@ -1,7 +1,7 @@
 /************************************
  * File with all Fetch calls for the model Product
 *************************************/
-import { Product } from "../interfaces/Product";
+import { API_PRODUCTS_URL, Product } from "../interfaces/Product";
 
 //Fetching all products
 export async function fetchAllProducts() {
@@ -11,7 +11,7 @@ export async function fetchAllProducts() {
   };
 
   try {
-    const response = await fetch(import.meta.env.VITE_API_URL_PRODUCTS, requestOptions);
+    const response = await fetch(API_PRODUCTS_URL, requestOptions);
 
     if (!response.ok) {
       throw new Error('Failed to fetch All Products');
@@ -33,7 +33,7 @@ export async function fetchProductById(productId: string) {
   };
 
   try {
-    const response = await fetch(import.meta.env.VITE_API_URL_PRODUCTS + "/" + productId, requestOptions);
+    const response = await fetch(API_PRODUCTS_URL + "/" + productId, requestOptions);
 
     if (!response.ok) {
       throw new Error('Failed to fetch Product by Id');
@@ -59,7 +59,7 @@ export async function createProduct(newProduct: Product) {
   };
 
   try {
-    const response = await fetch(import.meta.env.VITE_API_URL_PRODUCTS, requestOptions);
+    const response = await fetch(API_PRODUCTS_URL, requestOptions);
     const result = await response.text();
 
     return {
@@ -91,7 +91,7 @@ export async function editProductById(product: Product) {
   };
 
   try {
-    const response = await fetch(import.meta.env.VITE_API_URL_PRODUCTS + "/" + product._id, requestOptions);
+    const response = await fetch(API_PRODUCTS_URL + "/" + product._id, requestOptions);
     const result = await response.text();
     return {
       success: response.ok,
@@ -115,7 +115,7 @@ export async function deleteProductById(productId: string) {
   };
 
   try {
-    const response = await fetch(import.meta.env.VITE_API_URL_PRODUCTS + "/" + productId, requestOptions);
+    const response = await fetch(API_PRODUCTS_URL + "/" + productId, requestOptions);
     //const result = await response.text();
 
     return response;
