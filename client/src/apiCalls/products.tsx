@@ -1,7 +1,7 @@
 /************************************
  * File with all Fetch calls for the model Product
 *************************************/
-import { Product, ProductApiResponse } from "../interfaces/Product";
+import { Product } from "../interfaces/Product";
 
 //Fetching all products
 export async function fetchAllProducts() {
@@ -40,7 +40,6 @@ export async function fetchProductById(productId: string) {
     }
 
     const singleProduct = await response.json();
-    //console.log(singleProduct)
     return singleProduct;
   } catch (error) {
     console.error(error);
@@ -49,7 +48,6 @@ export async function fetchProductById(productId: string) {
 
 //Creating a new product
 export async function createProduct(newProduct: Product) {
-
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -63,7 +61,6 @@ export async function createProduct(newProduct: Product) {
   try {
     const response = await fetch(import.meta.env.VITE_API_URL_PRODUCTS, requestOptions);
     const result = await response.text();
-    console.log(result)
 
     return {
       success: response.ok,
@@ -80,3 +77,50 @@ export async function createProduct(newProduct: Product) {
     };
   };
 }//createProduct
+
+//Edit product by Id
+export async function editProductById(product: Product) {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  const requestOptions: RequestInit = {
+    method: "PUT",
+    headers: myHeaders,
+    body: JSON.stringify(product),
+    redirect: "follow"
+  };
+
+  try {
+    const response = await fetch(import.meta.env.VITE_API_URL_PRODUCTS + "/" + product._id, requestOptions);
+    const result = await response.text();
+    return {
+      success: response.ok,
+      message: response.ok ? "Product updated successfully" : "Failed to update product",
+      data: result,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: "Error creating product",
+    };
+  };
+}
+
+//Delete product by Id
+export async function deleteProductById(productId: string) {
+  const requestOptions: RequestInit = {
+    method: "DELETE",
+    redirect: "follow"
+  };
+
+  try {
+    const response = await fetch(import.meta.env.VITE_API_URL_PRODUCTS + "/" + productId, requestOptions);
+    const result = await response.text();
+
+    return response;
+
+  } catch (error) {
+    console.error(error);
+  };
+}

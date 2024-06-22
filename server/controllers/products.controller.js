@@ -5,8 +5,8 @@ const getAllProducts = async (req, res, next) => {
     const productsList = await Product.find({}).sort({ name: 1 });
     //res.status(200).send('List of all the products');
 
-    if (productsList.length === 0)
-      return res.send('Product list empty');
+    // if (productsList.length === 0)
+    //   return res.send('Product list empty');
 
     res.status(200).json(productsList);
     //console.log(productsList);
@@ -35,12 +35,9 @@ const getProductById = async (req, res, next) => {
 }
 
 const createProduct = async (req, res) => {
-  console.log("Request body");
-  console.log(req.body);
   try {// Create a new document
     //const newProduct = new Product({ name: "Another Weesley333" });
     const newProduct = new Product(req.body);
-    console.log(newProduct);
     // Save the document
     const savedProduct = await newProduct.save();
     console.log('Document saved:', savedProduct);
@@ -55,7 +52,8 @@ const createProduct = async (req, res) => {
 const updateProduct = async function (req, res, next) {
   try {
     const { id } = req.params;
-    //const productToupdate = await Product.findByIdAndUpdate(req.params.id, {'name': 'Another updated Weesley'});
+    console.log("Id a buscar: "+id);
+
     const productToupdate = await Product.findByIdAndUpdate(id, req.body);
     if (!productToupdate) {
       res.status(404).send('Document not found by ID');

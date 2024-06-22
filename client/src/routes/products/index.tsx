@@ -1,15 +1,33 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
-import { fetchAllProducts } from "../../apiCalls/products"
+import { ErrorComponent, ErrorComponentProps, Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { deleteProductById, fetchAllProducts } from "../../apiCalls/products"
 import "./products.pcss"
 import { Product } from "../../interfaces/Product"
+import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 export const Route = createFileRoute('/products/')({
   loader: fetchAllProducts,
+  errorComponent: PostErrorComponent as any,
+  notFoundComponent: () => {
+    return <p>Producto no encontrado</p>
+  },
   component: Products,
 })
 
+export function PostErrorComponent({ error }: ErrorComponentProps) {
+  return <ErrorComponent error={error} />
+}
+
 function Products() {
-  const allProducts = Route.useLoaderData<Product[]>()
+  const allProducts = Route.useLoaderData<Product[]>();
+  const navigate = useNavigate();
+
+  const deleteProductHandler = async (productId: string) => {
+    const response = await deleteProductById(productId);
+
+    if (response?.status === 200) {
+      navigate({ to: "/products" });
+    }
+  }
 
   return (
     <section id='products'>
@@ -26,19 +44,36 @@ function Products() {
                 <tr>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Opciones</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {
-                  allProducts.length > 1 ?
+                  allProducts.length > 0 ?
                     allProducts.map((product, index) =>
                       <tr key={index}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           <Link to={'/products/' + product._id}>{product.name}</Link></td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.quantity}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <div className="flex space-x-4">
+                            <Link to={'/products/' + product._id} className="text-blue-500 hover:text-blue-700">
+                              <FaEye />
+                            </Link>
+                            <Link to={'/products/edit/' + product._id} className="text-green-500 hover:text-green-700">
+                              <FaEdit />
+                            </Link>
+                            <button onClick={() => deleteProductHandler(product._id)} className="text-red-500 hover:text-red-700">
+                              <FaTrashAlt />
+                            </button>
+                          </div>
+                        </td>
                       </tr>
                     )
-                    : "No hay productos en inventario"
+                    :
+                    <tr>
+                      <td colSpan={3}>"No hay productos en inventario"</td>
+                    </tr>
                 }
               </tbody>
             </table>

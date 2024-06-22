@@ -11,3 +11,9 @@ export interface ProductApiResponse {
   message: string;
   data?: any;
 }
+
+export const emptyProduct = {
+  name: "",
+  quantity: 0,
+  description: ""
+}

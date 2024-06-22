@@ -1,6 +1,8 @@
-import { createFileRoute, ErrorComponent, ErrorComponentProps } from '@tanstack/react-router'
+import { Link, createFileRoute, ErrorComponent, ErrorComponentProps } from '@tanstack/react-router'
 import { fetchProductById } from '../../apiCalls/products'
 import { Product } from "../../interfaces/Product"
+import { useEffect, useState } from 'react'
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 export const Route = createFileRoute('/products/$productId')({
   loader: async ({ params: { productId } }) => fetchProductById(productId),
@@ -16,7 +18,11 @@ export function PostErrorComponent({ error }: ErrorComponentProps) {
 }
 
 function SingleProduct() {
-  const product = Route.useLoaderData<Product>()
+  const productData = Route.useLoaderData<Product>()
+  const [product, setProduct] = useState<Product>(productData);
+
+  useEffect(() => { setProduct(productData) }, [productData]);
+
   return (
     <div className="bg-gray-100 flex items-center justify-center min-h-screen">
       <div className="min-w-1/2 md:min-w-0 lg:min-w-0 w-full md:w-1/2 lg:w-1/2 bg-white p-8 rounded-lg shadow-lg">
@@ -38,6 +44,11 @@ function SingleProduct() {
           <div className="mt-1">
             <p id="description" className="text-sm text-gray-800">{product.description}</p>
           </div>
+        </div>
+        <div className="flex space-x-4 mt-4">
+          <Link to={'/products/edit/' + product._id} className="text-green-500 hover:text-green-700">
+            <FaEdit />
+          </Link>
         </div>
       </div>
     </div>

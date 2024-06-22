@@ -1,36 +1,47 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { Product, ApiResponse } from "../../interfaces/Product"
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { Product, ProductApiResponse, emptyProduct } from "../../interfaces/Product"
 import { createProduct } from '../../apiCalls/products';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export const Route = createFileRoute('/products/create')({
   component: CreateProduct
 })
 
 function CreateProduct() {
-  const [apiResponse, setApiResponse] = useState<ApiResponse | null>(null);
+  const [apiResponse, setApiResponse] = useState<ProductApiResponse | null>(null);
+  const [newProduct, setNewProduct] = useState<Product>(emptyProduct);
   const formRef = useRef<HTMLFormElement>(null);
+  const navigate = useNavigate();
+
+  const updateInputHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setNewProduct({
+      ...newProduct,
+      [name]: name === 'quantity' ? Number(value) : value
+    });
+    
+  };
 
   const createProductHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const target = e.target as typeof e.target & {
-      name: { value: string };
-      quantity: { value: string };
-      description: { value: string };
-    };
-
-    const newProduct: Product = {
-      name: target.name.value,
-      quantity: Number(target.quantity.value),
-    };
-
+    e.preventDefault()
+    
     const response = await createProduct(newProduct);
     setApiResponse(response);
-    if (formRef.current)
-      formRef.current.reset(); // Reset the form after submission
-  }
 
+    // Reset the form after submission
+    if (formRef.current)
+      formRef.current.reset(); 
+
+    //Redirecting user to products page
+    if (response.success) {
+      navigate({ to: "/products" });
+    } else {
+      // Handle error
+      console.error('Failed to update product');
+    }
+
+   
+  }
 
   return (
     <div className='createProduct'>
@@ -40,22 +51,28 @@ function CreateProduct() {
           <form ref={formRef} onSubmit={createProductHandler}>
             <div className="mb-4">
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nombre*</label>
-              <input required type="text" id="name" name="name" placeholder="Enter your name" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              <input required type="text" id="name" name="name" placeholder="Enter your name" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={updateInputHandler}
+              />
             </div>
 
             <div className="mb-4">
               <label htmlFor="quantity" className="block text-gray-700 text-sm font-bold mb-2">Cantidad*</label>
-              <input required min={0} type="number" id="quantity" name="quantity" placeholder="Enter quantity" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              <input required min={0} type="number" id="quantity" name="quantity" placeholder="Enter quantity" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={updateInputHandler}
+              />
             </div>
 
             <div className="mb-4">
               <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Descripción</label>
-              <textarea name="description" rows={4} id="description" placeholder="Enter description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+              <textarea name="description" rows={4} id="description" placeholder="Enter description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={updateInputHandler}
+              ></textarea>
             </div>
 
             <div className="flex items-center justify-between">
               <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Submit
+                Crear
               </button>
             </div>
           </form>
