@@ -17,3 +17,5 @@ export const emptyProduct = {
   quantity: 0,
   description: ""
 }
+
+export const API_PRODUCTS_URL = import.meta.env.VITE_API_URL_BASE + import.meta.env.VITE_API_URL_PRODUCTS;
