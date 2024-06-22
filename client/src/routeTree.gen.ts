@@ -16,6 +16,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as ProductsCreateImport } from './routes/products/create'
 import { Route as ProductsProductIdImport } from './routes/products/$productId'
+import { Route as ProductsEditProductIdImport } from './routes/products/edit.$productId'
 
 // Create/Update Routes
 
@@ -41,6 +42,11 @@ const ProductsCreateRoute = ProductsCreateImport.update({
 
 const ProductsProductIdRoute = ProductsProductIdImport.update({
   path: '/products/$productId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProductsEditProductIdRoute = ProductsEditProductIdImport.update({
+  path: '/products/edit/$productId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -83,6 +89,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/products/edit/$productId': {
+      id: '/products/edit/$productId'
+      path: '/products/edit/$productId'
+      fullPath: '/products/edit/$productId'
+      preLoaderRoute: typeof ProductsEditProductIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -94,6 +107,7 @@ export const routeTree = rootRoute.addChildren({
   ProductsProductIdRoute,
   ProductsCreateRoute,
   ProductsIndexRoute,
+  ProductsEditProductIdRoute,
 })
 
 /* prettier-ignore-end */
@@ -108,7 +122,8 @@ export const routeTree = rootRoute.addChildren({
         "/boilerplate",
         "/products/$productId",
         "/products/create",
-        "/products/"
+        "/products/",
+        "/products/edit/$productId"
       ]
     },
     "/": {
@@ -125,6 +140,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/products/": {
       "filePath": "products/index.tsx"
+    },
+    "/products/edit/$productId": {
+      "filePath": "products/edit.$productId.tsx"
     }
   }
 }
