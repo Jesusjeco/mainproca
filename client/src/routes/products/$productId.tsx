@@ -2,7 +2,7 @@ import { Link, createFileRoute, ErrorComponent, ErrorComponentProps } from '@tan
 import { fetchProductById } from '../../apiCalls/products'
 import { Product } from "../../interfaces/Product"
 import { useEffect, useState } from 'react'
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaEdit } from 'react-icons/fa';
 
 export const Route = createFileRoute('/products/$productId')({
   loader: async ({ params: { productId } }) => fetchProductById(productId),

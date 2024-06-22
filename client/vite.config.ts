@@ -7,15 +7,10 @@ import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
 import dotenv from 'dotenv';
 dotenv.config();
 
-// vitest automatically sets NODE_ENV to 'test' when running tests
-const isTest = process.env.NODE_ENV === 'test'
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    !isTest && TanStackRouterVite(),
+    TanStackRouterVite(),
     react()],
-  define: {
-    'process.env': process.env
-  }
+  //base: "/mainproca/"
 })
