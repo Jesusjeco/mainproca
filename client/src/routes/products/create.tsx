@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Product, ProductApiResponse, emptyProduct } from "../../interfaces/Product"
 import { createProduct } from '../../apiCalls/products';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 export const Route = createFileRoute('/products/create')({
   component: CreateProduct
@@ -19,18 +19,18 @@ function CreateProduct() {
       ...newProduct,
       [name]: name === 'quantity' ? Number(value) : value
     });
-    
+
   };
 
   const createProductHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    
+
     const response = await createProduct(newProduct);
     setApiResponse(response);
 
     // Reset the form after submission
     if (formRef.current)
-      formRef.current.reset(); 
+      formRef.current.reset();
 
     //Redirecting user to products page
     if (response.success) {
@@ -40,7 +40,7 @@ function CreateProduct() {
       console.error('Failed to update product');
     }
 
-   
+
   }
 
   return (

@@ -49,7 +49,7 @@ function Products() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {
-                  allProducts.length > 0 ?
+                  allProducts && allProducts.length > 0 ?
                     allProducts.map((product, index) =>
                       <tr key={index}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -63,7 +63,8 @@ function Products() {
                             <Link to={'/products/edit/' + product._id} className="text-green-500 hover:text-green-700">
                               <FaEdit />
                             </Link>
-                            <button onClick={() => deleteProductHandler(product._id)} className="text-red-500 hover:text-red-700">
+                            <button
+                            onClick={() => { if (product._id) deleteProductHandler(product._id) }} className="text-red-500 hover:text-red-700">
                               <FaTrashAlt />
                             </button>
                           </div>
@@ -71,8 +72,13 @@ function Products() {
                       </tr>
                     )
                     :
+                    allProducts ?
                     <tr>
-                      <td colSpan={3}>"No hay productos en inventario"</td>
+                      <td colSpan={3}>No hay productos en inventario</td>
+                    </tr>
+                    : 
+                    <tr>
+                      <td colSpan={3}>Error en el servidor</td>
                     </tr>
                 }
               </tbody>
