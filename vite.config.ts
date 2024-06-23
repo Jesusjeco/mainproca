@@ -19,4 +19,5 @@ export default defineConfig({
   plugins: [
     TanStackRouterVite(),
     react()],
+  publicDir: 'public',
 })
