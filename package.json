@@ -1,5 +1,4 @@
 {
-  "homepage": "https://jesusjeco.github.io/mainproca/",
   "name": "client",
   "private": true,
   "version": "0.0.0",
@@ -10,9 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "generate-routes": "tsr generate",
-    "watch-routes": "tsr watch",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "watch-routes": "tsr watch"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.39.4",
