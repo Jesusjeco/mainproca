@@ -15,9 +15,8 @@ import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
 // })
 
 export default defineConfig({
-  //console.log('Vite mode:', mode);
   plugins: [
     TanStackRouterVite(),
     react()],
-  publicDir: 'public',
+  publicDir: 'public/',
 })
