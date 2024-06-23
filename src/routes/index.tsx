@@ -9,6 +9,8 @@ export const Route = createFileRoute('/')({
 function Index() {
   const navigate = useNavigate();
   useEffect(() => {
+    console.log("Redirecting to products page");
+    
     navigate({ to: "/products" });
   }, []);
   return (
