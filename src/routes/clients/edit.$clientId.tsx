@@ -1,20 +1,16 @@
-import { createFileRoute, ErrorComponent, ErrorComponentProps, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { editClientById, fetchClientById } from '../../apiCalls/clients'
 import { Client } from "../../interfaces/Client"
 import { useEffect, useState } from 'react'
+import { FetchErrorComponent } from '../../components/FetchErrorComponent'
+import { NotFoundComponent } from '../../components/NotFoundComponent'
 
 export const Route = createFileRoute('/clients/edit/$clientId')({
   loader: async ({ params: { clientId } }) => fetchClientById(clientId),
-  errorComponent: PostErrorComponent as any,
-  notFoundComponent: () => {
-    return <p>Cliente no encontrado</p>
-  },
+  errorComponent: FetchErrorComponent as any,
+  notFoundComponent: () => <NotFoundComponent message="Cliente no encontrado" />,
   component: EditClient
 })
-
-export function PostErrorComponent({ error }: ErrorComponentProps) {
-  return <ErrorComponent error={error} />
-}
 
 function EditClient() {
   const client = Route.useLoaderData<Client>()

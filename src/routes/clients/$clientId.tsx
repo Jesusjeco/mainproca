@@ -1,21 +1,17 @@
-import { Link, createFileRoute, ErrorComponent, ErrorComponentProps } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import { fetchClientById } from '../../apiCalls/clients'
 import { Client } from "../../interfaces/Client"
 import { useEffect, useState } from 'react'
 import { FaEdit } from 'react-icons/fa';
+import { FetchErrorComponent } from '../../components/FetchErrorComponent';
+import { NotFoundComponent } from '../../components/NotFoundComponent';
 
 export const Route = createFileRoute('/clients/$clientId')({
   loader: async ({ params: { clientId } }) => fetchClientById(clientId),
-  errorComponent: PostErrorComponent as any,
-  notFoundComponent: () => {
-    return <p>Cliento no encontrado</p>
-  },
+  errorComponent: FetchErrorComponent as any,
+  notFoundComponent: () => <NotFoundComponent message="Cliente no encontrado" />,
   component: SingleClient
 })
-
-export function PostErrorComponent({ error }: ErrorComponentProps) {
-  return <ErrorComponent error={error} />
-}
 
 function SingleClient() {
   const clientData = Route.useLoaderData<Client>()
