@@ -6,10 +6,19 @@ export const Route = createRootRoute({
     <>
       <div className="p-2 flex gap-2">
         <Link to="/" activeProps={{ className: 'font-bold', }}>
-          Productos
+          Inicio
+        </Link>
+        <Link to="/products" activeProps={{ className: 'font-bold', }}>
+          Inventario
         </Link>
         <Link to="/clients" activeProps={{ className: 'font-bold', }}>
           Clientes
+        </Link>
+        <Link to="/sells" activeProps={{ className: 'font-bold', }}>
+          Ventas
+        </Link>
+        <Link to="/purchasing" activeProps={{ className: 'font-bold', }}>
+          Compras
         </Link>
       </div>
       <hr />
