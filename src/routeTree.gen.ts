@@ -14,9 +14,13 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as BoilerplateImport } from './routes/boilerplate'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
+import { Route as ClientsIndexImport } from './routes/clients/index'
 import { Route as ProductsCreateImport } from './routes/products/create'
 import { Route as ProductsProductIdImport } from './routes/products/$productId'
+import { Route as ClientsCreateImport } from './routes/clients/create'
+import { Route as ClientsClientIdImport } from './routes/clients/$clientId'
 import { Route as ProductsEditProductIdImport } from './routes/products/edit.$productId'
+import { Route as ClientsEditClientIdImport } from './routes/clients/edit.$clientId'
 
 // Create/Update Routes
 
@@ -35,6 +39,11 @@ const ProductsIndexRoute = ProductsIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ClientsIndexRoute = ClientsIndexImport.update({
+  path: '/clients/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ProductsCreateRoute = ProductsCreateImport.update({
   path: '/products/create',
   getParentRoute: () => rootRoute,
@@ -45,8 +54,23 @@ const ProductsProductIdRoute = ProductsProductIdImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ClientsCreateRoute = ClientsCreateImport.update({
+  path: '/clients/create',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ClientsClientIdRoute = ClientsClientIdImport.update({
+  path: '/clients/$clientId',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ProductsEditProductIdRoute = ProductsEditProductIdImport.update({
   path: '/products/edit/$productId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ClientsEditClientIdRoute = ClientsEditClientIdImport.update({
+  path: '/clients/edit/$clientId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -68,6 +92,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoilerplateImport
       parentRoute: typeof rootRoute
     }
+    '/clients/$clientId': {
+      id: '/clients/$clientId'
+      path: '/clients/$clientId'
+      fullPath: '/clients/$clientId'
+      preLoaderRoute: typeof ClientsClientIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/clients/create': {
+      id: '/clients/create'
+      path: '/clients/create'
+      fullPath: '/clients/create'
+      preLoaderRoute: typeof ClientsCreateImport
+      parentRoute: typeof rootRoute
+    }
     '/products/$productId': {
       id: '/products/$productId'
       path: '/products/$productId'
@@ -82,11 +120,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsCreateImport
       parentRoute: typeof rootRoute
     }
+    '/clients/': {
+      id: '/clients/'
+      path: '/clients'
+      fullPath: '/clients'
+      preLoaderRoute: typeof ClientsIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/products/': {
       id: '/products/'
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/clients/edit/$clientId': {
+      id: '/clients/edit/$clientId'
+      path: '/clients/edit/$clientId'
+      fullPath: '/clients/edit/$clientId'
+      preLoaderRoute: typeof ClientsEditClientIdImport
       parentRoute: typeof rootRoute
     }
     '/products/edit/$productId': {
@@ -104,9 +156,13 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   BoilerplateRoute,
+  ClientsClientIdRoute,
+  ClientsCreateRoute,
   ProductsProductIdRoute,
   ProductsCreateRoute,
+  ClientsIndexRoute,
   ProductsIndexRoute,
+  ClientsEditClientIdRoute,
   ProductsEditProductIdRoute,
 })
 
@@ -120,9 +176,13 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/boilerplate",
+        "/clients/$clientId",
+        "/clients/create",
         "/products/$productId",
         "/products/create",
+        "/clients/",
         "/products/",
+        "/clients/edit/$clientId",
         "/products/edit/$productId"
       ]
     },
@@ -132,14 +192,26 @@ export const routeTree = rootRoute.addChildren({
     "/boilerplate": {
       "filePath": "boilerplate.tsx"
     },
+    "/clients/$clientId": {
+      "filePath": "clients/$clientId.tsx"
+    },
+    "/clients/create": {
+      "filePath": "clients/create.tsx"
+    },
     "/products/$productId": {
       "filePath": "products/$productId.tsx"
     },
     "/products/create": {
       "filePath": "products/create.tsx"
     },
+    "/clients/": {
+      "filePath": "clients/index.tsx"
+    },
     "/products/": {
       "filePath": "products/index.tsx"
+    },
+    "/clients/edit/$clientId": {
+      "filePath": "clients/edit.$clientId.tsx"
     },
     "/products/edit/$productId": {
       "filePath": "products/edit.$productId.tsx"
