@@ -1,20 +1,16 @@
-import { createFileRoute, ErrorComponent, ErrorComponentProps, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { editProductById, fetchProductById } from '../../apiCalls/products'
 import { Product } from "../../interfaces/Product"
 import { useEffect, useState } from 'react'
+import { FetchErrorComponent } from '../../components/FetchErrorComponent'
+import { NotFoundComponent } from '../../components/NotFoundComponent'
 
 export const Route = createFileRoute('/products/edit/$productId')({
   loader: async ({ params: { productId } }) => fetchProductById(productId),
-  errorComponent: PostErrorComponent as any,
-  notFoundComponent: () => {
-    return <p>Producto no encontrado</p>
-  },
+  errorComponent: FetchErrorComponent as any,
+  notFoundComponent: () => <NotFoundComponent message="Producto no encontrado" />,
   component: EditProduct
 })
-
-export function PostErrorComponent({ error }: ErrorComponentProps) {
-  return <ErrorComponent error={error} />
-}
 
 function EditProduct() {
   const product = Route.useLoaderData<Product>()

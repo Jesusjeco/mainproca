@@ -3,19 +3,15 @@ import { deleteProductById, fetchAllProducts } from "../../apiCalls/products"
 import "./products.pcss"
 import { Product } from "../../interfaces/Product"
 import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FetchErrorComponent } from '../../components/FetchErrorComponent';
+import { NotFoundComponent } from '../../components/NotFoundComponent';
 
 export const Route = createFileRoute('/products/')({
   loader: fetchAllProducts,
-  errorComponent: PostErrorComponent as any,
-  notFoundComponent: () => {
-    return <p>Producto no encontrado</p>
-  },
+  errorComponent: FetchErrorComponent as any,
+  notFoundComponent: () => <NotFoundComponent message="Producto no encontrado" />,
   component: Products,
 })
-
-export function PostErrorComponent({ error }: ErrorComponentProps) {
-  return <ErrorComponent error={error} />
-}
 
 function Products() {
   const allProducts = Route.useLoaderData<Product[]>();
@@ -64,7 +60,7 @@ function Products() {
                               <FaEdit />
                             </Link>
                             <button
-                            onClick={() => { if (product._id) deleteProductHandler(product._id) }} className="text-red-500 hover:text-red-700">
+                              onClick={() => { if (product._id) deleteProductHandler(product._id) }} className="text-red-500 hover:text-red-700">
                               <FaTrashAlt />
                             </button>
                           </div>
@@ -73,13 +69,13 @@ function Products() {
                     )
                     :
                     allProducts ?
-                    <tr>
-                      <td colSpan={3}>No hay productos en inventario</td>
-                    </tr>
-                    : 
-                    <tr>
-                      <td colSpan={3}>Error en el servidor</td>
-                    </tr>
+                      <tr>
+                        <td colSpan={3}>No hay productos en inventario</td>
+                      </tr>
+                      :
+                      <tr>
+                        <td colSpan={3}>Error en el servidor</td>
+                      </tr>
                 }
               </tbody>
             </table>
