@@ -1,4 +1,4 @@
-import { ErrorComponent, ErrorComponentProps, Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { deleteProductById, fetchAllProducts } from "../../apiCalls/products"
 import "./products.pcss"
 import { Product } from "../../interfaces/Product"
