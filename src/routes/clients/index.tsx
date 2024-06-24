@@ -1,21 +1,17 @@
-import { ErrorComponent, ErrorComponentProps, Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { deleteClientById, fetchAllClients } from "../../apiCalls/clients"
 import "./clients.pcss"
 import { Client } from "../../interfaces/Client"
 import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FetchErrorComponent } from '../../components/FetchErrorComponent';
+import { NotFoundComponent } from '../../components/NotFoundComponent';
 
 export const Route = createFileRoute('/clients/')({
   loader: fetchAllClients,
-  errorComponent: PostErrorComponent as any,
-  notFoundComponent: () => {
-    return <p>Cliento no encontrado</p>
-  },
-  component: Clients, 
+  errorComponent: FetchErrorComponent as any,
+  notFoundComponent: () => <NotFoundComponent message="Cliente no encontrado" />,
+  component: Clients,
 })
-
-export function PostErrorComponent({ error }: ErrorComponentProps) {
-  return <ErrorComponent error={error} />
-}
 
 function Clients() {
   const allClients = Route.useLoaderData<Client[]>();
@@ -62,7 +58,7 @@ function Clients() {
                               <FaEdit />
                             </Link>
                             <button
-                            onClick={() => { if (client._id) deleteClientHandler(client._id) }} className="text-red-500 hover:text-red-700">
+                              onClick={() => { if (client._id) deleteClientHandler(client._id) }} className="text-red-500 hover:text-red-700">
                               <FaTrashAlt />
                             </button>
                           </div>
@@ -71,13 +67,13 @@ function Clients() {
                     )
                     :
                     allClients ?
-                    <tr>
-                      <td colSpan={3}>Lista de clientes vacia</td>
-                    </tr>
-                    : 
-                    <tr>
-                      <td colSpan={3}>Error en el servidor</td>
-                    </tr>
+                      <tr>
+                        <td colSpan={3}>Lista de clientes vacia</td>
+                      </tr>
+                      :
+                      <tr>
+                        <td colSpan={3}>Error en el servidor</td>
+                      </tr>
                 }
               </tbody>
             </table>
