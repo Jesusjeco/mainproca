@@ -7,5 +7,5 @@ services:
       startCommand: npm run start
       routes:
           - type: rewrite
-            source: ".*"
+            source: "/*"
             destination: /index.html
