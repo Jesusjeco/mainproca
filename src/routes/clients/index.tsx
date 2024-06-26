@@ -38,6 +38,7 @@ function Clients() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">RIF</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Opciones</th>
                 </tr>
@@ -47,8 +48,13 @@ function Clients() {
                   allClients && allClients.length > 0 ?
                     allClients.map((client, index) =>
                       <tr key={index}>
+
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {client.rif}</td>
+
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           <Link to={'/clients/' + client._id}>{client.name}</Link></td>
+
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           <div className="flex space-x-4">
                             <Link to={'/clients/' + client._id} className="text-blue-500 hover:text-blue-700">
