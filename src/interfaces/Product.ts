@@ -3,6 +3,7 @@ export interface Product {
   _id?: string, //I am making the _id optional only because when creating a
   name: string,
   quantity: number,
+  price: number,
   description?: string
 }
 

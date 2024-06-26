@@ -36,6 +36,12 @@ function SingleProduct() {
           </div>
         </div>
         <div className="mb-4">
+          <label htmlFor="price" className="block text-sm font-medium text-gray-700">Precio</label>
+          <div className="mt-1">
+            <p id="price" className="text-lg font-semibold text-gray-900">{product.price}</p>
+          </div>
+        </div>
+        <div className="mb-4">
           <label htmlFor="description" className="block text-sm font-medium text-gray-700">Descripción</label>
           <div className="mt-1">
             <p id="description" className="text-sm text-gray-800">{product.description}</p>
