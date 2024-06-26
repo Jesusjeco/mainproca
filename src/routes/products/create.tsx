@@ -64,6 +64,13 @@ function CreateProduct() {
             </div>
 
             <div className="mb-4">
+              <label htmlFor="price" className="block text-gray-700 text-sm font-bold mb-2">Precio*</label>
+              <input required min={0} type="number" id="price" name="price" placeholder="Enter price" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={updateInputHandler}
+              />
+            </div>
+
+            <div className="mb-4">
               <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Descripción</label>
               <textarea name="description" rows={4} id="description" placeholder="Enter description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 onChange={updateInputHandler}
