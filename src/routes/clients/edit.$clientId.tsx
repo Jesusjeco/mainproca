@@ -47,12 +47,38 @@ function EditClient() {
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
           <h2 className="text-2xl font-bold mb-6 text-center">Modificar cliento</h2>
           <form onSubmit={modifyClientHandler}>
+
+            <div className="mb-4">
+              <label htmlFor="rif" className="block text-gray-700 text-sm font-bold mb-2">RIF*</label>
+              <input required type="text" id="rif" name="rif" placeholder="Enter your rif" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                value={newClient.rif}
+                onChange={handleInputChange}
+              />
+            </div>
+
             <div className="mb-4">
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nombre*</label>
               <input required type="text" id="name" name="name" placeholder="Enter your name" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 value={newClient.name}
                 onChange={handleInputChange}
               />
+            </div>
+
+
+            <div className="mb-4">
+              <label htmlFor="legal_address" className="block text-gray-700 text-sm font-bold mb-2">Dirección fiscal</label>
+              <textarea name="legal_address" rows={4} id="legal_address" placeholder="Enter legal_address" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={handleInputChange}
+                value={newClient.legal_address}
+              ></textarea>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="office" className="block text-gray-700 text-sm font-bold mb-2">Sucursal</label>
+              <textarea name="office" rows={4} id="office" placeholder="Enter office" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={handleInputChange}
+                value={newClient.office}
+              ></textarea>
             </div>
 
             <div className="mb-4">
