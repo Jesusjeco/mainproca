@@ -16,6 +16,7 @@ export interface ProductApiResponse {
 export const emptyProduct = {
   name: "",
   quantity: 0,
+  price: 0,
   description: ""
 }
 

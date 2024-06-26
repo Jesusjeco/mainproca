@@ -17,7 +17,7 @@ function CreateClient() {
     const { name, value } = e.target;
     setNewClient({
       ...newClient,
-      [name]:  value
+      [name]: value
     });
 
   };
@@ -39,8 +39,6 @@ function CreateClient() {
       // Handle error
       console.error('Failed to update client');
     }
-
-
   }
 
   return (
@@ -49,11 +47,33 @@ function CreateClient() {
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
           <h2 className="text-2xl font-bold mb-6 text-center">Agregar cliente nuevo</h2>
           <form ref={formRef} onSubmit={createClientHandler}>
+
+            <div className="mb-4">
+              <label htmlFor="rif" className="block text-gray-700 text-sm font-bold mb-2">RIF*</label>
+              <input required type="text" id="rif" name="rif" placeholder="Enter your rif" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={updateInputHandler}
+              />
+            </div>
+
             <div className="mb-4">
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nombre*</label>
               <input required type="text" id="name" name="name" placeholder="Enter your name" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 onChange={updateInputHandler}
               />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="legal_address" className="block text-gray-700 text-sm font-bold mb-2">Dirección fiscal*</label>
+              <textarea required name="legal_address" rows={4} id="legal_address" placeholder="Enter legal_address" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={updateInputHandler}
+              ></textarea>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="office" className="block text-gray-700 text-sm font-bold mb-2">Sucursales</label>
+              <textarea name="office" rows={4} id="office" placeholder="Enter office" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                onChange={updateInputHandler}
+              ></textarea>
             </div>
 
             <div className="mb-4">
