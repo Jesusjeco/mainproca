@@ -18,7 +18,7 @@ function Index() {
         <Link to='/sells' className="w-full sm:w-auto px-8 py-4 bg-blue-500 text-white font-bold rounded-lg text-xl hover:bg-blue-700">
           Ventas
         </Link>
-        <Link to='/purchasing' className="w-full sm:w-auto px-8 py-4 bg-blue-500 text-white font-bold rounded-lg text-xl hover:bg-blue-700">
+        <Link to='/purchaseOrders' className="w-full sm:w-auto px-8 py-4 bg-blue-500 text-white font-bold rounded-lg text-xl hover:bg-blue-700">
           Compras
         </Link>
       </div>

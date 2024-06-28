@@ -6,7 +6,7 @@ import { FaEdit } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
 
-export const Route = createFileRoute('/clients/$clientId')({
+export const Route = createFileRoute('/purchaseOrders/$clientId')({
   loader: async ({ params: { clientId } }) => fetchClientById(clientId),
   errorComponent: FetchErrorComponent as any,
   notFoundComponent: () => <NotFoundComponent message="Cliente no encontrado" />,
