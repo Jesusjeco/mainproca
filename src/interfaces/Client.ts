@@ -20,4 +20,9 @@ export const emptyClient = {
   legal_address: ""
 }
 
+export interface ClientIdAndName {
+  id: string;
+  name: string;
+}
+
 export const API_CLIENTS_URL = import.meta.env.VITE_API_URL_BASE + import.meta.env.VITE_API_URL_CLIENTS;

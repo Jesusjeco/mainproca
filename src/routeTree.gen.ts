@@ -14,13 +14,16 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as BoilerplateImport } from './routes/boilerplate'
 import { Route as IndexImport } from './routes/index'
 import { Route as SellsIndexImport } from './routes/sells/index'
-import { Route as PurchasingIndexImport } from './routes/purchasing/index'
+import { Route as PurchaseOrdersIndexImport } from './routes/purchaseOrders/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as ClientsIndexImport } from './routes/clients/index'
+import { Route as PurchaseOrdersCreateImport } from './routes/purchaseOrders/create'
+import { Route as PurchaseOrdersClientIdImport } from './routes/purchaseOrders/$clientId'
 import { Route as ProductsCreateImport } from './routes/products/create'
 import { Route as ProductsProductIdImport } from './routes/products/$productId'
 import { Route as ClientsCreateImport } from './routes/clients/create'
 import { Route as ClientsClientIdImport } from './routes/clients/$clientId'
+import { Route as PurchaseOrdersEditClientIdImport } from './routes/purchaseOrders/edit.$clientId'
 import { Route as ProductsEditProductIdImport } from './routes/products/edit.$productId'
 import { Route as ClientsEditClientIdImport } from './routes/clients/edit.$clientId'
 
@@ -41,8 +44,8 @@ const SellsIndexRoute = SellsIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const PurchasingIndexRoute = PurchasingIndexImport.update({
-  path: '/purchasing/',
+const PurchaseOrdersIndexRoute = PurchaseOrdersIndexImport.update({
+  path: '/purchaseOrders/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -53,6 +56,16 @@ const ProductsIndexRoute = ProductsIndexImport.update({
 
 const ClientsIndexRoute = ClientsIndexImport.update({
   path: '/clients/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PurchaseOrdersCreateRoute = PurchaseOrdersCreateImport.update({
+  path: '/purchaseOrders/create',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PurchaseOrdersClientIdRoute = PurchaseOrdersClientIdImport.update({
+  path: '/purchaseOrders/$clientId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -75,6 +88,13 @@ const ClientsClientIdRoute = ClientsClientIdImport.update({
   path: '/clients/$clientId',
   getParentRoute: () => rootRoute,
 } as any)
+
+const PurchaseOrdersEditClientIdRoute = PurchaseOrdersEditClientIdImport.update(
+  {
+    path: '/purchaseOrders/edit/$clientId',
+    getParentRoute: () => rootRoute,
+  } as any,
+)
 
 const ProductsEditProductIdRoute = ProductsEditProductIdImport.update({
   path: '/products/edit/$productId',
@@ -132,6 +152,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsCreateImport
       parentRoute: typeof rootRoute
     }
+    '/purchaseOrders/$clientId': {
+      id: '/purchaseOrders/$clientId'
+      path: '/purchaseOrders/$clientId'
+      fullPath: '/purchaseOrders/$clientId'
+      preLoaderRoute: typeof PurchaseOrdersClientIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/purchaseOrders/create': {
+      id: '/purchaseOrders/create'
+      path: '/purchaseOrders/create'
+      fullPath: '/purchaseOrders/create'
+      preLoaderRoute: typeof PurchaseOrdersCreateImport
+      parentRoute: typeof rootRoute
+    }
     '/clients/': {
       id: '/clients/'
       path: '/clients'
@@ -146,11 +180,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIndexImport
       parentRoute: typeof rootRoute
     }
-    '/purchasing/': {
-      id: '/purchasing/'
-      path: '/purchasing'
-      fullPath: '/purchasing'
-      preLoaderRoute: typeof PurchasingIndexImport
+    '/purchaseOrders/': {
+      id: '/purchaseOrders/'
+      path: '/purchaseOrders'
+      fullPath: '/purchaseOrders'
+      preLoaderRoute: typeof PurchaseOrdersIndexImport
       parentRoute: typeof rootRoute
     }
     '/sells/': {
@@ -174,6 +208,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsEditProductIdImport
       parentRoute: typeof rootRoute
     }
+    '/purchaseOrders/edit/$clientId': {
+      id: '/purchaseOrders/edit/$clientId'
+      path: '/purchaseOrders/edit/$clientId'
+      fullPath: '/purchaseOrders/edit/$clientId'
+      preLoaderRoute: typeof PurchaseOrdersEditClientIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -186,12 +227,15 @@ export const routeTree = rootRoute.addChildren({
   ClientsCreateRoute,
   ProductsProductIdRoute,
   ProductsCreateRoute,
+  PurchaseOrdersClientIdRoute,
+  PurchaseOrdersCreateRoute,
   ClientsIndexRoute,
   ProductsIndexRoute,
-  PurchasingIndexRoute,
+  PurchaseOrdersIndexRoute,
   SellsIndexRoute,
   ClientsEditClientIdRoute,
   ProductsEditProductIdRoute,
+  PurchaseOrdersEditClientIdRoute,
 })
 
 /* prettier-ignore-end */
@@ -208,12 +252,15 @@ export const routeTree = rootRoute.addChildren({
         "/clients/create",
         "/products/$productId",
         "/products/create",
+        "/purchaseOrders/$clientId",
+        "/purchaseOrders/create",
         "/clients/",
         "/products/",
-        "/purchasing/",
+        "/purchaseOrders/",
         "/sells/",
         "/clients/edit/$clientId",
-        "/products/edit/$productId"
+        "/products/edit/$productId",
+        "/purchaseOrders/edit/$clientId"
       ]
     },
     "/": {
@@ -234,14 +281,20 @@ export const routeTree = rootRoute.addChildren({
     "/products/create": {
       "filePath": "products/create.tsx"
     },
+    "/purchaseOrders/$clientId": {
+      "filePath": "purchaseOrders/$clientId.tsx"
+    },
+    "/purchaseOrders/create": {
+      "filePath": "purchaseOrders/create.tsx"
+    },
     "/clients/": {
       "filePath": "clients/index.tsx"
     },
     "/products/": {
       "filePath": "products/index.tsx"
     },
-    "/purchasing/": {
-      "filePath": "purchasing/index.tsx"
+    "/purchaseOrders/": {
+      "filePath": "purchaseOrders/index.tsx"
     },
     "/sells/": {
       "filePath": "sells/index.tsx"
@@ -251,6 +304,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/products/edit/$productId": {
       "filePath": "products/edit.$productId.tsx"
+    },
+    "/purchaseOrders/edit/$clientId": {
+      "filePath": "purchaseOrders/edit.$clientId.tsx"
     }
   }
 }
