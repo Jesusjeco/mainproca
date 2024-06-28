@@ -50,7 +50,7 @@ function Clients() {
                       <tr key={index}>
 
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {client.rif}</td>
+                          <Link to={'/clients/' + client._id}>{client.rif}</Link></td>
 
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           <Link to={'/clients/' + client._id}>{client.name}</Link></td>

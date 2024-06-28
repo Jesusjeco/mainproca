@@ -17,7 +17,7 @@ export const Route = createRootRoute({
         <Link to="/sells" activeProps={{ className: 'font-bold', }}>
           Ventas
         </Link>
-        <Link to="/purchasing" activeProps={{ className: 'font-bold', }}>
+        <Link to="/purchaseOrders" activeProps={{ className: 'font-bold', }}>
           Compras
         </Link>
       </div>
