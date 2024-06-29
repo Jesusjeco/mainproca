@@ -125,33 +125,3 @@ export async function deleteClientById(clientId: string) {
     console.error(error);
   };
 }
-
-/********************
- * Custom fetch calls
- *******************/
-//Fetching single client by id
-export async function fetchClientsIdsAndNames(clientIds: (string | undefined)[]) {
-  const requestOptions: RequestInit = {
-    method: "POST", // Use POST method to send clientIds in the body
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ clientIds }), // Convert clientIds array to JSON string and send in body
-    redirect: "follow"
-  };
-
-  try {
-    const response = await fetch(API_CLIENTS_URL + "/IdsAndNames", requestOptions);
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch clients by IDs');
-    }
-
-    const clients = await response.json();
-    
-    return clients; // Assuming API returns an array of client objects
-  } catch (error) {
-    console.error(error);
-    return []; // Return empty array or handle error as needed
-  }
-}//fetchClientsIdsAndNames
