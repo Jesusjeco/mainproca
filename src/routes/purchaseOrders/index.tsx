@@ -5,10 +5,8 @@ import { PurchaseOrder } from "../../interfaces/PurchaseOrder"
 import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { DMYdate } from '../../utils/dates';
-import { fetchClientsIdsAndNames } from '../../apiCalls/clients';
-import { ClientIdAndName } from '../../interfaces/Client';
 
 export const Route = createFileRoute('/purchaseOrders/')({
   loader: fetchAllPurchaseOrders,
@@ -20,7 +18,6 @@ export const Route = createFileRoute('/purchaseOrders/')({
 function PurchaseOrders() {
   const allPurchaseOrders = Route.useLoaderData<PurchaseOrder[]>();
   const navigate = useNavigate();
-  const [clientIdsAndNames, setClientIdsAndNames] = useState<ClientIdAndName[]>([]);
 
   const deletePurchaseOrderHandler = async (purchaseOrderId: string) => {
     const response = await deletePurchaseOrderById(purchaseOrderId);
@@ -31,30 +28,18 @@ function PurchaseOrders() {
   }
 
   useEffect(() => {
-    const callFetchClientsIdsAndNames = async () => {
-      var clientNamesIds = allPurchaseOrders.map((order) => order.client);
-
-      const clientsIdsAndNames = await fetchClientsIdsAndNames(clientNamesIds);
-      console.log(clientsIdsAndNames);
-
-      setClientIdsAndNames(clientsIdsAndNames);
-    }
-
-    callFetchClientsIdsAndNames();
+    console.log("All purchase orders");
+    console.log(allPurchaseOrders);
+    
   }, [allPurchaseOrders]);
-
-  const getClientNameById = (id: string) => {
-    const client = clientIdsAndNames.find(client => client.id === id);
-    return client ? client.name : 'Unknown Client';
-  };
 
   return (
     <section id='purchaseOrders'>
       <div className="bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800">PurchaseOrderes</h2>
-            <Link to='/purchaseOrders/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Agregar purchaseOrdere</Link>
+            <h2 className="text-3xl font-bold text-gray-800">Ordenes de venta</h2>
+            <Link to='/purchaseOrders/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Agregar ordern de venta</Link>
           </div>
 
           <div className="overflow-hidden border border-gray-200 sm:rounded-lg">
@@ -74,20 +59,23 @@ function PurchaseOrders() {
                     allPurchaseOrders.map((purchaseOrder, index) =>
                       <tr key={index}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {getClientNameById(purchaseOrder.client)}</td>
+                          {purchaseOrder.client}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {DMYdate(purchaseOrder.orderDate)}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          Productos</td>
+                          {purchaseOrder.products.map((product, index2) =>
+                            <div key={index - index2}>{product.product + " x " + product.quantity}</div>
+                          )}
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {purchaseOrder.totalPrice}</td>
 
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           <div className="flex space-x-4">
-                            <Link to={'/products/' + purchaseOrder._id} className="text-blue-500 hover:text-blue-700">
+                            <Link to={'/purchaseOrders/' + purchaseOrder._id} className="text-blue-500 hover:text-blue-700">
                               <FaEye />
                             </Link>
-                            <Link to={'/products/edit/' + purchaseOrder._id} className="text-green-500 hover:text-green-700">
+                            <Link to={'/purchaseOrders/edit/' + purchaseOrder._id} className="text-green-500 hover:text-green-700">
                               <FaEdit />
                             </Link>
                             <button
