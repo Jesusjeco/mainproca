@@ -18,12 +18,12 @@ import { Route as PurchaseOrdersIndexImport } from './routes/purchaseOrders/inde
 import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as ClientsIndexImport } from './routes/clients/index'
 import { Route as PurchaseOrdersCreateImport } from './routes/purchaseOrders/create'
-import { Route as PurchaseOrdersClientIdImport } from './routes/purchaseOrders/$clientId'
+import { Route as PurchaseOrdersPurchaseOrderIdImport } from './routes/purchaseOrders/$purchaseOrderId'
 import { Route as ProductsCreateImport } from './routes/products/create'
 import { Route as ProductsProductIdImport } from './routes/products/$productId'
 import { Route as ClientsCreateImport } from './routes/clients/create'
 import { Route as ClientsClientIdImport } from './routes/clients/$clientId'
-import { Route as PurchaseOrdersEditClientIdImport } from './routes/purchaseOrders/edit.$clientId'
+import { Route as PurchaseOrdersEditPurchaseOrderIdImport } from './routes/purchaseOrders/edit.$purchaseOrderId'
 import { Route as ProductsEditProductIdImport } from './routes/products/edit.$productId'
 import { Route as ClientsEditClientIdImport } from './routes/clients/edit.$clientId'
 
@@ -64,10 +64,11 @@ const PurchaseOrdersCreateRoute = PurchaseOrdersCreateImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const PurchaseOrdersClientIdRoute = PurchaseOrdersClientIdImport.update({
-  path: '/purchaseOrders/$clientId',
-  getParentRoute: () => rootRoute,
-} as any)
+const PurchaseOrdersPurchaseOrderIdRoute =
+  PurchaseOrdersPurchaseOrderIdImport.update({
+    path: '/purchaseOrders/$purchaseOrderId',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 const ProductsCreateRoute = ProductsCreateImport.update({
   path: '/products/create',
@@ -89,12 +90,11 @@ const ClientsClientIdRoute = ClientsClientIdImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const PurchaseOrdersEditClientIdRoute = PurchaseOrdersEditClientIdImport.update(
-  {
-    path: '/purchaseOrders/edit/$clientId',
+const PurchaseOrdersEditPurchaseOrderIdRoute =
+  PurchaseOrdersEditPurchaseOrderIdImport.update({
+    path: '/purchaseOrders/edit/$purchaseOrderId',
     getParentRoute: () => rootRoute,
-  } as any,
-)
+  } as any)
 
 const ProductsEditProductIdRoute = ProductsEditProductIdImport.update({
   path: '/products/edit/$productId',
@@ -152,11 +152,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsCreateImport
       parentRoute: typeof rootRoute
     }
-    '/purchaseOrders/$clientId': {
-      id: '/purchaseOrders/$clientId'
-      path: '/purchaseOrders/$clientId'
-      fullPath: '/purchaseOrders/$clientId'
-      preLoaderRoute: typeof PurchaseOrdersClientIdImport
+    '/purchaseOrders/$purchaseOrderId': {
+      id: '/purchaseOrders/$purchaseOrderId'
+      path: '/purchaseOrders/$purchaseOrderId'
+      fullPath: '/purchaseOrders/$purchaseOrderId'
+      preLoaderRoute: typeof PurchaseOrdersPurchaseOrderIdImport
       parentRoute: typeof rootRoute
     }
     '/purchaseOrders/create': {
@@ -208,11 +208,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsEditProductIdImport
       parentRoute: typeof rootRoute
     }
-    '/purchaseOrders/edit/$clientId': {
-      id: '/purchaseOrders/edit/$clientId'
-      path: '/purchaseOrders/edit/$clientId'
-      fullPath: '/purchaseOrders/edit/$clientId'
-      preLoaderRoute: typeof PurchaseOrdersEditClientIdImport
+    '/purchaseOrders/edit/$purchaseOrderId': {
+      id: '/purchaseOrders/edit/$purchaseOrderId'
+      path: '/purchaseOrders/edit/$purchaseOrderId'
+      fullPath: '/purchaseOrders/edit/$purchaseOrderId'
+      preLoaderRoute: typeof PurchaseOrdersEditPurchaseOrderIdImport
       parentRoute: typeof rootRoute
     }
   }
@@ -227,7 +227,7 @@ export const routeTree = rootRoute.addChildren({
   ClientsCreateRoute,
   ProductsProductIdRoute,
   ProductsCreateRoute,
-  PurchaseOrdersClientIdRoute,
+  PurchaseOrdersPurchaseOrderIdRoute,
   PurchaseOrdersCreateRoute,
   ClientsIndexRoute,
   ProductsIndexRoute,
@@ -235,7 +235,7 @@ export const routeTree = rootRoute.addChildren({
   SellsIndexRoute,
   ClientsEditClientIdRoute,
   ProductsEditProductIdRoute,
-  PurchaseOrdersEditClientIdRoute,
+  PurchaseOrdersEditPurchaseOrderIdRoute,
 })
 
 /* prettier-ignore-end */
@@ -252,7 +252,7 @@ export const routeTree = rootRoute.addChildren({
         "/clients/create",
         "/products/$productId",
         "/products/create",
-        "/purchaseOrders/$clientId",
+        "/purchaseOrders/$purchaseOrderId",
         "/purchaseOrders/create",
         "/clients/",
         "/products/",
@@ -260,7 +260,7 @@ export const routeTree = rootRoute.addChildren({
         "/sells/",
         "/clients/edit/$clientId",
         "/products/edit/$productId",
-        "/purchaseOrders/edit/$clientId"
+        "/purchaseOrders/edit/$purchaseOrderId"
       ]
     },
     "/": {
@@ -281,8 +281,8 @@ export const routeTree = rootRoute.addChildren({
     "/products/create": {
       "filePath": "products/create.tsx"
     },
-    "/purchaseOrders/$clientId": {
-      "filePath": "purchaseOrders/$clientId.tsx"
+    "/purchaseOrders/$purchaseOrderId": {
+      "filePath": "purchaseOrders/$purchaseOrderId.tsx"
     },
     "/purchaseOrders/create": {
       "filePath": "purchaseOrders/create.tsx"
@@ -305,8 +305,8 @@ export const routeTree = rootRoute.addChildren({
     "/products/edit/$productId": {
       "filePath": "products/edit.$productId.tsx"
     },
-    "/purchaseOrders/edit/$clientId": {
-      "filePath": "purchaseOrders/edit.$clientId.tsx"
+    "/purchaseOrders/edit/$purchaseOrderId": {
+      "filePath": "purchaseOrders/edit.$purchaseOrderId.tsx"
     }
   }
 }
