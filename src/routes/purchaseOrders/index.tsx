@@ -5,10 +5,9 @@ import { PurchaseOrder } from "../../interfaces/PurchaseOrder"
 import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { DMYdate } from '../../utils/dates';
 import { useClientsStore } from '../../store/clientStore';
-import { Client, emptyClient } from '../../interfaces/Client';
 
 export const Route = createFileRoute('/purchaseOrders/')({
   loader: fetchAllPurchaseOrders,
