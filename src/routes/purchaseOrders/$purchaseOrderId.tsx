@@ -18,7 +18,9 @@ function SinglePurchaseOrder() {
   const purchaseOrderData = Route.useLoaderData<PurchaseOrder>()
   const [purchaseOrder, setPurchaseOrder] = useState<PurchaseOrder>(purchaseOrderData);
 
-  useEffect(() => { setPurchaseOrder(purchaseOrderData) }, [purchaseOrderData]);
+  useEffect(() => {
+    setPurchaseOrder(purchaseOrderData);
+  }, [purchaseOrderData]);
 
   return (
     <div className="bg-gray-100 flex items-center justify-center min-h-screen">
