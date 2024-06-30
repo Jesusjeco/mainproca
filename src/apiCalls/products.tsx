@@ -4,7 +4,7 @@
 import { API_PRODUCTS_URL, Product } from "../interfaces/Product";
 
 //Fetching all products
-export async function fetchAllProducts() {
+export async function fetchAllProducts(): Promise<Product[]>  {
   const requestOptions: RequestInit = {
     method: "GET",
     redirect: "follow"
@@ -18,10 +18,12 @@ export async function fetchAllProducts() {
     }
 
     const allProducts = await response.json();
+    // console.log('Respuesta de fetchAllProducts');
     //console.log(allProducts)
     return allProducts;
   } catch (error) {
     console.error(error);
+    return []; 
   };
 }//fetchAllProducts
 
