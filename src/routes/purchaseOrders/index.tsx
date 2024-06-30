@@ -30,7 +30,7 @@ function PurchaseOrders() {
   useEffect(() => {
     console.log("All purchase orders");
     console.log(allPurchaseOrders);
-    
+
   }, [allPurchaseOrders]);
 
   return (
@@ -38,8 +38,11 @@ function PurchaseOrders() {
       <div className="bg-gray-100">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800">Ordenes de venta</h2>
-            <Link to='/purchaseOrders/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Agregar ordern de venta</Link>
+            <div>
+              <h2 className="text-3xl font-bold text-gray-800">Ordenes de compra</h2>
+              <p>Ordenes que se agregan al inventario</p>
+            </div>
+            <Link to='/purchaseOrders/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Agregar ordern de compra</Link>
           </div>
 
           <div className="overflow-hidden border border-gray-200 sm:rounded-lg">

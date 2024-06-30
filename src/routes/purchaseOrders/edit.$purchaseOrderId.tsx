@@ -46,7 +46,7 @@ function EditPurchaseOrder() {
     <div className='createPurchaseOrder'>
       <div className="bg-gray-100 flex items-center justify-center min-h-screen">
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-6 text-center">Modificar Orden de venta</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">Modificar Orden de compra</h2>
           <form onSubmit={modifyPurchaseOrderHandler}>
 
             <div className="mb-4">
@@ -79,10 +79,10 @@ function EditPurchaseOrder() {
 
             <div className="mb-4">
               <label htmlFor="totalPrice" className="block text-gray-700 text-sm font-bold mb-2">Precio total</label>
-              <textarea name="totalPrice" rows={4} id="totalPrice" placeholder="Enter totalPrice" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              <input required min={0} type='number' step="0.01" name="totalPrice" id="totalPrice" placeholder="Enter totalPrice" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 onChange={handleInputChange}
                 value={newPurchaseOrder.totalPrice}
-              ></textarea>
+              ></input>
             </div>
 
             <div className="flex items-center justify-between">
