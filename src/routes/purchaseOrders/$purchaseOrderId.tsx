@@ -23,7 +23,7 @@ function SinglePurchaseOrder() {
   return (
     <div className="bg-gray-100 flex items-center justify-center min-h-screen">
       <div className=" w-fullbg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">Orden de venta</h2>
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">Orden de compra</h2>
         <div className="mb-4">
 
           <div className="mt-1">

@@ -1,86 +1,70 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { Client, ClientApiResponse, emptyClient } from "../../interfaces/Client"
-import { createClient } from '../../apiCalls/clients';
+import { PurchaseOrder, PurchaseOrderApiResponse, emptyPurchaseOrder } from "../../interfaces/PurchaseOrder"
+import { createPurchaseOrder } from '../../apiCalls/purchaseOrders';
 import { useRef, useState } from 'react';
 
 export const Route = createFileRoute('/purchaseOrders/create')({
-  component: CreateClient
+  component: CreatePurchaseOrder
 })
 
-function CreateClient() {
-  const [apiResponse, setApiResponse] = useState<ClientApiResponse | null>(null);
-  const [newClient, setNewClient] = useState<Client>(emptyClient);
+function CreatePurchaseOrder() {
+  const [apiResponse, setApiResponse] = useState<PurchaseOrderApiResponse | null>(null);
+  const [newPurchaseOrder, setNewPurchaseOrder] = useState<PurchaseOrder>(emptyPurchaseOrder);
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
 
   const updateInputHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setNewClient({
-      ...newClient,
+    setNewPurchaseOrder({
+      ...newPurchaseOrder,
       [name]: value
     });
 
   };
 
-  const createClientHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  const createPurchaseOrderHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const response = await createClient(newClient);
+    const response = await createPurchaseOrder(newPurchaseOrder);
     setApiResponse(response);
 
     // Reset the form after submission
     if (formRef.current)
       formRef.current.reset();
 
-    //Redirecting user to clients page
+    //Redirecting user to purchaseOrders page
     if (response.success) {
-      navigate({ to: "/clients" });
+      navigate({ to: "/purchaseOrders" });
     } else {
       // Handle error
-      console.error('Failed to update client');
+      console.error('Failed to update purchaseOrder');
     }
   }
 
   return (
-    <div className='createClient'>
+    <div className='createPurchaseOrder'>
       <div className="bg-gray-100 flex items-center justify-center min-h-screen">
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-6 text-center">Agregar cliente nuevo</h2>
-          <form ref={formRef} onSubmit={createClientHandler}>
+          <h2 className="text-2xl font-bold mb-6 text-center">Agregar Orden de compra nueva</h2>
+          <form ref={formRef} onSubmit={createPurchaseOrderHandler}>
 
             <div className="mb-4">
-              <label htmlFor="rif" className="block text-gray-700 text-sm font-bold mb-2">RIF*</label>
-              <input required type="text" id="rif" name="rif" placeholder="Enter your rif" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              <label htmlFor="client" className="block text-gray-700 text-sm font-bold mb-2">client*</label>
+              <input required type="text" id="client" name="client" placeholder="Enter your client" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 onChange={updateInputHandler}
               />
             </div>
 
             <div className="mb-4">
-              <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nombre*</label>
-              <input required type="text" id="name" name="name" placeholder="Enter your name" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              <label htmlFor="products" className="block text-gray-700 text-sm font-bold mb-2">Nombre*</label>
+              <input required type="text" id="products" name="products" placeholder="Enter your products" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 onChange={updateInputHandler}
               />
             </div>
 
             <div className="mb-4">
-              <label htmlFor="legal_address" className="block text-gray-700 text-sm font-bold mb-2">Dirección fiscal*</label>
-              <textarea required name="legal_address" rows={4} id="legal_address" placeholder="Enter legal_address" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                onChange={updateInputHandler}
-              ></textarea>
-            </div>
-
-            <div className="mb-4">
-              <label htmlFor="office" className="block text-gray-700 text-sm font-bold mb-2">Sucursales</label>
-              <textarea name="office" rows={4} id="office" placeholder="Enter office" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                onChange={updateInputHandler}
-              ></textarea>
-            </div>
-
-            <div className="mb-4">
-              <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Descripción</label>
-              <textarea name="description" rows={4} id="description" placeholder="Enter description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                onChange={updateInputHandler}
-              ></textarea>
+              <label htmlFor="totalPrice" className="block text-gray-700 text-sm font-bold mb-2">Dirección fiscal*</label>
+              <input required min={0} type="number" name="totalPrice" id="totalPrice" onChange={updateInputHandler} />
             </div>
 
             <div className="flex items-center justify-between">
@@ -92,7 +76,7 @@ function CreateClient() {
           {apiResponse && (
             <div>
               {apiResponse.success ?
-                <div>Cliente agregado a inventario</div>
+                <div>PurchaseOrdere agregado a inventario</div>
                 :
                 <div>Error: {apiResponse.message}</div>
               }
