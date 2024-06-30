@@ -6,24 +6,24 @@ import { API_CLIENTS_URL, Client } from "../interfaces/Client";
 //Fetching all clients
 export async function fetchAllClients(): Promise<Client[]> {
   const requestOptions: RequestInit = {
-      method: 'GET',
-      redirect: 'follow'
+    method: 'GET',
+    redirect: 'follow'
   };
 
   try {
-      const response = await fetch(API_CLIENTS_URL, requestOptions);
+    const response = await fetch(API_CLIENTS_URL, requestOptions);
 
-      if (!response.ok) {
-          throw new Error('Failed to fetch All Clients');
-      }
+    if (!response.ok) {
+      throw new Error('Failed to fetch All Clients');
+    }
 
-      const allClients = await response.json();
-      // console.log('Respuesta de fetchAllClients');
-      // console.log(allClients);
-      return allClients;
+    const allClients = await response.json();
+    // console.log('Respuesta de fetchAllClients');
+    // console.log(allClients);
+    return allClients;
   } catch (error) {
-      console.error(error);
-      return []; // Return an empty array in case of error
+    console.error(error);
+    return []; // Return an empty array in case of error
   }
 }//fetchAllClients
 

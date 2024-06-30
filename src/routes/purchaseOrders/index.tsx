@@ -1,28 +1,35 @@
-import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
-import { deletePurchaseOrderById, fetchAllPurchaseOrders } from "../../apiCalls/purchaseOrders"
-import "./purchaseOrders.pcss"
-import { PurchaseOrder } from "../../interfaces/PurchaseOrder"
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
+import { deletePurchaseOrderById, fetchAllPurchaseOrders } from "../../apiCalls/purchaseOrders";
+import "./purchaseOrders.pcss";
+import { PurchaseOrder } from "../../interfaces/PurchaseOrder";
 import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { useEffect } from 'react';
 import { DMYdate } from '../../utils/dates';
 import { useClientsStore } from '../../store/clientStore';
+import { useProductsStore } from '../../store/productStore';
 
 export const Route = createFileRoute('/purchaseOrders/')({
   loader: fetchAllPurchaseOrders,
   errorComponent: FetchErrorComponent as any,
-  notFoundComponent: () => <NotFoundComponent message="PurchaseOrdere no encontrado" />,
+  notFoundComponent: () => <NotFoundComponent message="Purchase Order no encontrado" />,
   component: PurchaseOrders,
-})
+});
 
 function PurchaseOrders() {
   const allPurchaseOrders = Route.useLoaderData<PurchaseOrder[]>();
   const navigate = useNavigate();
 
-  //Using Zustand Client store
+  // Using Zustand Client store
   const fetchClients = useClientsStore(state => state.fetchClients);
   const getClientById = useClientsStore(state => state.getClientById);
+  const clientsLoading = useClientsStore(state => state.loading);
+
+  // Using Zustand Product store
+  const fetchProducts = useProductsStore(state => state.fetchProducts);
+  const getProductById = useProductsStore(state => state.getProductById);
+  const productsLoading = useProductsStore(state => state.loading);
 
   const deletePurchaseOrderHandler = async (purchaseOrderId: string) => {
     const response = await deletePurchaseOrderById(purchaseOrderId);
@@ -30,14 +37,22 @@ function PurchaseOrders() {
     if (response?.status === 200) {
       navigate({ to: "/purchaseOrders" });
     }
-  }
+  };
 
   useEffect(() => {
     async function fetchClientsCaller() {
       await fetchClients();
     }
+    async function fetchProductsCaller() {
+      await fetchProducts();
+    }
     fetchClientsCaller();
+    fetchProductsCaller();
   }, []);
+
+  if (clientsLoading || productsLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <section id='purchaseOrders'>
@@ -48,7 +63,7 @@ function PurchaseOrders() {
               <h2 className="text-3xl font-bold text-gray-800">Ordenes de compra</h2>
               <p>Ordenes que se agregan al inventario</p>
             </div>
-            <Link to='/purchaseOrders/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Agregar ordern de compra</Link>
+            <Link to='/purchaseOrders/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Agregar orden de compra</Link>
           </div>
 
           <div className="overflow-hidden border border-gray-200 sm:rounded-lg">
@@ -74,13 +89,17 @@ function PurchaseOrders() {
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             {DMYdate(purchaseOrder.orderDate)}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {purchaseOrder.products.map((product, index2) =>
-                              <div key={index - index2}>{product.product + " x " + product.quantity}</div>
-                            )}
+                            {purchaseOrder.products.map((product, index2) => {
+                              const productDetails = getProductById(product.product);
+                              return (
+                                <div key={index2}>
+                                  {productDetails ? productDetails.name : 'Producto no encontrado'} x {product.quantity}
+                                </div>
+                              );
+                            })}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             {purchaseOrder.totalPrice}</td>
-
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div className="flex space-x-4">
                               <Link to={'/purchaseOrders/' + purchaseOrder._id} className="text-blue-500 hover:text-blue-700">
@@ -97,17 +116,15 @@ function PurchaseOrders() {
                           </td>
                         </tr>
                       )
-                    }
-
-                    )
+                    })
                     :
                     allPurchaseOrders ?
                       <tr>
-                        <td colSpan={4}>Lista de purchaseOrderes vacia</td>
+                        <td colSpan={5}>Lista de órdenes de compra vacía</td>
                       </tr>
                       :
                       <tr>
-                        <td colSpan={4}>Error en el servidor</td>
+                        <td colSpan={5}>Error en el servidor</td>
                       </tr>
                 }
               </tbody>
@@ -116,5 +133,5 @@ function PurchaseOrders() {
         </div>
       </div>
     </section>
-  )
+  );
 }
