@@ -40,14 +40,8 @@ function PurchaseOrders() {
   };
 
   useEffect(() => {
-    async function fetchClientsCaller() {
-      await fetchClients();
-    }
-    async function fetchProductsCaller() {
-      await fetchProducts();
-    }
-    fetchClientsCaller();
-    fetchProductsCaller();
+    fetchClients();
+    fetchProducts();
   }, []);
 
   if (clientsLoading || productsLoading) {
