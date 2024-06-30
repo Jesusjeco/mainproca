@@ -5,8 +5,10 @@ import { PurchaseOrder } from "../../interfaces/PurchaseOrder"
 import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DMYdate } from '../../utils/dates';
+import { useClientsStore } from '../../store/clientStore';
+import { Client, emptyClient } from '../../interfaces/Client';
 
 export const Route = createFileRoute('/purchaseOrders/')({
   loader: fetchAllPurchaseOrders,
@@ -19,6 +21,10 @@ function PurchaseOrders() {
   const allPurchaseOrders = Route.useLoaderData<PurchaseOrder[]>();
   const navigate = useNavigate();
 
+  //Using Zustand Client store
+  const fetchClients = useClientsStore(state => state.fetchClients);
+  const getClientById = useClientsStore(state => state.getClientById);
+
   const deletePurchaseOrderHandler = async (purchaseOrderId: string) => {
     const response = await deletePurchaseOrderById(purchaseOrderId);
 
@@ -28,10 +34,11 @@ function PurchaseOrders() {
   }
 
   useEffect(() => {
-    console.log("All purchase orders");
-    console.log(allPurchaseOrders);
-
-  }, [allPurchaseOrders]);
+    async function fetchClientsCaller() {
+      await fetchClients();
+    }
+    fetchClientsCaller();
+  }, []);
 
   return (
     <section id='purchaseOrders'>
@@ -59,35 +66,40 @@ function PurchaseOrders() {
               <tbody className="bg-white divide-y divide-gray-200">
                 {
                   allPurchaseOrders && allPurchaseOrders.length > 0 ?
-                    allPurchaseOrders.map((purchaseOrder, index) =>
-                      <tr key={index}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {purchaseOrder.client}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {DMYdate(purchaseOrder.orderDate)}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {purchaseOrder.products.map((product, index2) =>
-                            <div key={index - index2}>{product.product + " x " + product.quantity}</div>
-                          )}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {purchaseOrder.totalPrice}</td>
+                    allPurchaseOrders.map((purchaseOrder, index) => {
+                      const client = getClientById(purchaseOrder.client);
+                      return (
+                        <tr key={index}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {client ? client.name : 'Cliente no encontrado'}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {DMYdate(purchaseOrder.orderDate)}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {purchaseOrder.products.map((product, index2) =>
+                              <div key={index - index2}>{product.product + " x " + product.quantity}</div>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {purchaseOrder.totalPrice}</td>
 
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          <div className="flex space-x-4">
-                            <Link to={'/purchaseOrders/' + purchaseOrder._id} className="text-blue-500 hover:text-blue-700">
-                              <FaEye />
-                            </Link>
-                            <Link to={'/purchaseOrders/edit/' + purchaseOrder._id} className="text-green-500 hover:text-green-700">
-                              <FaEdit />
-                            </Link>
-                            <button
-                              onClick={() => { if (purchaseOrder._id) deletePurchaseOrderHandler(purchaseOrder._id) }} className="text-red-500 hover:text-red-700">
-                              <FaTrashAlt />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <div className="flex space-x-4">
+                              <Link to={'/purchaseOrders/' + purchaseOrder._id} className="text-blue-500 hover:text-blue-700">
+                                <FaEye />
+                              </Link>
+                              <Link to={'/purchaseOrders/edit/' + purchaseOrder._id} className="text-green-500 hover:text-green-700">
+                                <FaEdit />
+                              </Link>
+                              <button
+                                onClick={() => { if (purchaseOrder._id) deletePurchaseOrderHandler(purchaseOrder._id) }} className="text-red-500 hover:text-red-700">
+                                <FaTrashAlt />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    }
+
                     )
                     :
                     allPurchaseOrders ?
