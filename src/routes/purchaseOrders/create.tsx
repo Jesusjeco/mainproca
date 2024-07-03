@@ -13,11 +13,6 @@ export const Route = createFileRoute('/purchaseOrders/create')({
   component: CreatePurchaseOrder
 })
 
-interface ProductFields {
-  product: string,
-  quantity: number
-}
-
 function CreatePurchaseOrder() {
   // Using Zustand Client store
   const fetchClients = useClientsStore(state => state.fetchClients);
@@ -31,7 +26,6 @@ function CreatePurchaseOrder() {
 
   //Variables used to create the Purchase order
   const [clientID, setClientID] = useState<string>("");
-  const [productArray, setProductArray] = useState<ProductFields>({ product: "", quantity: 0 })
   const [totalPrice, setTotalPrice] = useState<Number>(0.00);
   const [orderDate, setOrderDate] = useState<Date>(new Date)
 
@@ -42,12 +36,6 @@ function CreatePurchaseOrder() {
 
   const clientHandler = (e: ChangeEvent<HTMLSelectElement>) => {
     setClientID(e.target.value);
-    setNewPurchaseOrder(
-      {
-        ...newPurchaseOrder,
-        'client': e.target.value
-      }
-    );
   }//clientHandler
 
   const totalPriceHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -76,8 +64,7 @@ function CreatePurchaseOrder() {
     fetchClients();
     fetchProducts();
     console.log(selectedProduct);
-
-
+    console.log(clientID);
   }, [selectedProduct]);
   return (
     <>
