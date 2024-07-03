@@ -2,7 +2,7 @@ import { FaSpinner } from "react-icons/fa"
 
 interface LoadingComponentProps {
   var1: boolean,
-  var2: boolean
+  var2?: boolean
 }
 export function LoadingComponent({ var1, var2 }: LoadingComponentProps) {
   if (var1 || var2)
