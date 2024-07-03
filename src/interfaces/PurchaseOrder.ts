@@ -3,8 +3,8 @@ export interface PurchaseOrder {
   _id?: string
   client: string; // Assuming client is an ObjectId in string form
   products: ProductOrder[];
-  orderDate: Date;
   totalPrice: number;
+  orderDate: Date;
 }
 
 export const emptyPurchaseOrder = {

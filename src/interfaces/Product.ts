@@ -7,12 +7,6 @@ export interface Product {
   description?: string
 }
 
-export interface ProductApiResponse {
-  success: boolean;
-  message: string;
-  data?: any;
-}
-
 export const emptyProduct = {
   name: "",
   quantity: 0,

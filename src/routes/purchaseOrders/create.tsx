@@ -1,13 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useClientsStore } from "../../store/clientStore";
 import { LoadingComponent } from "../../components/LoadingComponent";
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useProductsStore } from "../../store/productStore";
 import { Client } from "../../interfaces/Client";
 import { Product } from "../../interfaces/Product";
-import { ProductOrder, PurchaseOrder, emptyProductOrder, emptyPurchaseOrder } from "../../interfaces/PurchaseOrder";
+import { ProductOrder, emptyProductOrder } from "../../interfaces/PurchaseOrder";
+import { createPurchaseOrder } from "../../apiCalls/purchaseOrders";
 
 export const Route = createFileRoute('/purchaseOrders/create')({
   component: CreatePurchaseOrder
@@ -25,53 +26,81 @@ function CreatePurchaseOrder() {
   const productsLoading = useProductsStore(state => state.loading);
 
   //Variables used to create the Purchase order
+
+  // Client ID
   const [clientID, setClientID] = useState<string>("");
-  const [totalPrice, setTotalPrice] = useState<Number>(0.00);
-  const [orderDate, setOrderDate] = useState<Date>(new Date)
-
-  //Variable to build the new Purchase Order
-  const [newPurchaseOrder, setNewPurchaseOrder] = useState<PurchaseOrder>(emptyPurchaseOrder);
-
-  const [selectedProduct, setSelectedProduct] = useState<ProductOrder>(emptyProductOrder)
-
   const clientHandler = (e: ChangeEvent<HTMLSelectElement>) => {
     setClientID(e.target.value);
   }//clientHandler
 
-  const totalPriceHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setTotalPrice(Number(e.target.value));
-    console.log("totalPrice: " + totalPrice);
+  // Products array
+  const [selectedProducts, setSelectedProducts] = useState<ProductOrder[]>([])
+  const addNewProduct = () => {
+    const auxProductList = [...selectedProducts, emptyProductOrder];
+    setSelectedProducts(auxProductList);
+  }
+  const setSelectedProductsHandler = (productData: ProductOrder, index: number) => {
+    const auxProductList = [...selectedProducts];
+    auxProductList[index] = productData;
+    setSelectedProducts(auxProductList);
   }
 
+  // Total price
+  const [totalPrice, setTotalPrice] = useState<number>(0.00);
+  const totalPriceHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setTotalPrice(Number(e.target.value));
+  }
+
+  //Order date
+  const [orderDate, setOrderDate] = useState<Date>(new Date)
   const setOrderDateHandler = (date: Date | null) => {
     if (date === null)
       date = new Date();
 
     setOrderDate(date);
-    setNewPurchaseOrder({
-      ...newPurchaseOrder,
-      'orderDate': date
-    }
-    );
   }
 
-  const formHandler = (e: FormEvent<HTMLFormElement>) => {
+  //Form ref and navigation
+  const formRef = useRef<HTMLFormElement>(null);
+  const navigate = useNavigate();
+
+  // Form handler
+  const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form button pushed");
+
+    const newPurchaseOrder = {
+      client: clientID,
+      products: selectedProducts,
+      totalPrice: totalPrice,
+      orderDate: orderDate
+    }
+
+    const response = await createPurchaseOrder(newPurchaseOrder);
+
+    //Redirecting user to clients page
+    if (response.success) {
+      // Reset the form after submission
+      if (formRef.current)
+        formRef.current.reset();
+      navigate({ to: "/purchaseOrders" });
+    } else {
+      // Handle error
+      console.error('Failed to update client');
+    }
+
   }
 
   useEffect(() => {
     fetchClients();
     fetchProducts();
-    console.log(selectedProduct);
-    console.log(clientID);
-  }, [selectedProduct]);
+  }, []);
+
   return (
     <>
       <LoadingComponent var1={clientsLoading} var2={productsLoading} />
       <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md">
         <h2 className="text-2xl font-bold mb-6">Crear orden de compra</h2>
-        <form onSubmit={formHandler}>
+        <form onSubmit={formHandler} ref={formRef}>
           <div className="mb-4">
             <ClientSelectList clients={clients} clientHandler={clientHandler} />
           </div>
@@ -79,7 +108,8 @@ function CreatePurchaseOrder() {
           <div className="mb-4">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold mb-6 inline">Product Table</h2>
-              <button type="button" className="bg-blue-500 text-white px-4 py-2 rounded-md">Agregar producto</button>
+              <button type="button" className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                onClick={addNewProduct}>Agregar producto</button>
             </div>
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white border border-gray-300">
@@ -92,7 +122,14 @@ function CreatePurchaseOrder() {
                 <tbody>
                   <tr>
                     <td colSpan={3} className="py-2 px-4 border-b border-gray-300">
-                      <ProductSelectList products={products} setSelectedProduct={setSelectedProduct} />
+                      {selectedProducts.length > 0 ?
+                        selectedProducts.map((_, index) =>
+                          <ProductSelectList products={products}
+                            setSelectedProductsHandler={setSelectedProductsHandler}
+                            index={index}
+                            key={index} />
+                        )
+                        : "Sin productos"}
                     </td>
                   </tr>
                 </tbody>
@@ -122,6 +159,7 @@ function CreatePurchaseOrder() {
             <DatePicker
               id="orderDate"
               name="orderDate"
+              required
               selected={orderDate}
               onChange={setOrderDateHandler}
               className="w-full border border-gray-300 rounded-md p-2"
@@ -150,6 +188,7 @@ function ClientSelectList({ clients, clientHandler }: ClientSelectListProps) {
           <select
             name="client"
             id="client"
+            required
             onChange={clientHandler}
             className="w-full border border-gray-300 rounded-md p-2"
           >
@@ -168,9 +207,10 @@ function ClientSelectList({ clients, clientHandler }: ClientSelectListProps) {
 
 interface ProductSelectListProps {
   products: Product[],
-  setSelectedProduct: Dispatch<SetStateAction<ProductOrder>>
+  setSelectedProductsHandler: (productData: ProductOrder, index: number) => void,
+  index: number
 }
-function ProductSelectList({ products, setSelectedProduct }: ProductSelectListProps) {
+function ProductSelectList({ products, setSelectedProductsHandler, index }: ProductSelectListProps) {
 
   const [componentProduct, setComponentProduct] = useState<ProductOrder>(emptyProductOrder)
   const componentProductHandler = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
@@ -184,7 +224,7 @@ function ProductSelectList({ products, setSelectedProduct }: ProductSelectListPr
   }//componentProductHandler
 
   useEffect(() => {
-    setSelectedProduct(componentProduct);
+    setSelectedProductsHandler(componentProduct, index);
   }, [componentProduct]);
   return (
     <>
@@ -194,6 +234,7 @@ function ProductSelectList({ products, setSelectedProduct }: ProductSelectListPr
             <select
               name="product"
               id="product"
+              required
               onChange={componentProductHandler}
               className="w-full border border-gray-300 rounded-md p-2"
             >
@@ -206,6 +247,7 @@ function ProductSelectList({ products, setSelectedProduct }: ProductSelectListPr
               type="number"
               step={1}
               min={0}
+              required
               name="quantity"
               id="quantity"
               onChange={componentProductHandler}
