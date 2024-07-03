@@ -33,7 +33,7 @@ function EditProduct() {
     const { name, value } = e.target;
     setNewProduct({
       ...newProduct,
-      [name]: name === 'quantity' ? Number(value) : value
+      [name]: (name === 'quantity' || name === 'price') ? Number(value) : value
     });
   };
 
