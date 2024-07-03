@@ -1,14 +1,15 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { Client, ClientApiResponse, emptyClient } from "../../interfaces/Client"
+import { Client, emptyClient } from "../../interfaces/Client"
 import { createClient } from '../../apiCalls/clients';
 import { useRef, useState } from 'react';
+import { ApiResponse } from '../../interfaces/ApiResponse';
 
 export const Route = createFileRoute('/clients/create')({
   component: CreateClient
 })
 
 function CreateClient() {
-  const [apiResponse, setApiResponse] = useState<ClientApiResponse | null>(null);
+  const [apiResponse, setApiResponse] = useState<ApiResponse | null>(null);
   const [newClient, setNewClient] = useState<Client>(emptyClient);
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();

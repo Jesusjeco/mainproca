@@ -1,14 +1,15 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { Product, ProductApiResponse, emptyProduct } from "../../interfaces/Product"
+import { Product, emptyProduct } from "../../interfaces/Product"
 import { createProduct } from '../../apiCalls/products';
-import { useRef, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
+import { ApiResponse } from '../../interfaces/ApiResponse';
 
 export const Route = createFileRoute('/products/create')({
   component: CreateProduct
 })
 
 function CreateProduct() {
-  const [apiResponse, setApiResponse] = useState<ProductApiResponse | null>(null);
+  const [apiResponse, setApiResponse] = useState<ApiResponse | null>(null);
   const [newProduct, setNewProduct] = useState<Product>(emptyProduct);
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ function CreateProduct() {
 
   };
 
-  const createProductHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  const createProductHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const response = await createProduct(newProduct);
@@ -39,9 +40,7 @@ function CreateProduct() {
       // Handle error
       console.error('Failed to update product');
     }
-
-
-  }
+  }//createProductHandler
 
   return (
     <div className='createProduct'>
@@ -65,7 +64,7 @@ function CreateProduct() {
 
             <div className="mb-4">
               <label htmlFor="price" className="block text-gray-700 text-sm font-bold mb-2">Precio*</label>
-              <input required min={0} type="number" step="0.01"id="price" name="price" placeholder="Enter price" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              <input required min={0} type="number" step="0.01" id="price" name="price" placeholder="Enter price" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 onChange={updateInputHandler}
               />
             </div>

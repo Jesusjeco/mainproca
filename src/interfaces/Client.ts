@@ -8,12 +8,6 @@ export interface Client {
   description?: string
 }
 
-export interface ClientApiResponse {
-  success: boolean;
-  message: string;
-  data?: any;
-}
-
 export const emptyClient = {
   rif: "",
   name: "",
