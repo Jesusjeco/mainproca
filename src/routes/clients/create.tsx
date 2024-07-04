@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { Client, emptyClient } from "../../interfaces/Client"
+import { Client, ClientOffice, emptyClient, emptyClientOffice } from "../../interfaces/Client"
 import { createClient } from '../../apiCalls/clients';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ApiResponse } from '../../interfaces/ApiResponse';
 
 export const Route = createFileRoute('/clients/create')({
@@ -23,18 +23,41 @@ function CreateClient() {
 
   };
 
+  const [offices, setOffices] = useState<ClientOffice[]>([]);
+  const addOffice = () => {
+    const auxOffices = [...offices, emptyClientOffice];
+    setOffices(auxOffices);
+  }
+  const setOfficesHandler = (office: ClientOffice, index: number) => {
+    const auxOffices = [...offices]
+    auxOffices[index] = office;
+    setOffices(auxOffices);
+  }
+
+  useEffect(() => {
+    setNewClient(
+      {
+        ...newClient,
+        offices: offices
+      }
+    );
+
+    console.log(newClient, "newClient");
+
+  }, [offices]);
+
+  //Create client function
   const createClientHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const response = await createClient(newClient);
     setApiResponse(response);
 
-    // Reset the form after submission
-    if (formRef.current)
-      formRef.current.reset();
-
     //Redirecting user to clients page
     if (response.success) {
+      // Reset the form after submission
+      if (formRef.current)
+        formRef.current.reset();
       navigate({ to: "/clients" });
     } else {
       // Handle error
@@ -71,10 +94,17 @@ function CreateClient() {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="office" className="block text-gray-700 text-sm font-bold mb-2">Sucursales</label>
-              <textarea name="office" rows={4} id="office" placeholder="Enter office" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                onChange={updateInputHandler}
-              ></textarea>
+              <div className='flex items-center justify-between mb-3'>
+                <label htmlFor="office" className="block text-gray-700 text-sm font-bold mb-2">Sucursales</label>
+                <button type="button" onClick={addOffice} className="bg-blue-500 text-white px-4 py-2 rounded-md">Agregar sucursal</button>
+              </div>
+
+              {offices.length > 0 ?
+                offices.map((_, index) =>
+                  <input key={index} type='text' name="office" id="office" placeholder="Enter office" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    onChange={(e) => setOfficesHandler({ address: e.target.value }, index)}
+                  />
+                ) : "Sin sucursales registradas"}
             </div>
 
             <div className="mb-4">

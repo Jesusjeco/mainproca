@@ -33,6 +33,27 @@ function CreateSellOrder() {
     setClientID(e.target.value);
   }//clientHandler
 
+  //Client address
+  const [address, setAddress] = useState<string>("");
+  const [addressArray, setAddressArray] = useState<string[]>([]);
+  useEffect(() => {
+    const client = clients.find((client) => client._id === clientID);
+    if (client) {
+      const legalAddress = client.legal_address;
+      const offices = client.offices?.map((office) => office.address);
+
+      if (offices) {
+        setAddressArray(
+          [legalAddress, ...offices]
+        )
+      } else
+        setAddressArray(
+          [legalAddress]
+        )
+
+    }
+  }, [clientID]);
+
   // Products array
   const [selectedProducts, setSelectedProducts] = useState<ProductOrder[]>([])
   const addNewProduct = () => {
@@ -81,6 +102,7 @@ function CreateSellOrder() {
 
     const newSellOrder = {
       client: clientID,
+      address: address,
       products: selectedProducts,
       totalPrice: purchasePrice,
       orderDate: orderDate
@@ -114,6 +136,20 @@ function CreateSellOrder() {
         <form onSubmit={formHandler} ref={formRef}>
           <div className="mb-4">
             <ClientSelectList clients={clients} clientHandler={clientHandler} />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="address" className="block text-gray-700 font-medium mb-2">Dirección</label>
+            <select name="address" id="address"
+              className="w-full border border-gray-300 rounded-md p-2"
+              onChange={(e) => setAddress(e.target.value)}>
+              <option value="">Escoger dirección</option>
+              {
+                addressArray.map((address, index) =>
+                  <option key={index} value={address}>{address}</option>
+                )
+              }
+            </select>
           </div>
 
           <div className="mb-4">

@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { editClientById, fetchClientById } from '../../apiCalls/clients'
-import { Client } from "../../interfaces/Client"
+import { Client, ClientOffice, emptyClientOffice } from "../../interfaces/Client"
 import { useEffect, useState } from 'react'
 import { FetchErrorComponent } from '../../components/FetchErrorComponent'
 import { NotFoundComponent } from '../../components/NotFoundComponent'
@@ -17,6 +17,38 @@ function EditClient() {
   const [newClient, setNewClient] = useState<Client>(client)
   const navigate = useNavigate();
 
+  // Managing offices
+  const [officesArray, setOfficesArray] = useState<ClientOffice[]>([]);
+  useEffect(() => {
+    if (newClient.offices)
+      setOfficesArray(newClient.offices);
+  }, [newClient]);
+
+  const addOffice = () => {
+    const auxOfficesArray = [...officesArray, emptyClientOffice]
+    setOfficesArray(auxOfficesArray);
+  }
+
+  const removeOffice = (index: number) => {
+    const auxOfficesArray = officesArray.filter((_, i) => i !== index);
+    setOfficesArray(auxOfficesArray);
+  }
+
+  const setOfficesArrayHandler = (office: ClientOffice, index: number) => {
+    const auxOfficesArray = [...officesArray];
+    auxOfficesArray[index] = office;
+    setOfficesArray(auxOfficesArray);
+  }
+
+  // Updating client with offices
+  useEffect(() => {
+    setNewClient({
+      ...newClient,
+      offices: officesArray
+    });
+  }, [officesArray]);
+
+  // Sending client to update
   const modifyClientHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -42,60 +74,101 @@ function EditClient() {
   }, [client]);
 
   return (
-    <div className='createClient'>
-      <div className="bg-gray-100 flex items-center justify-center min-h-screen">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-6 text-center">Modificar cliento</h2>
-          <form onSubmit={modifyClientHandler}>
+    <div className='flex items-center justify-center min-h-screen bg-gray-100'>
+      <div className='w-full w-4/5 bg-white p-8 rounded-lg shadow-lg'>
+        <h2 className='text-3xl font-bold mb-6 text-center'>Modificar cliente</h2>
+        <form onSubmit={modifyClientHandler} className='space-y-4'>
+          <div className='grid grid-cols-1 gap-5 lg:grid-cols-2 items-center'>
 
-            <div className="mb-4">
-              <label htmlFor="rif" className="block text-gray-700 text-sm font-bold mb-2">RIF*</label>
-              <input required type="text" id="rif" name="rif" placeholder="Enter your rif" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            <div>
+              <label htmlFor='rif' className='block text-gray-700 font-bold'>RIF*</label>
+              <input
+                required
+                disabled
+                type='text'
+                id='rif'
+                name='rif'
+                placeholder='Enter your rif'
+                className='w-full mt-2 p-2 border rounded'
                 value={newClient.rif}
-                onChange={handleInputChange}
+              //onChange={handleInputChange}
               />
             </div>
 
-            <div className="mb-4">
-              <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nombre*</label>
-              <input required type="text" id="name" name="name" placeholder="Enter your name" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            <div>
+              <label htmlFor='name' className='block text-gray-700 font-bold'>Nombre*</label>
+              <input
+                required
+                disabled
+                type='text'
+                id='name'
+                name='name'
+                placeholder='Enter your name'
+                className='w-full mt-2 p-2 border rounded'
                 value={newClient.name}
-                onChange={handleInputChange}
+              //onChange={handleInputChange}
               />
             </div>
+          </div>
 
+          <div>
+            <label htmlFor='legal_address' className='block text-gray-700 font-bold'>Dirección fiscal</label>
+            <textarea
+              name='legal_address'
+              rows={2}
+              id='legal_address'
+              placeholder='Enter legal address'
+              className='w-full mt-2 p-2 border rounded'
+              onChange={handleInputChange}
+              value={newClient.legal_address}
+            ></textarea>
+          </div>
 
-            <div className="mb-4">
-              <label htmlFor="legal_address" className="block text-gray-700 text-sm font-bold mb-2">Dirección fiscal</label>
-              <textarea name="legal_address" rows={4} id="legal_address" placeholder="Enter legal_address" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                onChange={handleInputChange}
-                value={newClient.legal_address}
-              ></textarea>
+          <div>
+            <div className='flex items-center justify-between mb-3'>
+              <label htmlFor='office' className='block text-gray-700 font-bold'>Sucursales</label>
+              <button type='button' className='bg-blue-500 text-white px-4 py-2 rounded' onClick={addOffice}>Agregar sucursal</button>
             </div>
 
-            <div className="mb-4">
-              <label htmlFor="office" className="block text-gray-700 text-sm font-bold mb-2">Sucursal</label>
-              <textarea name="office" rows={4} id="office" placeholder="Enter office" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                onChange={handleInputChange}
-                value={newClient.office}
-              ></textarea>
-            </div>
+            {officesArray.length > 0 ? (
+              officesArray.map((office, index) => (
+                <div key={index} className='flex items-center mb-2'>
+                  <input
+                    type='text'
+                    name='office'
+                    id='office'
+                    placeholder='Enter office'
+                    className='w-full p-2 border rounded mr-2'
+                    value={office.address}
+                    onChange={(e) => setOfficesArrayHandler({ address: e.target.value }, index)}
+                  />
+                  <button type='button' className='bg-red-500 text-white px-2 py-1 rounded' onClick={() => removeOffice(index)}>−</button>
+                </div>
+              ))
+            ) : (
+              <div>Sin sucursales registradas</div>
+            )}
+          </div>
 
-            <div className="mb-4">
-              <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Descripción</label>
-              <textarea name="description" rows={4} id="description" placeholder="Enter description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                onChange={handleInputChange}
-                value={newClient.description}
-              ></textarea>
-            </div>
+          <div>
+            <label htmlFor='description' className='block text-gray-700 font-bold'>Descripción</label>
+            <textarea
+              name='description'
+              rows={4}
+              id='description'
+              placeholder='Enter description'
+              className='w-full mt-2 p-2 border rounded'
+              onChange={handleInputChange}
+              value={newClient.description}
+            ></textarea>
+          </div>
 
-            <div className="flex items-center justify-between">
-              <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Cambiar
-              </button>
-            </div>
-          </form>
-        </div>
+          <div className='flex items-center justify-between'>
+            <button type='submit' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
+              Cambiar
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   )
