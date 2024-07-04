@@ -5,7 +5,7 @@ export interface Client {
   rif: string,
   name: string,
   legal_address: string,
-  office?: string,
+  offices?: ClientOffice[],
   description?: string
 }
 
@@ -13,6 +13,14 @@ export const emptyClient = {
   rif: "",
   name: "",
   legal_address: ""
+}
+
+export interface ClientOffice {
+  address: string
+}
+
+export const emptyClientOffice = {
+  address: ""
 }
 
 export const API_CLIENTS_URL = import.meta.env.VITE_API_URL_BASE + import.meta.env.VITE_API_URL_CLIENTS;
