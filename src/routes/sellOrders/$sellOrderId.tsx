@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { fetchPurchaseOrderById } from '../../apiCalls/purchaseOrders'
-import { PurchaseOrder } from "../../interfaces/PurchaseOrder"
+import { fetchSellOrderById } from '../../apiCalls/sellOrders'
+import { SellOrder } from "../../interfaces/SellOrder"
 import { useEffect } from 'react'
 import { FaEdit } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
@@ -10,15 +10,15 @@ import { useClientsStore } from '../../store/clientStore';
 import { useProductsStore } from '../../store/productStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
 
-export const Route = createFileRoute('/purchaseOrders/$purchaseOrderId')({
-  loader: async ({ params: { purchaseOrderId } }) => fetchPurchaseOrderById(purchaseOrderId),
+export const Route = createFileRoute('/sellOrders/$sellOrderId')({
+  loader: async ({ params: { sellOrderId } }) => fetchSellOrderById(sellOrderId),
   errorComponent: FetchErrorComponent as any,
-  notFoundComponent: () => <NotFoundComponent message="PurchaseOrdere no encontrado" />,
-  component: SinglePurchaseOrder
+  notFoundComponent: () => <NotFoundComponent message="SellOrdere no encontrado" />,
+  component: SingleSellOrder
 })
 
-function SinglePurchaseOrder() {
-  const purchaseOrder = Route.useLoaderData<PurchaseOrder>()
+function SingleSellOrder() {
+  const sellOrder = Route.useLoaderData<SellOrder>()
   // Using Zustand Client store
   const fetchClients = useClientsStore(state => state.fetchClients);
   const getClientById = useClientsStore(state => state.getClientById);
@@ -44,28 +44,28 @@ function SinglePurchaseOrder() {
 
             <div className="mt-1">
               <p id="client_name" className="text-lg font-semibold text-gray-900">
-                Cliente: {getClientById(purchaseOrder.client)?.name}</p>
+                Cliente: {getClientById(sellOrder.client)?.name}</p>
             </div>
 
             <div className="mt-1">
-              <p id="date" className="text-lg font-semibold text-gray-900">Fecha: {DMYdate(purchaseOrder.orderDate)}</p>
+              <p id="date" className="text-lg font-semibold text-gray-900">Fecha: {DMYdate(sellOrder.orderDate)}</p>
             </div>
 
             <div className="mt-1">
               <p id="price" className="text-lg font-semibold text-gray-900">Productos:</p>
               {
-                purchaseOrder.products.map((product, index) =>
+                sellOrder.products.map((product, index) =>
                   <div key={index}>{getProductById(product.product)?.name + " x " + product.quantity}</div>
                 )}
             </div>
 
             <div className="mt-1">
-              <p id="price" className="text-lg font-semibold text-gray-900">Precio total: {purchaseOrder.totalPrice} $</p>
+              <p id="price" className="text-lg font-semibold text-gray-900">Precio total: {sellOrder.totalPrice} $</p>
             </div>
           </div>
 
           <div className="flex space-x-4 mt-4">
-            <Link to={'/purchaseOrders/edit/' + purchaseOrder._id} className="text-green-500 hover:text-green-700">
+            <Link to={'/sellOrders/edit/' + sellOrder._id} className="text-green-500 hover:text-green-700">
               <FaEdit />
             </Link>
           </div>
