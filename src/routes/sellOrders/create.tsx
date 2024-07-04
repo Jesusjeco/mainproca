@@ -134,22 +134,37 @@ function CreateSellOrder() {
       <div className="w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
         <h2 className="text-2xl font-bold mb-6">Crear orden de compra</h2>
         <form onSubmit={formHandler} ref={formRef}>
-          <div className="mb-4">
-            <ClientSelectList clients={clients} clientHandler={clientHandler} />
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="mb-4">
+              <ClientSelectList clients={clients} clientHandler={clientHandler} />
+            </div>
+            <div className="mb-4 flex flex-col">
+              <label htmlFor="orderDate" className="block text-gray-700 font-medium mb-2">Order Date</label>
+              <DatePicker
+                id="orderDate"
+                name="orderDate"
+                required
+                selected={orderDate}
+                onChange={setOrderDateHandler}
+                className="w-full border border-gray-300 rounded-md p-2"
+              />
+            </div>
           </div>
 
           <div className="mb-4">
             <label htmlFor="address" className="block text-gray-700 font-medium mb-2">Dirección</label>
-            <select name="address" id="address"
-              className="w-full border border-gray-300 rounded-md p-2"
-              onChange={(e) => setAddress(e.target.value)}>
-              <option value="">Escoger dirección</option>
-              {
-                addressArray.map((address, index) =>
-                  <option key={index} value={address}>{address}</option>
-                )
-              }
-            </select>
+            {clientID ?
+              <select name="address" id="address"
+                className="w-full border border-gray-300 rounded-md p-2"
+                onChange={(e) => setAddress(e.target.value)}>
+                {
+                  addressArray.map((address, index) =>
+                    <option key={index} value={address}>{address}</option>
+                  )
+                }
+              </select>
+              : <p>Escoja un cliente para cargar las direcciones</p>
+            }
           </div>
 
           <div className="mb-4">
@@ -188,7 +203,7 @@ function CreateSellOrder() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="totalPrice" className="block text-gray-700 font-medium mb-2">Precio total*</label>
+            <label htmlFor="totalPrice" className="block text-gray-700 font-medium mb-2 text-right">Precio total*</label>
             <input
               required
               disabled
@@ -199,19 +214,7 @@ function CreateSellOrder() {
               name="totalPrice"
               placeholder="Precio total"
               value={purchasePrice.toFixed(2)}
-              className="w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="orderDate" className="block text-gray-700 font-medium mb-2">Order Date</label>
-            <DatePicker
-              id="orderDate"
-              name="orderDate"
-              required
-              selected={orderDate}
-              onChange={setOrderDateHandler}
-              className="w-full border border-gray-300 rounded-md p-2"
+              className="w-full border border-gray-300 rounded-md p-2 text-right"
             />
           </div>
 
@@ -243,7 +246,7 @@ function ClientSelectList({ clients, clientHandler }: ClientSelectListProps) {
           >
             <option value="">Select a client</option>
             {clients.map((client) => (
-              <option key={client._id} value={client._id}>{client.name}</option>
+              <option key={client._id} value={client._id}>{client.rif} - {client.name}</option>
             ))}
           </select>
         ) : (
