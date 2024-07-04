@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "prod": "vite --mode production",
+    "dev": "vite --mode development",
     "local": "vite --mode localdev",
-    "build": "npm run generate-routes && tsc && vite build",
+    "build": "npm run generate-routes && tsc && vite --mode production build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start": "vite preview",
