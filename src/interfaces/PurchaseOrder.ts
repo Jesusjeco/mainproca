@@ -26,10 +26,4 @@ export const emptyProductOrder = {
   quantity: 0
 }
 
-export interface PurchaseOrderApiResponse {
-  success: boolean;
-  message: string;
-  data?: any;
-}
-
 export const API_PURCHASE_ORDER_URL = import.meta.env.VITE_API_URL_BASE + import.meta.env.VITE_API_URL_PURCHASE_ORDER;
