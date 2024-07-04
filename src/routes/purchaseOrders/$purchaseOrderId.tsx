@@ -52,15 +52,15 @@ function SinglePurchaseOrder() {
             </div>
 
             <div className="mt-1">
-              <p id="price" className="text-lg font-semibold text-gray-900">Productos:
-                {
-                  purchaseOrder.products.map((product) => 
-                  <div>{getProductById(product.product)?.name + " x " + product.quantity}</div>
-                )}</p>
+              <p id="price" className="text-lg font-semibold text-gray-900">Productos:</p>
+              {
+                purchaseOrder.products.map((product, index) =>
+                  <div key={index}>{getProductById(product.product)?.name + " x " + product.quantity}</div>
+                )}
             </div>
 
             <div className="mt-1">
-              <p id="price" className="text-lg font-semibold text-gray-900">Precio total: {purchaseOrder.totalPrice}</p>
+              <p id="price" className="text-lg font-semibold text-gray-900">Precio total: {purchaseOrder.totalPrice} $</p>
             </div>
           </div>
 

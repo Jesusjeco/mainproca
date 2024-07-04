@@ -1,26 +1,28 @@
 
 export interface PurchaseOrder {
   _id?: string
-  client: string; // Assuming client is an ObjectId in string form
+  client: string;
   products: ProductOrder[];
   totalPrice: number;
   orderDate: Date;
 }
 
 export const emptyPurchaseOrder = {
-  client: "", // Assuming client is an ObjectId in string form
+  client: "",
   products: [],
   orderDate: new Date(),
   totalPrice: 0
 }
 
 export interface ProductOrder {
-  product: string; // Assuming product is an ObjectId in string form
+  product: string;
+  price: number,
   quantity: number;
 }
 
 export const emptyProductOrder = {
-  product: "", // Assuming product is an ObjectId in string form
+  product: "",
+  price: 1,
   quantity: 0
 }
 
