@@ -1,6 +1,6 @@
 //Defining the interface for Product
 export interface Product {
-  _id?: string, //I am making the _id optional only because when creating a
+  _id?: string,
   name: string,
   quantity: number,
   price: number,
