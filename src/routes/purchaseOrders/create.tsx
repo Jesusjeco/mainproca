@@ -45,11 +45,22 @@ function CreatePurchaseOrder() {
     setSelectedProducts(auxProductList);
   }
 
-  // Total price
-  const [totalPrice, setTotalPrice] = useState<number>(0.00);
-  const totalPriceHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setTotalPrice(Number(e.target.value));
+  // Total product price
+  const [totalProductPriceArray, setTotalProductPriceArray] = useState<number[]>([]);
+  const setTotalProductPriceArrayHandler = (productCost: number, index: number) => {
+    const auxTotalPrice = [...totalProductPriceArray];
+    auxTotalPrice[index] = productCost;
+    setTotalProductPriceArray(auxTotalPrice);
   }
+
+  //Purchase Price
+  const [purchasePrice, setPurchasePrice] = useState<number>(0.00);
+  useEffect(() => {
+    setPurchasePrice(
+      totalProductPriceArray.reduce((acumulator, currentValue) => acumulator + currentValue, 0)
+    );
+  }, [totalProductPriceArray]);
+
 
   //Order date
   const [orderDate, setOrderDate] = useState<Date>(new Date)
@@ -71,7 +82,7 @@ function CreatePurchaseOrder() {
     const newPurchaseOrder = {
       client: clientID,
       products: selectedProducts,
-      totalPrice: totalPrice,
+      totalPrice: purchasePrice,
       orderDate: orderDate
     }
 
@@ -116,16 +127,19 @@ function CreatePurchaseOrder() {
                 <thead>
                   <tr>
                     <th className="py-2 px-4 border-b border-gray-300 bg-gray-100 text-left text-gray-700">Productos</th>
+                    <th className="py-2 px-4 border-b border-gray-300 bg-gray-100 text-left text-gray-700">Precio</th>
                     <th className="py-2 px-4 border-b border-gray-300 bg-gray-100 text-left text-gray-700">Cantidad</th>
+                    <th className="py-2 px-4 border-b border-gray-300 bg-gray-100 text-left text-gray-700">Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td colSpan={3} className="py-2 px-4 border-b border-gray-300">
+                    <td colSpan={4} className="py-2 px-4 border-b border-gray-300">
                       {selectedProducts.length > 0 ?
                         selectedProducts.map((_, index) =>
                           <ProductSelectList products={products}
                             setSelectedProductsHandler={setSelectedProductsHandler}
+                            setProductTotalPrice={setTotalProductPriceArrayHandler}
                             index={index}
                             key={index} />
                         )
@@ -138,7 +152,7 @@ function CreatePurchaseOrder() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="totalPrice" className="block text-gray-700 font-medium mb-2">Total Price*</label>
+            <label htmlFor="totalPrice" className="block text-gray-700 font-medium mb-2">Precio total*</label>
             <input
               required
               disabled
@@ -147,9 +161,8 @@ function CreatePurchaseOrder() {
               step="0.01"
               id="totalPrice"
               name="totalPrice"
-              placeholder="Enter total price"
-              onChange={totalPriceHandler}
-              value={totalPrice.toFixed(2)}
+              placeholder="Precio total"
+              value={purchasePrice.toFixed(2)}
               className="w-full border border-gray-300 rounded-md p-2"
             />
           </div>
@@ -208,21 +221,64 @@ function ClientSelectList({ clients, clientHandler }: ClientSelectListProps) {
 interface ProductSelectListProps {
   products: Product[],
   setSelectedProductsHandler: (productData: ProductOrder, index: number) => void,
+  setProductTotalPrice: (totalProductPrice: number, index: number) => void,
   index: number
 }
-function ProductSelectList({ products, setSelectedProductsHandler, index }: ProductSelectListProps) {
+function ProductSelectList({ products, setSelectedProductsHandler, setProductTotalPrice, index }: ProductSelectListProps) {
+  //product
+  const [productId, setProductId] = useState<string>("");
+  const productIdHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+
+    //Updating price using the id of the product
+    const price = products.find((product) => product._id === value)?.price;
+    if (price)
+      setPrice(price)
+    else
+      setPrice(0)
+    setProductId(value);
+  }
+
+  //price
+  const [price, setPrice] = useState<number>(0);
+  const setPriceHandler = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    const { value } = e.target;
+    setPrice(Number(value));
+  }
+
+  //quantity
+  const [quantity, setQuantity] = useState<number>(1)
+  const setQuantityHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setQuantity(Number(value));
+  }
+
+  //Total cost
+  const [totalProductPrice, setTotalProductPrice] = useState<number>(0.00);
+  useEffect(() => {
+    setTotalProductPrice(price * quantity);
+  }, [price, quantity]);
+
+  //Sending the total cost to father component
+  useEffect(() => {
+    setProductTotalPrice(totalProductPrice, index);
+  }, [totalProductPrice]);
+
+
 
   const [componentProduct, setComponentProduct] = useState<ProductOrder>(emptyProductOrder)
-  const componentProductHandler = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    const { name, value } = e.target;
+  useEffect(() => {
     setComponentProduct(
       {
         ...componentProduct,
-        [name]: name === 'quantity' ? Number(value) : value
+        product: productId,
+        price: price,
+        quantity: quantity
       }
     )
-  }//componentProductHandler
+  }, [productId, price, quantity]);
 
+  //Sending the component
   useEffect(() => {
     setSelectedProductsHandler(componentProduct, index);
   }, [componentProduct]);
@@ -230,12 +286,12 @@ function ProductSelectList({ products, setSelectedProductsHandler, index }: Prod
     <>
       {
         products.length > 0 ? (
-          <div className="grid gap-2 md:grid-cols-2 items-center">
+          <div className="grid gap-2 md:grid-cols-4 items-center">
             <select
               name="product"
               id="product"
               required
-              onChange={componentProductHandler}
+              onChange={productIdHandler}
               className="w-full border border-gray-300 rounded-md p-2"
             >
               <option value="">Select a product</option>
@@ -243,6 +299,20 @@ function ProductSelectList({ products, setSelectedProductsHandler, index }: Prod
                 <option key={product._id} value={product._id}>{product.name} - {product.price}$</option>
               ))}
             </select>
+            <div className="relative w-full">
+              <input
+                type="number"
+                step={0.01}
+                min={0}
+                required
+                name="price"
+                id="price"
+                value={price}
+                onChange={setPriceHandler}
+                className="w-full border border-gray-300 rounded-md p-2 pr-10"
+              />
+              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+            </div>
             <input
               type="number"
               step={1}
@@ -250,9 +320,13 @@ function ProductSelectList({ products, setSelectedProductsHandler, index }: Prod
               required
               name="quantity"
               id="quantity"
-              onChange={componentProductHandler}
+              value={quantity}
+              onChange={setQuantityHandler}
               className="w-full border border-gray-300 rounded-md p-2"
             />
+            <input disabled required
+              type="number" name="totalProductPrice" id="totalProductPrice"
+              value={totalProductPrice} className="w-full border border-gray-300 rounded-md p-2" />
           </div>
         ) : (
           <p className="text-red-500">Product list is empty</p>
