@@ -13,17 +13,17 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as BoilerplateImport } from './routes/boilerplate'
 import { Route as IndexImport } from './routes/index'
-import { Route as SellsIndexImport } from './routes/sells/index'
+import { Route as SellOrdersIndexImport } from './routes/sellOrders/index'
 import { Route as PurchaseOrdersIndexImport } from './routes/purchaseOrders/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as ClientsIndexImport } from './routes/clients/index'
-import { Route as PurchaseOrdersCreateImport } from './routes/purchaseOrders/create'
-import { Route as PurchaseOrdersPurchaseOrderIdImport } from './routes/purchaseOrders/$purchaseOrderId'
+import { Route as SellOrdersCreateImport } from './routes/sellOrders/create'
+import { Route as SellOrdersSellOrderIdImport } from './routes/sellOrders/$sellOrderId'
 import { Route as ProductsCreateImport } from './routes/products/create'
 import { Route as ProductsProductIdImport } from './routes/products/$productId'
 import { Route as ClientsCreateImport } from './routes/clients/create'
 import { Route as ClientsClientIdImport } from './routes/clients/$clientId'
-import { Route as PurchaseOrdersEditPurchaseOrderIdImport } from './routes/purchaseOrders/edit.$purchaseOrderId'
+import { Route as SellOrdersEditSellOrderIdImport } from './routes/sellOrders/edit.$sellOrderId'
 import { Route as ProductsEditProductIdImport } from './routes/products/edit.$productId'
 import { Route as ClientsEditClientIdImport } from './routes/clients/edit.$clientId'
 
@@ -39,8 +39,8 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const SellsIndexRoute = SellsIndexImport.update({
-  path: '/sells/',
+const SellOrdersIndexRoute = SellOrdersIndexImport.update({
+  path: '/sellOrders/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -59,16 +59,15 @@ const ClientsIndexRoute = ClientsIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const PurchaseOrdersCreateRoute = PurchaseOrdersCreateImport.update({
-  path: '/purchaseOrders/create',
+const SellOrdersCreateRoute = SellOrdersCreateImport.update({
+  path: '/sellOrders/create',
   getParentRoute: () => rootRoute,
 } as any)
 
-const PurchaseOrdersPurchaseOrderIdRoute =
-  PurchaseOrdersPurchaseOrderIdImport.update({
-    path: '/purchaseOrders/$purchaseOrderId',
-    getParentRoute: () => rootRoute,
-  } as any)
+const SellOrdersSellOrderIdRoute = SellOrdersSellOrderIdImport.update({
+  path: '/sellOrders/$sellOrderId',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const ProductsCreateRoute = ProductsCreateImport.update({
   path: '/products/create',
@@ -90,11 +89,10 @@ const ClientsClientIdRoute = ClientsClientIdImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const PurchaseOrdersEditPurchaseOrderIdRoute =
-  PurchaseOrdersEditPurchaseOrderIdImport.update({
-    path: '/purchaseOrders/edit/$purchaseOrderId',
-    getParentRoute: () => rootRoute,
-  } as any)
+const SellOrdersEditSellOrderIdRoute = SellOrdersEditSellOrderIdImport.update({
+  path: '/sellOrders/edit/$sellOrderId',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const ProductsEditProductIdRoute = ProductsEditProductIdImport.update({
   path: '/products/edit/$productId',
@@ -152,18 +150,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsCreateImport
       parentRoute: typeof rootRoute
     }
-    '/purchaseOrders/$purchaseOrderId': {
-      id: '/purchaseOrders/$purchaseOrderId'
-      path: '/purchaseOrders/$purchaseOrderId'
-      fullPath: '/purchaseOrders/$purchaseOrderId'
-      preLoaderRoute: typeof PurchaseOrdersPurchaseOrderIdImport
+    '/sellOrders/$sellOrderId': {
+      id: '/sellOrders/$sellOrderId'
+      path: '/sellOrders/$sellOrderId'
+      fullPath: '/sellOrders/$sellOrderId'
+      preLoaderRoute: typeof SellOrdersSellOrderIdImport
       parentRoute: typeof rootRoute
     }
-    '/purchaseOrders/create': {
-      id: '/purchaseOrders/create'
-      path: '/purchaseOrders/create'
-      fullPath: '/purchaseOrders/create'
-      preLoaderRoute: typeof PurchaseOrdersCreateImport
+    '/sellOrders/create': {
+      id: '/sellOrders/create'
+      path: '/sellOrders/create'
+      fullPath: '/sellOrders/create'
+      preLoaderRoute: typeof SellOrdersCreateImport
       parentRoute: typeof rootRoute
     }
     '/clients/': {
@@ -187,11 +185,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PurchaseOrdersIndexImport
       parentRoute: typeof rootRoute
     }
-    '/sells/': {
-      id: '/sells/'
-      path: '/sells'
-      fullPath: '/sells'
-      preLoaderRoute: typeof SellsIndexImport
+    '/sellOrders/': {
+      id: '/sellOrders/'
+      path: '/sellOrders'
+      fullPath: '/sellOrders'
+      preLoaderRoute: typeof SellOrdersIndexImport
       parentRoute: typeof rootRoute
     }
     '/clients/edit/$clientId': {
@@ -208,11 +206,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsEditProductIdImport
       parentRoute: typeof rootRoute
     }
-    '/purchaseOrders/edit/$purchaseOrderId': {
-      id: '/purchaseOrders/edit/$purchaseOrderId'
-      path: '/purchaseOrders/edit/$purchaseOrderId'
-      fullPath: '/purchaseOrders/edit/$purchaseOrderId'
-      preLoaderRoute: typeof PurchaseOrdersEditPurchaseOrderIdImport
+    '/sellOrders/edit/$sellOrderId': {
+      id: '/sellOrders/edit/$sellOrderId'
+      path: '/sellOrders/edit/$sellOrderId'
+      fullPath: '/sellOrders/edit/$sellOrderId'
+      preLoaderRoute: typeof SellOrdersEditSellOrderIdImport
       parentRoute: typeof rootRoute
     }
   }
@@ -227,15 +225,15 @@ export const routeTree = rootRoute.addChildren({
   ClientsCreateRoute,
   ProductsProductIdRoute,
   ProductsCreateRoute,
-  PurchaseOrdersPurchaseOrderIdRoute,
-  PurchaseOrdersCreateRoute,
+  SellOrdersSellOrderIdRoute,
+  SellOrdersCreateRoute,
   ClientsIndexRoute,
   ProductsIndexRoute,
   PurchaseOrdersIndexRoute,
-  SellsIndexRoute,
+  SellOrdersIndexRoute,
   ClientsEditClientIdRoute,
   ProductsEditProductIdRoute,
-  PurchaseOrdersEditPurchaseOrderIdRoute,
+  SellOrdersEditSellOrderIdRoute,
 })
 
 /* prettier-ignore-end */
@@ -252,15 +250,15 @@ export const routeTree = rootRoute.addChildren({
         "/clients/create",
         "/products/$productId",
         "/products/create",
-        "/purchaseOrders/$purchaseOrderId",
-        "/purchaseOrders/create",
+        "/sellOrders/$sellOrderId",
+        "/sellOrders/create",
         "/clients/",
         "/products/",
         "/purchaseOrders/",
-        "/sells/",
+        "/sellOrders/",
         "/clients/edit/$clientId",
         "/products/edit/$productId",
-        "/purchaseOrders/edit/$purchaseOrderId"
+        "/sellOrders/edit/$sellOrderId"
       ]
     },
     "/": {
@@ -281,11 +279,11 @@ export const routeTree = rootRoute.addChildren({
     "/products/create": {
       "filePath": "products/create.tsx"
     },
-    "/purchaseOrders/$purchaseOrderId": {
-      "filePath": "purchaseOrders/$purchaseOrderId.tsx"
+    "/sellOrders/$sellOrderId": {
+      "filePath": "sellOrders/$sellOrderId.tsx"
     },
-    "/purchaseOrders/create": {
-      "filePath": "purchaseOrders/create.tsx"
+    "/sellOrders/create": {
+      "filePath": "sellOrders/create.tsx"
     },
     "/clients/": {
       "filePath": "clients/index.tsx"
@@ -296,8 +294,8 @@ export const routeTree = rootRoute.addChildren({
     "/purchaseOrders/": {
       "filePath": "purchaseOrders/index.tsx"
     },
-    "/sells/": {
-      "filePath": "sells/index.tsx"
+    "/sellOrders/": {
+      "filePath": "sellOrders/index.tsx"
     },
     "/clients/edit/$clientId": {
       "filePath": "clients/edit.$clientId.tsx"
@@ -305,8 +303,8 @@ export const routeTree = rootRoute.addChildren({
     "/products/edit/$productId": {
       "filePath": "products/edit.$productId.tsx"
     },
-    "/purchaseOrders/edit/$purchaseOrderId": {
-      "filePath": "purchaseOrders/edit.$purchaseOrderId.tsx"
+    "/sellOrders/edit/$sellOrderId": {
+      "filePath": "sellOrders/edit.$sellOrderId.tsx"
     }
   }
 }

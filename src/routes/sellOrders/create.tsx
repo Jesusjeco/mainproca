@@ -7,14 +7,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useProductsStore } from "../../store/productStore";
 import { Client } from "../../interfaces/Client";
 import { Product } from "../../interfaces/Product";
-import { ProductOrder, emptyProductOrder } from "../../interfaces/PurchaseOrder";
-import { createPurchaseOrder } from "../../apiCalls/purchaseOrders";
+import { ProductOrder, emptyProductOrder } from "../../interfaces/SellOrder";
+import { createSellOrder } from "../../apiCalls/sellOrders";
 
-export const Route = createFileRoute('/purchaseOrders/create')({
-  component: CreatePurchaseOrder
+export const Route = createFileRoute('/sellOrders/create')({
+  component: CreateSellOrder
 })
 
-function CreatePurchaseOrder() {
+function CreateSellOrder() {
   // Using Zustand Client store
   const fetchClients = useClientsStore(state => state.fetchClients);
   const clients = useClientsStore(state => state.clients);
@@ -79,21 +79,21 @@ function CreatePurchaseOrder() {
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newPurchaseOrder = {
+    const newSellOrder = {
       client: clientID,
       products: selectedProducts,
       totalPrice: purchasePrice,
       orderDate: orderDate
     }
 
-    const response = await createPurchaseOrder(newPurchaseOrder);
+    const response = await createSellOrder(newSellOrder);
 
     //Redirecting user to clients page
     if (response.success) {
       // Reset the form after submission
       if (formRef.current)
         formRef.current.reset();
-      navigate({ to: "/purchaseOrders" });
+      navigate({ to: "/sellOrders" });
     } else {
       // Handle error
       console.error('Failed to update client');
