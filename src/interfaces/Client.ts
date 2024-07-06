@@ -4,6 +4,8 @@ export interface Client {
   _id?: string,
   rif: string,
   name: string,
+  number: string,
+  email: string,
   legal_address: string,
   offices?: ClientOffice[],
   description?: string

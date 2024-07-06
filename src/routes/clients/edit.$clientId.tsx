@@ -79,7 +79,6 @@ function EditClient() {
         <h2 className='text-3xl font-bold mb-6 text-center'>Modificar cliente</h2>
         <form onSubmit={modifyClientHandler} className='space-y-4'>
           <div className='grid grid-cols-1 gap-5 lg:grid-cols-2 items-center'>
-
             <div>
               <label htmlFor='rif' className='block text-gray-700 font-bold'>RIF*</label>
               <input
@@ -107,6 +106,36 @@ function EditClient() {
                 className='w-full mt-2 p-2 border rounded'
                 value={newClient.name}
               //onChange={handleInputChange}
+              />
+            </div>
+          </div>
+
+          <div className='grid grid-cols-1 gap-5 lg:grid-cols-2 items-center'>
+            <div>
+              <label htmlFor='number' className='block text-gray-700 font-bold'>Número</label>
+              <input
+                required
+                type='text'
+                id='number'
+                name='number'
+                placeholder='Enter your number'
+                className='w-full mt-2 p-2 border rounded'
+                value={newClient.number}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div>
+              <label htmlFor='email' className='block text-gray-700 font-bold'>Email</label>
+              <input
+                required
+                type='email'
+                id='email'
+                name='email'
+                placeholder='Enter your email'
+                className='w-full mt-2 p-2 border rounded'
+                value={newClient.email}
+                onChange={handleInputChange}
               />
             </div>
           </div>
