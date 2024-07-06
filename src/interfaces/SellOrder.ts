@@ -2,6 +2,7 @@
 export interface SellOrder {
   _id?: string
   client: string;
+  address: string;
   products: ProductOrder[];
   totalPrice: number;
   orderDate: Date;
@@ -9,6 +10,7 @@ export interface SellOrder {
 
 export const emptySellOrder = {
   client: "",
+  address: "",
   products: [],
   orderDate: new Date(),
   totalPrice: 0
