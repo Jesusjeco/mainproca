@@ -40,6 +40,7 @@ function CreateSellOrder() {
     const client = clients.find((client) => client._id === clientID);
     if (client) {
       const legalAddress = client.legal_address;
+      setAddress(legalAddress);
       const offices = client.offices?.map((office) => office.address);
 
       if (offices) {
@@ -147,6 +148,7 @@ function CreateSellOrder() {
                 selected={orderDate}
                 onChange={setOrderDateHandler}
                 className="w-full border border-gray-300 rounded-md p-2"
+                dateFormat={"dd MMMM yyyy"}
               />
             </div>
           </div>
@@ -270,16 +272,20 @@ function ProductSelectList({ products, setSelectedProductsHandler, setProductTot
     const { value } = e.target;
 
     //Updating price using the id of the product
-    const price = products.find((product) => product._id === value)?.price;
-    if (price)
+    const auxProduct = products.find((product) => product._id === value);
+    if (auxProduct) {
+      const price = auxProduct.price;
       setPrice(price)
-    else
-      setPrice(0)
-    setProductId(value);
-  }
+      const maxQuantity = auxProduct.quantity
+      setMaxQuantity(maxQuantity);
+    }
 
-  //price
+    setProductId(value);
+  }//productIdHandler
+
+  //price and quantity
   const [price, setPrice] = useState<number>(0);
+  const [maxQuantity, setMaxQuantity] = useState<number>(0);
   const setPriceHandler = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { value } = e.target;
     setPrice(Number(value));
@@ -288,9 +294,12 @@ function ProductSelectList({ products, setSelectedProductsHandler, setProductTot
   //quantity
   const [quantity, setQuantity] = useState<number>(1)
   const setQuantityHandler = async (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setQuantity(Number(value));
-  }
+    const value = Number(e.target.value);
+    if (value === maxQuantity) {
+      setMessage(true);
+    } else { setMessage(false); }
+    setQuantity(value);
+  }//setQuantityHandler
 
   //Total cost
   const [totalProductPrice, setTotalProductPrice] = useState<number>(0.00);
@@ -317,6 +326,8 @@ function ProductSelectList({ products, setSelectedProductsHandler, setProductTot
     )
   }, [productId, price, quantity]);
 
+  const [message, setMessage] = useState<boolean>(false);
+
   //Sending the component
   useEffect(() => {
     setSelectedProductsHandler(componentProduct, index);
@@ -325,48 +336,58 @@ function ProductSelectList({ products, setSelectedProductsHandler, setProductTot
     <>
       {
         products.length > 0 ? (
-          <div className="grid gap-2 md:grid-cols-4 items-center">
-            <select
-              name="product"
-              id="product"
-              required
-              onChange={productIdHandler}
-              className="w-full border border-gray-300 rounded-md p-2"
-            >
-              <option value="">Select a product</option>
-              {products.map((product) => (
-                <option key={product._id} value={product._id}>{product.name} - {product.price}$</option>
-              ))}
-            </select>
-            <div className="relative w-full">
-              <input
-                type="number"
-                step={0.01}
-                min={0}
+          <>
+            <div className="grid gap-2 md:grid-cols-4 items-center">
+              <select
+                name="product"
+                id="product"
                 required
-                name="price"
-                id="price"
-                value={price}
-                onChange={setPriceHandler}
-                className="w-full border border-gray-300 rounded-md p-2 pr-10"
-              />
-              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                onChange={productIdHandler}
+                className="w-full border border-gray-300 rounded-md p-2"
+              >
+                <option value="">Select a product</option>
+                {products.map((product) => (
+                  <option key={product._id} value={product._id}>{product.name} - {product.price}$</option>
+                ))}
+              </select>
+              <div className="relative w-full">
+                <input
+                  type="number"
+                  step={0.01}
+                  min={0}
+                  required
+                  name="price"
+                  id="price"
+                  value={price}
+                  onChange={setPriceHandler}
+                  className="w-full border border-gray-300 rounded-md p-2 pr-10"
+                />
+                <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  step={1}
+                  min={0}
+                  required
+                  name="quantity"
+                  id="quantity"
+                  max={maxQuantity}
+                  value={quantity}
+                  onChange={setQuantityHandler}
+                  className="w-full border border-gray-300 rounded-md p-2"
+                />
+                {message ?
+                  <p className="absolute top-1 bottom-1 right-[25%] flex items-center bg-red-500 px-4 font-bold">MAX</p>
+                  : ""
+                }
+              </div>
+
+              <input disabled required
+                type="number" name="totalProductPrice" id="totalProductPrice"
+                value={totalProductPrice} className="w-full border border-gray-300 rounded-md p-2" />
             </div>
-            <input
-              type="number"
-              step={1}
-              min={0}
-              required
-              name="quantity"
-              id="quantity"
-              value={quantity}
-              onChange={setQuantityHandler}
-              className="w-full border border-gray-300 rounded-md p-2"
-            />
-            <input disabled required
-              type="number" name="totalProductPrice" id="totalProductPrice"
-              value={totalProductPrice} className="w-full border border-gray-300 rounded-md p-2" />
-          </div>
+          </>
         ) : (
           <p className="text-red-500">Product list is empty</p>
         )
