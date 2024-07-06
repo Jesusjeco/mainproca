@@ -68,22 +68,37 @@ function CreateClient() {
   return (
     <div className='createClient'>
       <div className="bg-gray-100 flex items-center justify-center min-h-screen">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full lg:w-4/5">
           <h2 className="text-2xl font-bold mb-6 text-center">Agregar cliente nuevo</h2>
           <form ref={formRef} onSubmit={createClientHandler}>
 
-            <div className="mb-4">
-              <label htmlFor="rif" className="block text-gray-700 text-sm font-bold mb-2">RIF*</label>
-              <input required type="text" id="rif" name="rif" placeholder="Enter your rif" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                onChange={updateInputHandler}
-              />
-            </div>
+            <div className="mb-4 grid gap-4 lg:grid-cols-2">
+              <div>
+                <label htmlFor="rif" className="block text-gray-700 text-sm font-bold mb-2">RIF*</label>
+                <input required type="text" id="rif" name="rif" placeholder="Enter your rif" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  onChange={updateInputHandler}
+                />
+              </div>
+              <div>
+                <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nombre*</label>
+                <input required type="text" id="name" name="name" placeholder="Enter your name" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  onChange={updateInputHandler}
+                />
+              </div>
 
-            <div className="mb-4">
-              <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nombre*</label>
-              <input required type="text" id="name" name="name" placeholder="Enter your name" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                onChange={updateInputHandler}
-              />
+              <div>
+                <label htmlFor="number" className="block text-gray-700 text-sm font-bold mb-2">Número</label>
+                <input  type="text" id="number" name="number" placeholder="Enter client number" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  onChange={updateInputHandler}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                <input  type="email" id="email" name="email" placeholder="Enter your email" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  onChange={updateInputHandler}
+                />
+              </div>
             </div>
 
             <div className="mb-4">
