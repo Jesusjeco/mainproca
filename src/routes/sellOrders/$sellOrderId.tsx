@@ -1,8 +1,7 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { fetchSellOrderById } from '../../apiCalls/sellOrders'
 import { SellOrder } from "../../interfaces/SellOrder"
 import { useEffect, useState } from 'react'
-import { FaEdit } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { DMYdate } from '../../utils/dates';
