@@ -30,6 +30,16 @@ function SingleClient() {
         </div>
 
         <div className="mb-6">
+          <p className="text-sm font-medium text-gray-700">Numero</p>
+          <p className="mt-1 text-sm text-gray-800">{client.number ?? "Sin número registrado"}</p>
+        </div>
+
+        <div className="mb-6">
+          <p className="text-sm font-medium text-gray-700">Correo</p>
+          <p className="mt-1 text-sm text-gray-800">{client.email ?? "Sin correo registrado"}</p>
+        </div>
+
+        <div className="mb-6">
           <p className="text-sm font-medium text-gray-700">Dirección fiscal</p>
           <p className="mt-1 text-sm text-gray-800">{client.legal_address}</p>
         </div>
@@ -45,12 +55,10 @@ function SingleClient() {
           <div className="mb-6 text-sm text-gray-800">Sin sucursales</div>
         )}
 
-        {client.description && client.description !== "" && (
-          <div className="mb-6">
-            <p className="text-sm font-medium text-gray-700">Descripción</p>
-            <p className="mt-1 text-sm text-gray-800">{client.description}</p>
-          </div>
-        )}
+        <div className="mb-6">
+          <p className="text-sm font-medium text-gray-700">Descripción</p>
+          <p className="mt-1 text-sm text-gray-800">{client.description ?? "Sin descripción"}</p>
+        </div>
 
         <div className="flex justify-center mt-6">
           <Link to={'/clients/edit/' + client._id} className="text-blue-500 hover:text-blue-700">
