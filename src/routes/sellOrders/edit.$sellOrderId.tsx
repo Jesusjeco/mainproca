@@ -1,10 +1,9 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { editSellOrderById, fetchSellOrderById } from '../../apiCalls/sellOrders'
+import { createFileRoute } from '@tanstack/react-router'
+import { fetchSellOrderById } from '../../apiCalls/sellOrders'
 import { SellOrder } from "../../interfaces/SellOrder"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import { FetchErrorComponent } from '../../components/FetchErrorComponent'
 import { NotFoundComponent } from '../../components/NotFoundComponent'
-import { DMYdate } from '../../utils/dates'
 import { useClientsStore } from '../../store/clientStore'
 import { useProductsStore } from '../../store/productStore'
 import { LoadingComponent } from '../../components/LoadingComponent'
@@ -28,7 +27,7 @@ function EditSellOrder() {
 
   // Using Zustand Product store
   const fetchProducts = useProductsStore(state => state.fetchProducts);
-  const products = useProductsStore(state => state.products);
+  //const products = useProductsStore(state => state.products);
   const productsLoading = useProductsStore(state => state.loading);
 
   useEffect(() => {
@@ -36,7 +35,7 @@ function EditSellOrder() {
     fetchProducts();
   }, []);
 
-  const [newSellOrder, setNewSellOrder] = useState<SellOrder>(sellOrder)
+  //const [newSellOrder, setNewSellOrder] = useState<SellOrder>(sellOrder)
 
   //Variables used to create the Purchase order
 
@@ -73,11 +72,10 @@ function EditSellOrder() {
           [legalAddress]
         )
     }
-  }, [clientID,address]);
+  }, [clientID, address]);
 
   //Form ref and navigation
   const formRef = useRef<HTMLFormElement>(null);
-  const navigate = useNavigate();
 
   function formHandler(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
