@@ -42,7 +42,7 @@ function CreateClient() {
       }
     );
 
-    console.log(newClient, "newClient");
+    //console.log(newClient, "newClient");
 
   }, [offices]);
 

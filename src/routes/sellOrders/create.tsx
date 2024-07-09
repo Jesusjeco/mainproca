@@ -51,7 +51,6 @@ function CreateSellOrder() {
         setAddressArray(
           [legalAddress]
         )
-
     }
   }, [clientID]);
 
@@ -394,4 +393,4 @@ function ProductSelectList({ products, setSelectedProductsHandler, setProductTot
       }
     </>
   )
-}
+} 
