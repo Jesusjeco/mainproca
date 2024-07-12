@@ -24,7 +24,7 @@ export interface ProductOrder {
 
 export const emptyProductOrder = {
   product: "",
-  price: 1,
+  price: 0,
   quantity: 0
 }
 

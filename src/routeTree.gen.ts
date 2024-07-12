@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as BoilerplateImport } from './routes/boilerplate'
 import { Route as IndexImport } from './routes/index'
+import { Route as TestsIndexImport } from './routes/tests/index'
 import { Route as SellOrdersIndexImport } from './routes/sellOrders/index'
 import { Route as PurchaseOrdersIndexImport } from './routes/purchaseOrders/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
@@ -36,6 +37,11 @@ const BoilerplateRoute = BoilerplateImport.update({
 
 const IndexRoute = IndexImport.update({
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TestsIndexRoute = TestsIndexImport.update({
+  path: '/tests/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -192,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellOrdersIndexImport
       parentRoute: typeof rootRoute
     }
+    '/tests/': {
+      id: '/tests/'
+      path: '/tests'
+      fullPath: '/tests'
+      preLoaderRoute: typeof TestsIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/clients/edit/$clientId': {
       id: '/clients/edit/$clientId'
       path: '/clients/edit/$clientId'
@@ -231,6 +244,7 @@ export const routeTree = rootRoute.addChildren({
   ProductsIndexRoute,
   PurchaseOrdersIndexRoute,
   SellOrdersIndexRoute,
+  TestsIndexRoute,
   ClientsEditClientIdRoute,
   ProductsEditProductIdRoute,
   SellOrdersEditSellOrderIdRoute,
@@ -256,6 +270,7 @@ export const routeTree = rootRoute.addChildren({
         "/products/",
         "/purchaseOrders/",
         "/sellOrders/",
+        "/tests/",
         "/clients/edit/$clientId",
         "/products/edit/$productId",
         "/sellOrders/edit/$sellOrderId"
@@ -296,6 +311,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/sellOrders/": {
       "filePath": "sellOrders/index.tsx"
+    },
+    "/tests/": {
+      "filePath": "tests/index.tsx"
     },
     "/clients/edit/$clientId": {
       "filePath": "clients/edit.$clientId.tsx"
