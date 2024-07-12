@@ -5,7 +5,7 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useProductsStore } from "../../store/productStore";
-import { Client, emptyClient } from "../../interfaces/Client";
+import { Client } from "../../interfaces/Client";
 import { Product } from "../../interfaces/Product";
 import { ProductOrder, emptyProductOrder } from "../../interfaces/SellOrder";
 import { createSellOrder } from "../../apiCalls/sellOrders";
@@ -29,7 +29,7 @@ function CreateSellOrder() {
   //Variables used to create the Purchase order
 
   //Client
-  const [client,setClient] = useState<Client>(emptyClient);
+  //const [client,setClient] = useState<Client>(emptyClient);
   // const clientHandler = (newClient: Client) =>{
   //   setClient(newClient);
   // }
