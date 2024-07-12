@@ -1,7 +1,7 @@
 //Defining the interface for Client
 export interface Client {
   //I am making the _id optional only because when creating a client we will not have an ID. The system will make it later on
-  _id?: string,
+  _id: string,
   rif: string,
   name: string,
   number?: string,
@@ -12,6 +12,7 @@ export interface Client {
 }
 
 export const emptyClient = {
+  _id: "",
   rif: "",
   name: "",
   legal_address: ""
