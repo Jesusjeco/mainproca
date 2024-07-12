@@ -5,10 +5,11 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useProductsStore } from "../../store/productStore";
-import { Client } from "../../interfaces/Client";
+import { Client, emptyClient } from "../../interfaces/Client";
 import { Product } from "../../interfaces/Product";
 import { ProductOrder, emptyProductOrder } from "../../interfaces/SellOrder";
 import { createSellOrder } from "../../apiCalls/sellOrders";
+import { ClientSelectList } from "../../components/clients/ClientSelectList";
 
 export const Route = createFileRoute('/sellOrders/create')({
   component: CreateSellOrder
@@ -27,10 +28,17 @@ function CreateSellOrder() {
 
   //Variables used to create the Purchase order
 
+  //Client
+  const [client,setClient] = useState<Client>(emptyClient);
+  // const clientHandler = (newClient: Client) =>{
+  //   setClient(newClient);
+  // }
+
   // Client ID
   const [clientID, setClientID] = useState<string>("");
-  const clientHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-    setClientID(e.target.value);
+  const clientHandler = (newClient: Client) => {
+    if (newClient._id)
+      setClientID(newClient._id);
   }//clientHandler
 
   //Client address
@@ -136,7 +144,7 @@ function CreateSellOrder() {
         <form onSubmit={formHandler} ref={formRef}>
           <div className="grid gap-4 lg:grid-cols-2">
             <div className="mb-4">
-              <ClientSelectList clients={clients} clientHandler={clientHandler} />
+              <ClientSelectList clients={clients} clientResult={clientHandler} />
             </div>
             <div className="mb-4 flex flex-col">
               <label htmlFor="orderDate" className="block text-gray-700 font-medium mb-2">Order Date</label>
@@ -224,36 +232,6 @@ function CreateSellOrder() {
           </div>
         </form>
       </div>
-    </>
-  )
-}
-
-interface ClientSelectListProps {
-  clients: Client[],
-  clientHandler: (e: ChangeEvent<HTMLSelectElement>) => void
-}
-function ClientSelectList({ clients, clientHandler }: ClientSelectListProps) {
-  return (
-    <>
-      <label htmlFor="client" className="block text-gray-700 font-medium mb-2">Client*</label>
-      {
-        clients.length > 0 ? (
-          <select
-            name="client"
-            id="client"
-            required
-            onChange={clientHandler}
-            className="w-full border border-gray-300 rounded-md p-2"
-          >
-            <option value="">Select a client</option>
-            {clients.map((client) => (
-              <option key={client._id} value={client._id}>{client.rif} - {client.name}</option>
-            ))}
-          </select>
-        ) : (
-          <p className="text-red-500">Client list is empty</p>
-        )
-      }
     </>
   )
 }

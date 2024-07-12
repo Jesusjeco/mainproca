@@ -20,7 +20,6 @@ function CreateClient() {
       ...newClient,
       [name]: value
     });
-
   };
 
   const [offices, setOffices] = useState<ClientOffice[]>([]);
@@ -33,7 +32,6 @@ function CreateClient() {
     auxOffices[index] = office;
     setOffices(auxOffices);
   }
-
   useEffect(() => {
     setNewClient(
       {
@@ -41,9 +39,6 @@ function CreateClient() {
         offices: offices
       }
     );
-
-    //console.log(newClient, "newClient");
-
   }, [offices]);
 
   //Create client function
