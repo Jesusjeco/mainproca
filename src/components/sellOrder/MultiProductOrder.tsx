@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { emptyProductOrder, ProductOrder } from "../../interfaces/ProductOrder"
 import { SingleProductOrder } from "../productOrder/SingleProductOrder"
 

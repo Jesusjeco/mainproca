@@ -296,7 +296,7 @@ function ProductSelectList({ products, setSelectedProductsHandler, setProductTot
     setComponentProduct(
       {
         ...componentProduct,
-        product: productId,
+        product_id: productId,
         price: price,
         quantity: quantity
       }
