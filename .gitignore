@@ -11,10 +11,6 @@ node_modules
 dist
 dist-ssr
 *.local
-.env
-.env.localdev
-.env.development
-.env.production
 
 # Editor directories and files
 .vscode/*
@@ -26,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# TanStack route file
+src/routeTree.gen.ts
+
+# Enviroment files
+.env
+.env.localdev
+.env.development
+.env.production

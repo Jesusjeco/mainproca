@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { Product } from "../../interfaces/Product";
+import { emptyProduct, Product } from "../../interfaces/Product";
 
 interface ProductSelectListProps {
   products: Product[],
   productResult: (product: Product) => void
-  className?: string | undefined
+  className?: string | undefined,
+  label?: string | undefined
 }
-export function ProductSelectList({ products, className, productResult }: ProductSelectListProps) {
+export function ProductSelectList({ products, className, productResult, label }: ProductSelectListProps) {
   const [productID, setProductID] = useState<string>("");
 
   useEffect(() => {
@@ -14,16 +15,17 @@ export function ProductSelectList({ products, className, productResult }: Produc
     if (product)
       productResult(product)
     else
-      console.log("Error en ProductSelectList component");
+      productResult(emptyProduct)
   }, [productID]);
 
   return (
     <>
       {products.length > 0 ?
-        <select name="product" id="product" onChange={(e) => setProductID(e.target.value)} className={className}>
+        <select name={label} id={label} onChange={(e) => setProductID(e.target.value)} className={className}>
           <option value="">Select a product</option>
           {products.map((product, index) =>
-            <option key={index} value={product._id}>{product.name}</option>
+            //Making sure not to show products that are run out in the inventory
+            product.quantity > 0 ? <option key={index} value={product._id}>{product.name}</option> : ""
           )}
         </select>
         : "Lista de productos vacia"}
