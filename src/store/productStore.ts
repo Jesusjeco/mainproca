@@ -5,6 +5,7 @@ import { Product } from '../interfaces/Product';
 
 interface ProductsState {
     products: Product[];
+    availableProducts: Product[];
     loading: boolean;
     fetchProducts: () => Promise<void>;
     getProductById: (id: string) => Product | undefined;
@@ -12,12 +13,16 @@ interface ProductsState {
 
 export const useProductsStore = create<ProductsState>((set, get) => ({
     products: [],
+    availableProducts: [],
     loading: false,
     fetchProducts: async () => {
         set({ loading: true });
         try {
             const products = await fetchAllProducts();
-            set({ products, loading: false });
+            const availableProducts = products.filter(product => product.quantity > 0)
+            set({ products });
+            set({ availableProducts });
+            set({ loading: false })
         } catch (error) {
             console.error('Failed to fetch products', error);
         }
