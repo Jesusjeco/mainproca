@@ -1,6 +1,6 @@
 //Defining the interface for Product
 export interface Product {
-  _id?: string,
+  _id: string,
   name: string,
   quantity: number,
   price: number,
@@ -8,6 +8,7 @@ export interface Product {
 }
 
 export const emptyProduct = {
+  _id: "",
   name: "",
   quantity: 0,
   price: 0,
