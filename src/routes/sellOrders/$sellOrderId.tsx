@@ -84,7 +84,7 @@ function SingleSellOrder() {
                 {
                   sellOrder.products.map((product, index) =>
                     <tr key={index} className="py-2 px-4 border-b border-gray-300">
-                      <td >{getProductById(product.product)?.name + " x " + product.quantity}
+                      <td >{getProductById(product.product_id)?.name + " x " + product.quantity}
                       </td>
                       <td id="price" className=" border border-gray-300 rounded-md p-2 pr-10">
                         {product.price}
