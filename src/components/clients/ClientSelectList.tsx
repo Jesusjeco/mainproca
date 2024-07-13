@@ -1,11 +1,16 @@
+/*
+* this components returns a full client
+* based on the selected ID
+*/
 import { useEffect, useState } from "react"
 import { Client } from "../../interfaces/Client"
 
 interface ClientSelectListProps {
   clients: Client[],
-  clientResult: (client: Client) => void
+  clientResult: (client: Client) => void,
+  className?: string | undefined
 }
-export function ClientSelectList({ clients, clientResult }: ClientSelectListProps) {
+export function ClientSelectList({ clients, clientResult, className }: ClientSelectListProps) {
   const [clientID, setClientID] = useState<string>("");
   useEffect(() => {
     const client = clients.find((client) => client._id === clientID);
@@ -15,7 +20,6 @@ export function ClientSelectList({ clients, clientResult }: ClientSelectListProp
 
   return (
     <>
-      <label htmlFor="client" className="block text-gray-700 font-medium mb-2">Client*</label>
       {
         clients.length > 0 ? (
           <select
@@ -23,7 +27,7 @@ export function ClientSelectList({ clients, clientResult }: ClientSelectListProp
             id="client"
             required
             onChange={(e) => { setClientID(e.target.value) }}
-            className="w-full border border-gray-300 rounded-md p-2"
+            className={className} 
           >
             <option value="">Select a client</option>
             {clients.map((client) => (

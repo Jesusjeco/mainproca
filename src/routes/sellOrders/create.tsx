@@ -7,9 +7,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useProductsStore } from "../../store/productStore";
 import { Client } from "../../interfaces/Client";
 import { Product } from "../../interfaces/Product";
-import { ProductOrder, emptyProductOrder } from "../../interfaces/SellOrder";
 import { createSellOrder } from "../../apiCalls/sellOrders";
 import { ClientSelectList } from "../../components/clients/ClientSelectList";
+import { emptyProductOrder, ProductOrder } from "../../interfaces/ProductOrder";
 
 export const Route = createFileRoute('/sellOrders/create')({
   component: CreateSellOrder
