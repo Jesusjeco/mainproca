@@ -18,6 +18,7 @@ import { Route as SellOrdersIndexImport } from './routes/sellOrders/index'
 import { Route as PurchaseOrdersIndexImport } from './routes/purchaseOrders/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as ClientsIndexImport } from './routes/clients/index'
+import { Route as TestsProductSelectListImport } from './routes/tests/ProductSelectList'
 import { Route as SellOrdersCreateImport } from './routes/sellOrders/create'
 import { Route as SellOrdersSellOrderIdImport } from './routes/sellOrders/$sellOrderId'
 import { Route as ProductsCreateImport } from './routes/products/create'
@@ -62,6 +63,11 @@ const ProductsIndexRoute = ProductsIndexImport.update({
 
 const ClientsIndexRoute = ClientsIndexImport.update({
   path: '/clients/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TestsProductSelectListRoute = TestsProductSelectListImport.update({
+  path: '/tests/ProductSelectList',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -170,6 +176,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellOrdersCreateImport
       parentRoute: typeof rootRoute
     }
+    '/tests/ProductSelectList': {
+      id: '/tests/ProductSelectList'
+      path: '/tests/ProductSelectList'
+      fullPath: '/tests/ProductSelectList'
+      preLoaderRoute: typeof TestsProductSelectListImport
+      parentRoute: typeof rootRoute
+    }
     '/clients/': {
       id: '/clients/'
       path: '/clients'
@@ -240,6 +253,7 @@ export const routeTree = rootRoute.addChildren({
   ProductsCreateRoute,
   SellOrdersSellOrderIdRoute,
   SellOrdersCreateRoute,
+  TestsProductSelectListRoute,
   ClientsIndexRoute,
   ProductsIndexRoute,
   PurchaseOrdersIndexRoute,
@@ -266,6 +280,7 @@ export const routeTree = rootRoute.addChildren({
         "/products/create",
         "/sellOrders/$sellOrderId",
         "/sellOrders/create",
+        "/tests/ProductSelectList",
         "/clients/",
         "/products/",
         "/purchaseOrders/",
@@ -299,6 +314,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/sellOrders/create": {
       "filePath": "sellOrders/create.tsx"
+    },
+    "/tests/ProductSelectList": {
+      "filePath": "tests/ProductSelectList.tsx"
     },
     "/clients/": {
       "filePath": "clients/index.tsx"

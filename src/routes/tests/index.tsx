@@ -25,7 +25,7 @@ function renderComponent() {
   return (
     <>
       <div>Current client {client.name}</div>
-      <ClientSelectList clients={clients} clientResult={clientResult} />
+      <ClientSelectList clients={clients} clientResult={clientResult} className='w-full border border-gray-300 rounded-md p-2' />
     </>
   )
 }
