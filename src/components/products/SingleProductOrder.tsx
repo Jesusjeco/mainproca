@@ -3,8 +3,13 @@ import { ProductSelectList } from "./ProductSelectList";
 import { LoadingComponent } from "../LoadingComponent";
 import { useProductsStore } from "../../store/productStore";
 import { emptyProduct, Product } from "../../interfaces/Product";
+import { ProductOrder } from "../../interfaces/ProductOrder";
 
-export function SingleProductOrder() {
+interface SingleProductOrderProps {
+  productOrderResult: (newProductOrder: ProductOrder) => void;
+}
+
+export function SingleProductOrder({ productOrderResult }: SingleProductOrderProps) {
   // Using Zustand Product store
   const fetchProducts = useProductsStore(state => state.fetchProducts);
   const products = useProductsStore(state => state.products);
@@ -13,22 +18,34 @@ export function SingleProductOrder() {
     fetchProducts();
   }, []);
 
+  //Single product
   const [product, setProduct] = useState<Product>(emptyProduct);
   const productResult = (newProduct: Product) => {
     setProduct(newProduct)
   }
-
+7//Alternative price
   const [alternativePrice, setAlternativePrice] = useState<number>(0.00);
   useEffect(() => {
     setAlternativePrice(product.price)
+    setQuantity(1)
   }, [product]);
 
-  const [quantity, setQuantity] = useState<number>(0)
+  //Quantity
+  const [quantity, setQuantity] = useState<number>(1)
 
+  //Total price
   const [totalPrice, setTotalPrice] = useState<number>(0.00);
   useEffect(() => {
     setTotalPrice(alternativePrice * quantity)
   }, [alternativePrice, quantity])
+
+  useEffect(() => {
+    productOrderResult({
+      product_id: product._id,
+      price: alternativePrice,
+      quantity: quantity
+    })
+  }, [product,totalPrice])
   return (
     <>
       <LoadingComponent var1={productsLoading} />

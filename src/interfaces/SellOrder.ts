@@ -1,3 +1,4 @@
+import { ProductOrder } from "./ProductOrder";
 
 export interface SellOrder {
   _id?: string
@@ -16,16 +17,6 @@ export const emptySellOrder = {
   totalPrice: 0
 }
 
-export interface ProductOrder {
-  product: string;
-  price: number,
-  quantity: number;
-}
 
-export const emptyProductOrder = {
-  product: "",
-  price: 0,
-  quantity: 0
-}
 
 export const API_PURCHASE_ORDER_URL = import.meta.env.VITE_API_URL_BASE + import.meta.env.VITE_API_URL_SELL_ORDER;
