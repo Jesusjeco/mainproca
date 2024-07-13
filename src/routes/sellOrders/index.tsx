@@ -84,7 +84,7 @@ function SellOrders() {
                               {DMYdate(sellOrder.orderDate)}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               {sellOrder.products.map((product, index2) => {
-                                const productDetails = getProductById(product.product);
+                                const productDetails = getProductById(product.product_id);
                                 return (
                                   <div key={index2}>
                                     {productDetails ? productDetails.name : 'Producto no encontrado'} x {product.quantity}

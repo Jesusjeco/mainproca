@@ -20,6 +20,7 @@ import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as ClientsIndexImport } from './routes/clients/index'
 import { Route as TestsSingleProductOrderImport } from './routes/tests/SingleProductOrder'
 import { Route as TestsProductSelectListImport } from './routes/tests/ProductSelectList'
+import { Route as TestsMultiProductOrderImport } from './routes/tests/MultiProductOrder'
 import { Route as SellOrdersCreateImport } from './routes/sellOrders/create'
 import { Route as SellOrdersSellOrderIdImport } from './routes/sellOrders/$sellOrderId'
 import { Route as ProductsCreateImport } from './routes/products/create'
@@ -74,6 +75,11 @@ const TestsSingleProductOrderRoute = TestsSingleProductOrderImport.update({
 
 const TestsProductSelectListRoute = TestsProductSelectListImport.update({
   path: '/tests/ProductSelectList',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TestsMultiProductOrderRoute = TestsMultiProductOrderImport.update({
+  path: '/tests/MultiProductOrder',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -182,6 +188,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellOrdersCreateImport
       parentRoute: typeof rootRoute
     }
+    '/tests/MultiProductOrder': {
+      id: '/tests/MultiProductOrder'
+      path: '/tests/MultiProductOrder'
+      fullPath: '/tests/MultiProductOrder'
+      preLoaderRoute: typeof TestsMultiProductOrderImport
+      parentRoute: typeof rootRoute
+    }
     '/tests/ProductSelectList': {
       id: '/tests/ProductSelectList'
       path: '/tests/ProductSelectList'
@@ -266,6 +279,7 @@ export const routeTree = rootRoute.addChildren({
   ProductsCreateRoute,
   SellOrdersSellOrderIdRoute,
   SellOrdersCreateRoute,
+  TestsMultiProductOrderRoute,
   TestsProductSelectListRoute,
   TestsSingleProductOrderRoute,
   ClientsIndexRoute,
@@ -294,6 +308,7 @@ export const routeTree = rootRoute.addChildren({
         "/products/create",
         "/sellOrders/$sellOrderId",
         "/sellOrders/create",
+        "/tests/MultiProductOrder",
         "/tests/ProductSelectList",
         "/tests/SingleProductOrder",
         "/clients/",
@@ -329,6 +344,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/sellOrders/create": {
       "filePath": "sellOrders/create.tsx"
+    },
+    "/tests/MultiProductOrder": {
+      "filePath": "tests/MultiProductOrder.tsx"
     },
     "/tests/ProductSelectList": {
       "filePath": "tests/ProductSelectList.tsx"

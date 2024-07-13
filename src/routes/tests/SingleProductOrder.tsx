@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { SingleProductOrder } from '../../components/products/SingleProductOrder'
+import { SingleProductOrder } from '../../components/productOrder/SingleProductOrder'
 import { useState } from 'react'
 import { emptyProductOrder, ProductOrder } from '../../interfaces/ProductOrder';
 
@@ -9,7 +9,7 @@ export const Route = createFileRoute('/tests/SingleProductOrder')({
 
 function SingleProductOrderIndex() {
   const [productOrder, setProductOrder] = useState<ProductOrder>(emptyProductOrder);
-  const productOrderResult = (newProductOrder: ProductOrder) => {
+  const productOrderResult = (_: number, newProductOrder: ProductOrder) => {
     setProductOrder(newProductOrder);
   }
   return (

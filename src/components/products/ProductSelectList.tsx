@@ -24,7 +24,8 @@ export function ProductSelectList({ products, className, productResult, label }:
         <select name={label} id={label} onChange={(e) => setProductID(e.target.value)} className={className}>
           <option value="">Select a product</option>
           {products.map((product, index) =>
-            <option key={index} value={product._id}>{product.name}</option>
+            //Making sure not to show products that are run out in the inventory
+            product.quantity > 0 ? <option key={index} value={product._id}>{product.name}</option> : ""
           )}
         </select>
         : "Lista de productos vacia"}
