@@ -10,7 +10,7 @@ export interface SellOrder {
 }
 
 export const emptySellOrder = {
-  client: "",
+  client_id: "",
   address: "",
   products: [],
   orderDate: new Date(),
