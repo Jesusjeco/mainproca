@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { ProductSelectList } from "../products/ProductSelectList";
 import { emptyProduct, Product } from "../../interfaces/Product";
 import { ProductOrder } from "../../interfaces/ProductOrder";
@@ -39,6 +39,12 @@ export function SingleProductOrder({ products, productOrderResult, index = 0 }: 
     })
   }, [product, totalPrice])
 
+  const quantityLimitReach: CSSProperties = {
+    color: 'red',
+    fontWeight: 'bold',
+    backgroundColor: '#eecaca',
+  }
+
   return (
     <>
       <div className="grid grid-cols-4 gap-4">
@@ -60,6 +66,7 @@ export function SingleProductOrder({ products, productOrderResult, index = 0 }: 
             <span className="text-sm text-gray-500">(max: {product.quantity})</span>:</label>
           <input type="number" name="quantity" id="quantity" min="1" max={product.quantity}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+            style={quantity === product.quantity ? quantityLimitReach : undefined}
             onChange={(e) => setQuantity(Number(e.target.value))}
             value={quantity} />
         </div>
