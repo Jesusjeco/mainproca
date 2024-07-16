@@ -1,12 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import "react-datepicker/dist/react-datepicker.css";
 import { ClientSelectList } from "../../components/clients/ClientSelectList";
 import { useClientsStore } from "../../store/clientStore";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { LoadingComponent } from "../../components/LoadingComponent";
 import { Client, emptyClient } from "../../interfaces/Client";
 import DatePicker from "react-datepicker";
 import { AddressSelectList } from "../../components/clients/AddressSelectList";
+import { MultiProductOrder } from "../../components/sellOrder/MultiProductOrder";
+import { useProductsStore } from "../../store/productStore";
+import { ProductOrder } from "../../interfaces/ProductOrder";
+import { createSellOrder } from "../../apiCalls/sellOrders";
 
 export const Route = createFileRoute('/sellOrders/create')({
   component: CreateSellOrder
@@ -16,8 +20,14 @@ function CreateSellOrder() {
   const fetchClients = useClientsStore(state => state.fetchClients)
   const loadingClients = useClientsStore(state => state.loading)
   const clients = useClientsStore(state => state.clients)
+  // Using Zustand Product store
+  const fetchProducts = useProductsStore(state => state.fetchProducts);
+  const availableProducts = useProductsStore(state => state.availableProducts);
+  const productsLoading = useProductsStore(state => state.loading);
+
   useEffect(() => {
     fetchClients()
+    fetchProducts();
   }, []);
 
   //Client 
@@ -52,19 +62,59 @@ function CreateSellOrder() {
     console.log(address, "address");
   }, [address])
 
+  // Products
+  const [products, setProducts] = useState<ProductOrder[]>([])
+  const resultProducts = (newProductsOrder: ProductOrder[]) => {
+    setProducts(newProductsOrder);
+  }
+  useEffect(() => {
+    console.log(products, "products");
+    const newTotalPrice = products.map(product => product.price * product.quantity)
+    console.log(newTotalPrice, "newTotalPrice");
+    setTotalPrice(newTotalPrice.reduce((acumulator, currentValue) => acumulator + currentValue, 0))
+  }, [products])
+
+  const [totalPrice, setTotalPrice] = useState<number>(0.00);
+
+  // Form functions and variables
+  //Form ref and navigation
+  const formRef = useRef<HTMLFormElement>(null);
+  const navigate = useNavigate();
+
   //Form Handler
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form handler. Form clicked");
+    const newSellOrder = {
+      _id: "",
+      client_id: client._id,
+      address,
+      products,
+      orderDate,
+      totalPrice,
+    }
 
-  }
+    const response = await createSellOrder(newSellOrder);
+
+    //Redirecting user to clients page
+    if (response.success) {
+      // Reset the form after submission
+      if (formRef.current)
+        formRef.current.reset();
+      navigate({ to: "/sellOrders" });
+    } else {
+      // Handle error
+      console.error('Failed to update client');
+    }
+
+  }//formHandler
   return (
     <>
-      <LoadingComponent var1={loadingClients} />
+      <LoadingComponent var1={loadingClients} var2={productsLoading} />
       <div className="w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
         <h2 className="text-2xl font-bold mb-6">
           Orden de venta</h2>
-        <form onSubmit={formHandler}>
+        <form onSubmit={formHandler} ref={formRef}>
           <div className="grid gap-4 lg:grid-cols-2">
             <div className="mb-4">
               <label htmlFor="client_id" className="block text-gray-700 font-medium mb-2">
@@ -92,53 +142,22 @@ function CreateSellOrder() {
             <AddressSelectList client={client} resultAddress={resultAddress} label="address" className="w-full border border-gray-300 rounded-md p-2" />
           </div>
 
+          <div className="mb-4">
+            <MultiProductOrder products={availableProducts} resultProducts={resultProducts} />
+          </div>
+
+          <div className="mb-4">
+            <div className="block text-gray-700 font-medium mb-2 text-right">
+              Precio total*</div>
+            <p id="totalPrice" className="w-full border border-gray-300 rounded-md p-2 text-right">
+              {totalPrice.toFixed(2)}</p>
+          </div>
+
           <div className="flex justify-end">
             <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">Crear orden</button>
           </div>
-
         </form>
-        <div className="mb-4">
-          <h2 className="text-2xl font-bold mb-6 inline">
-            Productos</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-300">
-              <thead>
-                <tr>
-                  <th className="py-2 px-4 border-b border-gray-300 bg-gray-100 text-left text-gray-700">
-                    Productos</th>
-                  <th className="py-2 px-4 border-b border-gray-300 bg-gray-100 text-left text-gray-700">
-                    Precio</th>
-                  <th className="py-2 px-4 border-b border-gray-300 bg-gray-100 text-left text-gray-700">
-                    Cantidad</th>
-                  <th className="py-2 px-4 border-b border-gray-300 bg-gray-100 text-left text-gray-700">
-                    Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="py-2 px-4 border-b border-gray-300">
-                  <td>
-                    Producto 1 x 1</td>
-                  <td id="price" className=" border border-gray-300 rounded-md p-2 pr-10">
-                    0.05<span className="text-gray-500">
-                      $</span>
-                  </td>
-                  <td className="border border-gray-300 rounded-md p-2">
-                    1</td>
-                  <td>
-                    0.05</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className="mb-4">
-          <div className="block text-gray-700 font-medium mb-2 text-right">
-            Precio total*</div>
-          <p id="totalPrice" className="w-full border border-gray-300 rounded-md p-2 text-right">
-            0.05</p>
-        </div>
       </div>
-
     </>
 
   )

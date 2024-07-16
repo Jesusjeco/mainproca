@@ -1,24 +1,16 @@
 import { useEffect, useState } from "react";
 import { ProductSelectList } from "../products/ProductSelectList";
-import { LoadingComponent } from "../LoadingComponent";
-import { useProductsStore } from "../../store/productStore";
 import { emptyProduct, Product } from "../../interfaces/Product";
-import { ProductOrder } from "../../interfaces/ProductOrder";
+import { emptyProductOrder, ProductOrder } from "../../interfaces/ProductOrder";
+import { FaMinusSquare } from "react-icons/fa";
 
 interface SingleProductOrderProps {
+  products: Product[];
   productOrderResult: (index: number, newProductOrder: ProductOrder) => void;
   index?: number;
 }
 
-export function SingleProductOrder({ productOrderResult, index = 0 }: SingleProductOrderProps) {
-  // Using Zustand Product store
-  const fetchProducts = useProductsStore(state => state.fetchProducts);
-  const availableProducts = useProductsStore(state => state.availableProducts);
-  const productsLoading = useProductsStore(state => state.loading);
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
+export function SingleProductOrder({ products, productOrderResult, index = 0 }: SingleProductOrderProps) {
   //Single product
   const [product, setProduct] = useState<Product>(emptyProduct);
   const productResult = (newProduct: Product) => {
@@ -47,13 +39,13 @@ export function SingleProductOrder({ productOrderResult, index = 0 }: SingleProd
       quantity: quantity
     })
   }, [product, totalPrice])
+
   return (
     <>
-      <LoadingComponent var1={productsLoading} />
       <div className="grid grid-cols-4 gap-4">
         <div>
           <label htmlFor="product" className="block text-gray-700 font-medium">Producto:</label>
-          <ProductSelectList products={availableProducts} productResult={productResult} label={"product"}
+          <ProductSelectList products={products} productResult={productResult} label={"product"}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300" />
         </div>
         <div>

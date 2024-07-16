@@ -21,7 +21,7 @@ export function ProductSelectList({ products, className, productResult, label }:
   return (
     <>
       {products.length > 0 ?
-        <select name={label} id={label} onChange={(e) => setProductID(e.target.value)} className={className}>
+        <select required name={label} id={label} onChange={(e) => setProductID(e.target.value)} className={className}>
           <option value="">Select a product</option>
           {products.map((product, index) =>
             //Making sure not to show products that are run out in the inventory
