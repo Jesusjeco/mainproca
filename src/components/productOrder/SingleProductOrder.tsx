@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { ProductSelectList } from "../products/ProductSelectList";
 import { emptyProduct, Product } from "../../interfaces/Product";
-import { emptyProductOrder, ProductOrder } from "../../interfaces/ProductOrder";
-import { FaMinusSquare } from "react-icons/fa";
+import { ProductOrder } from "../../interfaces/ProductOrder";
 
 interface SingleProductOrderProps {
   products: Product[];
