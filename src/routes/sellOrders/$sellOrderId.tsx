@@ -36,7 +36,7 @@ function SingleSellOrder() {
     fetchProducts();
 
     const setClientHandler = () => {
-      const client = getClientById(sellOrder.client);
+      const client = getClientById(sellOrder.client_id);
       if (client)
         setClient(client);
     }
@@ -100,7 +100,7 @@ function SingleSellOrder() {
         </div>
         <div className="mb-4">
           <div className="block text-gray-700 font-medium mb-2 text-right">Precio total*</div>
-          <p id="totalPrice" className="w-full border border-gray-300 rounded-md p-2 text-right">{sellOrder.totalPrice}</p>
+          <p id="totalPrice" className="w-full border border-gray-300 rounded-md p-2 text-right">{sellOrder.totalPrice.toFixed(2)}</p>
         </div>
       </div>
     </>

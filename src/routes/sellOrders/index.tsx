@@ -75,7 +75,7 @@ function SellOrders() {
                   {
                     allSellOrders && allSellOrders.length > 0 ?
                       allSellOrders.map((sellOrder, index) => {
-                        const client = getClientById(sellOrder.client);
+                        const client = getClientById(sellOrder.client_id);
                         return (
                           <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -93,7 +93,7 @@ function SellOrders() {
                               })}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {sellOrder.totalPrice}</td>
+                              {sellOrder.totalPrice.toFixed(2)}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                               <div className="flex space-x-4">
                                 <Link to={'/sellOrders/' + sellOrder._id} className="text-blue-500 hover:text-blue-700">

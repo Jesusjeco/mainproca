@@ -1,119 +1,97 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useClientsStore } from "../../store/clientStore";
-import { LoadingComponent } from "../../components/LoadingComponent";
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useProductsStore } from "../../store/productStore";
-import { Client } from "../../interfaces/Client";
-import { Product } from "../../interfaces/Product";
-import { createSellOrder } from "../../apiCalls/sellOrders";
 import { ClientSelectList } from "../../components/clients/ClientSelectList";
-import { emptyProductOrder, ProductOrder } from "../../interfaces/ProductOrder";
+import { useClientsStore } from "../../store/clientStore";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { LoadingComponent } from "../../components/LoadingComponent";
+import { Client, emptyClient } from "../../interfaces/Client";
+import DatePicker from "react-datepicker";
+import { AddressSelectList } from "../../components/clients/AddressSelectList";
+import { MultiProductOrder } from "../../components/sellOrder/MultiProductOrder";
+import { useProductsStore } from "../../store/productStore";
+import { ProductOrder } from "../../interfaces/ProductOrder";
+import { createSellOrder } from "../../apiCalls/sellOrders";
 
 export const Route = createFileRoute('/sellOrders/create')({
   component: CreateSellOrder
 })
 
 function CreateSellOrder() {
-  // Using Zustand Client store
-  const fetchClients = useClientsStore(state => state.fetchClients);
-  const clients = useClientsStore(state => state.clients);
-  const clientsLoading = useClientsStore(state => state.loading);
-
+  const fetchClients = useClientsStore(state => state.fetchClients)
+  const loadingClients = useClientsStore(state => state.loading)
+  const clients = useClientsStore(state => state.clients)
   // Using Zustand Product store
   const fetchProducts = useProductsStore(state => state.fetchProducts);
-  const products = useProductsStore(state => state.products);
+  const availableProducts = useProductsStore(state => state.availableProducts);
   const productsLoading = useProductsStore(state => state.loading);
 
-  //Variables used to create the Purchase order
-
-  //Client
-  //const [client,setClient] = useState<Client>(emptyClient);
-  // const clientHandler = (newClient: Client) =>{
-  //   setClient(newClient);
-  // }
-
-  // Client ID
-  const [clientID, setClientID] = useState<string>("");
-  const clientHandler = (newClient: Client) => {
-    if (newClient._id)
-      setClientID(newClient._id);
-  }//clientHandler
-
-  //Client address
-  const [address, setAddress] = useState<string>("");
-  const [addressArray, setAddressArray] = useState<string[]>([]);
   useEffect(() => {
-    const client = clients.find((client) => client._id === clientID);
-    if (client) {
-      const legalAddress = client.legal_address;
-      setAddress(legalAddress);
-      const offices = client.offices?.map((office) => office.address);
+    fetchClients()
+    fetchProducts();
+  }, []);
 
-      if (offices) {
-        setAddressArray(
-          [legalAddress, ...offices]
-        )
-      } else
-        setAddressArray(
-          [legalAddress]
-        )
+  //Client 
+  const [client, setClient] = useState<Client>(emptyClient)
+  const clientResult = (newClient: Client) => {
+    if (newClient._id !== "")
+      setClient(newClient)
+    else {
+      setClient(emptyClient)
+      setAddress("");
     }
-  }, [clientID]);
-
-  // Products array
-  const [selectedProducts, setSelectedProducts] = useState<ProductOrder[]>([])
-  const addNewProduct = () => {
-    const auxProductList = [...selectedProducts, emptyProductOrder];
-    setSelectedProducts(auxProductList);
   }
-  const setSelectedProductsHandler = (productData: ProductOrder, index: number) => {
-    const auxProductList = [...selectedProducts];
-    auxProductList[index] = productData;
-    setSelectedProducts(auxProductList);
-  }
-
-  // Total product price
-  const [totalProductPriceArray, setTotalProductPriceArray] = useState<number[]>([]);
-  const setTotalProductPriceArrayHandler = (productCost: number, index: number) => {
-    const auxTotalPrice = [...totalProductPriceArray];
-    auxTotalPrice[index] = productCost;
-    setTotalProductPriceArray(auxTotalPrice);
-  }
-
-  //Purchase Price
-  const [purchasePrice, setPurchasePrice] = useState<number>(0.00);
   useEffect(() => {
-    setPurchasePrice(
-      totalProductPriceArray.reduce((acumulator, currentValue) => acumulator + currentValue, 0)
-    );
-  }, [totalProductPriceArray]);
-
+    console.log(client);
+  }, [client])
 
   //Order date
-  const [orderDate, setOrderDate] = useState<Date>(new Date)
-  const setOrderDateHandler = (date: Date | null) => {
-    if (date === null)
-      date = new Date();
-
-    setOrderDate(date);
+  const [orderDate, setOrderDate] = useState<Date>(new Date);
+  const orderDateResult = (newDate: Date | null) => {
+    if (newDate)
+      setOrderDate(newDate)
   }
+  useEffect(() => {
+    console.log(orderDate, "orderDate");
+  }, [orderDate])
 
+  const [address, setAddress] = useState<string>("");
+  const resultAddress = (newAddress: string) => {
+    setAddress(newAddress);
+  }
+  useEffect(() => {
+    console.log(address, "address");
+  }, [address])
+
+  // Products
+  const [products, setProducts] = useState<ProductOrder[]>([])
+  const resultProducts = (newProductsOrder: ProductOrder[]) => {
+    setProducts(newProductsOrder);
+  }
+  useEffect(() => {
+    console.log(products, "products");
+    const newTotalPrice = products.map(product => product.price * product.quantity)
+    console.log(newTotalPrice, "newTotalPrice");
+    setTotalPrice(newTotalPrice.reduce((acumulator, currentValue) => acumulator + currentValue, 0))
+  }, [products])
+
+  const [totalPrice, setTotalPrice] = useState<number>(0.00);
+
+  // Form functions and variables
   //Form ref and navigation
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
 
-  // Form handler
+  //Form Handler
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    console.log("Form handler. Form clicked");
     const newSellOrder = {
-      client: clientID,
-      address: address,
-      products: selectedProducts,
-      totalPrice: purchasePrice,
-      orderDate: orderDate
+      _id: "",
+      client_id: client._id,
+      address,
+      products,
+      orderDate,
+      totalPrice,
     }
 
     const response = await createSellOrder(newSellOrder);
@@ -129,31 +107,29 @@ function CreateSellOrder() {
       console.error('Failed to update client');
     }
 
-  }
-
-  useEffect(() => {
-    fetchClients();
-    fetchProducts();
-  }, []);
-
+  }//formHandler
   return (
     <>
-      <LoadingComponent var1={clientsLoading} var2={productsLoading} />
+      <LoadingComponent var1={loadingClients} var2={productsLoading} />
       <div className="w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
-        <h2 className="text-2xl font-bold mb-6">Crear orden de compra</h2>
+        <h2 className="text-2xl font-bold mb-6">
+          Orden de venta</h2>
         <form onSubmit={formHandler} ref={formRef}>
           <div className="grid gap-4 lg:grid-cols-2">
             <div className="mb-4">
-              <ClientSelectList clients={clients} clientResult={clientHandler} />
+              <label htmlFor="client_id" className="block text-gray-700 font-medium mb-2">
+                Cliente</label>
+              <ClientSelectList clients={clients} clientResult={clientResult} className="w-full border border-gray-300 rounded-md p-2" label="client_id" />
             </div>
             <div className="mb-4 flex flex-col">
-              <label htmlFor="orderDate" className="block text-gray-700 font-medium mb-2">Order Date</label>
+              <label htmlFor="orderDate" className="block text-gray-700 font-medium mb-2">
+                Fecha de orden</label>
               <DatePicker
                 id="orderDate"
                 name="orderDate"
                 required
                 selected={orderDate}
-                onChange={setOrderDateHandler}
+                onChange={orderDateResult}
                 className="w-full border border-gray-300 rounded-md p-2"
                 dateFormat={"dd MMMM yyyy"}
               />
@@ -161,214 +137,28 @@ function CreateSellOrder() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="address" className="block text-gray-700 font-medium mb-2">Dirección</label>
-            {clientID ?
-              <select name="address" id="address"
-                className="w-full border border-gray-300 rounded-md p-2"
-                onChange={(e) => setAddress(e.target.value)}>
-                {
-                  addressArray.map((address, index) =>
-                    <option key={index} value={address}>{address}</option>
-                  )
-                }
-              </select>
-              : <p>Escoja un cliente para cargar las direcciones</p>
-            }
+            <label htmlFor="address" className="block text-gray-700 font-medium mb-2">
+              Dirección</label>
+            <AddressSelectList client={client} resultAddress={resultAddress} label="address" className="w-full border border-gray-300 rounded-md p-2" />
           </div>
 
           <div className="mb-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold mb-6 inline">Product Table</h2>
-              <button type="button" className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                onClick={addNewProduct}>Agregar producto</button>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full bg-white border border-gray-300">
-                <thead>
-                  <tr>
-                    <th className="py-2 px-4 border-b border-gray-300 bg-gray-100 text-left text-gray-700">Productos</th>
-                    <th className="py-2 px-4 border-b border-gray-300 bg-gray-100 text-left text-gray-700">Precio</th>
-                    <th className="py-2 px-4 border-b border-gray-300 bg-gray-100 text-left text-gray-700">Cantidad</th>
-                    <th className="py-2 px-4 border-b border-gray-300 bg-gray-100 text-left text-gray-700">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td colSpan={4} className="py-2 px-4 border-b border-gray-300">
-                      {selectedProducts.length > 0 ?
-                        selectedProducts.map((_, index) =>
-                          <ProductSelectList products={products}
-                            setSelectedProductsHandler={setSelectedProductsHandler}
-                            setProductTotalPrice={setTotalProductPriceArrayHandler}
-                            index={index}
-                            key={index} />
-                        )
-                        : "Sin productos"}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <MultiProductOrder products={availableProducts} resultProducts={resultProducts} />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="totalPrice" className="block text-gray-700 font-medium mb-2 text-right">Precio total*</label>
-            <input
-              required
-              disabled
-              min={0}
-              type="number"
-              step="0.01"
-              id="totalPrice"
-              name="totalPrice"
-              placeholder="Precio total"
-              value={purchasePrice.toFixed(2)}
-              className="w-full border border-gray-300 rounded-md p-2 text-right"
-            />
+            <div className="block text-gray-700 font-medium mb-2 text-right">
+              Precio total*</div>
+            <p id="totalPrice" className="w-full border border-gray-300 rounded-md p-2 text-right">
+              {totalPrice.toFixed(2)}</p>
           </div>
 
           <div className="flex justify-end">
-            <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">Submit</button>
+            <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">Crear orden</button>
           </div>
         </form>
       </div>
     </>
+
   )
 }
-
-interface ProductSelectListProps {
-  products: Product[],
-  setSelectedProductsHandler: (productData: ProductOrder, index: number) => void,
-  setProductTotalPrice: (totalProductPrice: number, index: number) => void,
-  index: number
-}
-function ProductSelectList({ products, setSelectedProductsHandler, setProductTotalPrice, index }: ProductSelectListProps) {
-  //product
-  const [productId, setProductId] = useState<string>("");
-  const productIdHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
-
-    //Updating price using the id of the product
-    const auxProduct = products.find((product) => product._id === value);
-    if (auxProduct) {
-      const price = auxProduct.price;
-      setPrice(price)
-      const maxQuantity = auxProduct.quantity
-      setMaxQuantity(maxQuantity);
-    }
-
-    setProductId(value);
-  }//productIdHandler
-
-  //price and quantity
-  const [price, setPrice] = useState<number>(0);
-  const [maxQuantity, setMaxQuantity] = useState<number>(0);
-  const setPriceHandler = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    const { value } = e.target;
-    setPrice(Number(value));
-  }
-
-  //quantity
-  const [quantity, setQuantity] = useState<number>(1)
-  const setQuantityHandler = async (e: ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    if (value === maxQuantity) {
-      setMessage(true);
-    } else { setMessage(false); }
-    setQuantity(value);
-  }//setQuantityHandler
-
-  //Total cost
-  const [totalProductPrice, setTotalProductPrice] = useState<number>(0.00);
-  useEffect(() => {
-    setTotalProductPrice(price * quantity);
-  }, [price, quantity]);
-
-  //Sending the total cost to father component
-  useEffect(() => {
-    setProductTotalPrice(totalProductPrice, index);
-  }, [totalProductPrice]);
-
-
-
-  const [componentProduct, setComponentProduct] = useState<ProductOrder>(emptyProductOrder)
-  useEffect(() => {
-    setComponentProduct(
-      {
-        ...componentProduct,
-        product_id: productId,
-        price: price,
-        quantity: quantity
-      }
-    )
-  }, [productId, price, quantity]);
-
-  const [message, setMessage] = useState<boolean>(false);
-
-  //Sending the component
-  useEffect(() => {
-    setSelectedProductsHandler(componentProduct, index);
-  }, [componentProduct]);
-  return (
-    <>
-      {
-        products.length > 0 ? (
-          <>
-            <div className="grid gap-2 md:grid-cols-4 items-center">
-              <select
-                name="product"
-                id="product"
-                required
-                onChange={productIdHandler}
-                className="w-full border border-gray-300 rounded-md p-2"
-              >
-                <option value="">Select a product</option>
-                {products.map((product) => (
-                  <option key={product._id} value={product._id}>{product.name} - {product.price}$</option>
-                ))}
-              </select>
-              <div className="relative w-full">
-                <input
-                  type="number"
-                  step={0.01}
-                  min={0}
-                  required
-                  name="price"
-                  id="price"
-                  value={price}
-                  onChange={setPriceHandler}
-                  className="w-full border border-gray-300 rounded-md p-2 pr-10"
-                />
-                <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-              </div>
-              <div className="relative">
-                <input
-                  type="number"
-                  step={1}
-                  min={0}
-                  required
-                  name="quantity"
-                  id="quantity"
-                  max={maxQuantity}
-                  value={quantity}
-                  onChange={setQuantityHandler}
-                  className="w-full border border-gray-300 rounded-md p-2"
-                />
-                {message ?
-                  <p className="absolute top-1 bottom-1 right-[25%] flex items-center bg-red-500 px-4 font-bold">MAX</p>
-                  : ""
-                }
-              </div>
-
-              <input disabled required
-                type="number" name="totalProductPrice" id="totalProductPrice"
-                value={totalProductPrice} className="w-full border border-gray-300 rounded-md p-2" />
-            </div>
-          </>
-        ) : (
-          <p className="text-red-500">Product list is empty</p>
-        )
-      }
-    </>
-  )
-} 

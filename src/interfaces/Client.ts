@@ -7,7 +7,7 @@ export interface Client {
   number?: string,
   email?: string,
   legal_address: string,
-  offices?: ClientOffice[],
+  offices: ClientOffice[],
   description?: string
 }
 
@@ -15,7 +15,8 @@ export const emptyClient = {
   _id: "",
   rif: "",
   name: "",
-  legal_address: ""
+  legal_address: "",
+  offices: []
 }
 
 export interface ClientOffice {

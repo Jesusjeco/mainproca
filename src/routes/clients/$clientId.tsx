@@ -44,7 +44,7 @@ function SingleClient() {
           <p className="mt-1 text-sm text-gray-800">{client.legal_address}</p>
         </div>
 
-        {client.offices && client.offices.length > 0 ? (
+        {client.offices.length > 0 ? (
           <div className="mb-6">
             <p className="text-sm font-medium text-gray-700">Sucursales</p>
             {client.offices.map((office, index) => (
