@@ -11,6 +11,7 @@ import { MultiProductOrder } from "../../components/sellOrder/MultiProductOrder"
 import { useProductsStore } from "../../store/productStore";
 import { ProductOrder } from "../../interfaces/ProductOrder";
 import { createSellOrder } from "../../apiCalls/sellOrders";
+import { AvoidEnterKeyPress } from "../../utils/AvoidEnterKeyPress";
 
 export const Route = createFileRoute('/sellOrders/create')({
   component: CreateSellOrder
@@ -40,9 +41,6 @@ function CreateSellOrder() {
       setAddress("");
     }
   }
-  useEffect(() => {
-    console.log(client);
-  }, [client])
 
   //Order date
   const [orderDate, setOrderDate] = useState<Date>(new Date);
@@ -50,17 +48,11 @@ function CreateSellOrder() {
     if (newDate)
       setOrderDate(newDate)
   }
-  useEffect(() => {
-    console.log(orderDate, "orderDate");
-  }, [orderDate])
 
   const [address, setAddress] = useState<string>("");
   const resultAddress = (newAddress: string) => {
     setAddress(newAddress);
   }
-  useEffect(() => {
-    console.log(address, "address");
-  }, [address])
 
   // Products
   const [products, setProducts] = useState<ProductOrder[]>([])
@@ -68,9 +60,7 @@ function CreateSellOrder() {
     setProducts(newProductsOrder);
   }
   useEffect(() => {
-    console.log(products, "products");
     const newTotalPrice = products.map(product => product.price * product.quantity)
-    console.log(newTotalPrice, "newTotalPrice");
     setTotalPrice(newTotalPrice.reduce((acumulator, currentValue) => acumulator + currentValue, 0))
   }, [products])
 
@@ -84,7 +74,6 @@ function CreateSellOrder() {
   //Form Handler
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form handler. Form clicked");
     const newSellOrder = {
       _id: "",
       client_id: client._id,
@@ -113,8 +102,8 @@ function CreateSellOrder() {
       <LoadingComponent var1={loadingClients} var2={productsLoading} />
       <div className="w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
         <h2 className="text-2xl font-bold mb-6">
-          Orden de venta</h2>
-        <form onSubmit={formHandler} ref={formRef}>
+          Crear nota de entrega</h2>
+        <form onSubmit={formHandler} ref={formRef} onKeyDown={AvoidEnterKeyPress}>
           <div className="grid gap-4 lg:grid-cols-2">
             <div className="mb-4">
               <label htmlFor="client_id" className="block text-gray-700 font-medium mb-2">

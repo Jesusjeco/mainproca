@@ -54,10 +54,9 @@ function SellOrders() {
           <div className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex justify-between items-center mb-8">
               <div>
-                <h2 className="text-3xl font-bold text-gray-800">Ordenes de compra</h2>
-                <p>Ordenes que se agregan al inventario</p>
+                <h2 className="text-3xl font-bold text-gray-800">Notas de entrega</h2>
               </div>
-              <Link to='/sellOrders/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Agregar orden de compra</Link>
+              <Link to='/sellOrders/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Crear nota</Link>
             </div>
 
             <div className="overflow-hidden border border-gray-200 sm:rounded-lg">
