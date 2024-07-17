@@ -76,6 +76,7 @@ function CreateSellOrder() {
     e.preventDefault();
     const newSellOrder = {
       _id: "",
+      orderNumber: "",
       client_id: client._id,
       address,
       products,
