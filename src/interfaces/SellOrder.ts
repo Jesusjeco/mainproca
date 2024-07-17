@@ -2,6 +2,7 @@ import { ProductOrder } from "./ProductOrder";
 
 export interface SellOrder {
   _id: string
+  orderNumber: string,
   client_id: string;
   address: string;
   products: ProductOrder[];
@@ -11,6 +12,7 @@ export interface SellOrder {
 
 export const emptySellOrder = {
   _id: "",
+  orderNumber: "",
   client_id: "",
   address: "",
   products: [],

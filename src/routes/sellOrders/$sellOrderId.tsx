@@ -30,25 +30,28 @@ function SingleSellOrder() {
   const productsLoading = useProductsStore(state => state.loading);
 
   const [client, setClient] = useState<Client>(emptyClient);
-
   useEffect(() => {
-    fetchClients();
-    fetchProducts();
-
     const setClientHandler = () => {
       const client = getClientById(sellOrder.client_id);
       if (client)
         setClient(client);
     }
     setClientHandler();
+  }, [clientsLoading])
 
+  useEffect(() => {
+    fetchClients();
+    fetchProducts();
   }, []);
 
   return (
     <>
       <LoadingComponent var1={clientsLoading} var2={productsLoading} />
       <div className="w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
-        <h2 className="text-2xl font-bold mb-6">Nota de entrega</h2>
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold mb-6">Nota de entrega</h2>
+          <p className="text-2xl text-gray-700 font-medium mb-2">N° {sellOrder.orderNumber}</p>
+        </div>
         <div className="grid gap-4 lg:grid-cols-2">
           <div className="mb-4">
             <p className="block text-gray-700 font-medium mb-2">Cliente</p>
