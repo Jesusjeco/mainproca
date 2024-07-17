@@ -48,7 +48,7 @@ function SingleSellOrder() {
     <>
       <LoadingComponent var1={clientsLoading} var2={productsLoading} />
       <div className="w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
-        <h2 className="text-2xl font-bold mb-6">Orden de compra</h2>
+        <h2 className="text-2xl font-bold mb-6">Nota de entrega</h2>
         <div className="grid gap-4 lg:grid-cols-2">
           <div className="mb-4">
             <p className="block text-gray-700 font-medium mb-2">Cliente</p>

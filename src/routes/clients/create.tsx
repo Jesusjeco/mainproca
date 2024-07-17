@@ -3,6 +3,7 @@ import { Client, ClientOffice, emptyClient, emptyClientOffice } from "../../inte
 import { createClient } from '../../apiCalls/clients';
 import { useEffect, useRef, useState } from 'react';
 import { ApiResponse } from '../../interfaces/ApiResponse';
+import { AvoidEnterKeyPress } from '../../utils/AvoidEnterKeyPress';
 
 export const Route = createFileRoute('/clients/create')({
   component: CreateClient
@@ -65,7 +66,7 @@ function CreateClient() {
       <div className="bg-gray-100 flex items-center justify-center min-h-screen">
         <div className="bg-white p-6 rounded-lg shadow-lg w-full lg:w-4/5">
           <h2 className="text-2xl font-bold mb-6 text-center">Agregar cliente nuevo</h2>
-          <form ref={formRef} onSubmit={createClientHandler}>
+          <form ref={formRef} onSubmit={createClientHandler} onKeyDown={AvoidEnterKeyPress}>
 
             <div className="mb-4 grid gap-4 lg:grid-cols-2">
               <div>
@@ -83,14 +84,14 @@ function CreateClient() {
 
               <div>
                 <label htmlFor="number" className="block text-gray-700 text-sm font-bold mb-2">Número</label>
-                <input  type="text" id="number" name="number" placeholder="Enter client number" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                <input type="text" id="number" name="number" placeholder="Enter client number" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   onChange={updateInputHandler}
                 />
               </div>
 
               <div>
                 <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                <input  type="email" id="email" name="email" placeholder="Enter your email" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                <input type="email" id="email" name="email" placeholder="Enter your email" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   onChange={updateInputHandler}
                 />
               </div>

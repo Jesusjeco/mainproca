@@ -3,6 +3,7 @@ import { Product, emptyProduct } from "../../interfaces/Product"
 import { createProduct } from '../../apiCalls/products';
 import { FormEvent, useRef, useState } from 'react';
 import { ApiResponse } from '../../interfaces/ApiResponse';
+import { AvoidEnterKeyPress } from '../../utils/AvoidEnterKeyPress';
 
 export const Route = createFileRoute('/products/create')({
   component: CreateProduct
@@ -47,7 +48,7 @@ function CreateProduct() {
       <div className="bg-gray-100 flex items-center justify-center min-h-screen">
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
           <h2 className="text-2xl font-bold mb-6 text-center">Agregar producto nuevo</h2>
-          <form ref={formRef} onSubmit={createProductHandler}>
+          <form ref={formRef} onSubmit={createProductHandler} onKeyDown={AvoidEnterKeyPress}>
             <div className="mb-4">
               <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nombre*</label>
               <input required type="text" id="name" name="name" placeholder="Enter your name" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
