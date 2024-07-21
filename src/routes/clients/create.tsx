@@ -1,17 +1,16 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Client, ClientOffice, emptyClient, emptyClientOffice } from "../../interfaces/Client"
-import { createClient } from '../../apiCalls/clients';
 import { useEffect, useRef, useState } from 'react';
-import { ApiResponse } from '../../interfaces/ApiResponse';
 import { AvoidEnterKeyPress } from '../../utils/AvoidEnterKeyPress';
+import { useClientsStore } from '../../store/clientStore';
 
 export const Route = createFileRoute('/clients/create')({
   component: CreateClient
 })
 
 function CreateClient() {
-  const [apiResponse, setApiResponse] = useState<ApiResponse | null>(null);
   const [newClient, setNewClient] = useState<Client>(emptyClient);
+  const createClient = useClientsStore(state => state.createClient)
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
 
@@ -45,10 +44,7 @@ function CreateClient() {
   //Create client function
   const createClientHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
     const response = await createClient(newClient);
-    setApiResponse(response);
-
     //Redirecting user to clients page
     if (response.success) {
       // Reset the form after submission
@@ -131,18 +127,6 @@ function CreateClient() {
               </button>
             </div>
           </form>
-          {apiResponse && (
-            <div>
-              {apiResponse.success ?
-                <div>Cliente agregado a inventario</div>
-                :
-                <div>Error: {apiResponse.message}</div>
-              }
-              {/* {apiResponse.data && (
-                <pre>{JSON.stringify(apiResponse.data, null, 2)}</pre>
-              )} */}
-            </div>
-          )}
         </div>
       </div>
     </div>

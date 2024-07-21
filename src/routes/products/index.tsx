@@ -1,20 +1,24 @@
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
-import { deleteProductById, fetchAllProducts } from "../../apiCalls/products"
+import { deleteProductById } from "../../apiCalls/products"
 import "./products.pcss"
-import { Product } from "../../interfaces/Product"
 import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
+import { useProductsStore } from '../../store/productStore';
+import { useEffect } from 'react';
 
 export const Route = createFileRoute('/products/')({
-  loader: fetchAllProducts,
   errorComponent: FetchErrorComponent as any,
   notFoundComponent: () => <NotFoundComponent message="Producto no encontrado" />,
   component: Products,
 })
 
 function Products() {
-  const allProducts = Route.useLoaderData<Product[]>();
+  const fetchAllProducts = useProductsStore(state => state.fetchProducts)
+  const products = useProductsStore(state => state.products)
+  useEffect(() => {
+    fetchAllProducts()
+  }, []);
   const navigate = useNavigate();
 
   const deleteProductHandler = async (productId: string) => {
@@ -45,8 +49,8 @@ function Products() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {
-                  allProducts && allProducts.length > 0 ?
-                    allProducts.map((product, index) =>
+                  products && products.length > 0 ?
+                    products.map((product, index) =>
                       <tr key={index}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           <Link to={'/products/' + product._id}>{product.name}</Link></td>
@@ -68,7 +72,7 @@ function Products() {
                       </tr>
                     )
                     :
-                    allProducts ?
+                    products ?
                       <tr>
                         <td colSpan={3}>No hay productos en inventario</td>
                       </tr>

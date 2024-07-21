@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { editClientById, fetchClientById } from '../../apiCalls/clients'
+import { editClientById, fetchClientById, } from '../../apiCalls/clients'
 import { Client, ClientOffice, emptyClientOffice } from "../../interfaces/Client"
 import { useEffect, useState } from 'react'
 import { FetchErrorComponent } from '../../components/FetchErrorComponent'
@@ -53,7 +53,7 @@ function EditClient() {
     e.preventDefault();
 
     const response = await editClientById(newClient);
-    if (response.success) {
+    if (response?.ok) {
       navigate({ to: "/clients/" + newClient._id });
     } else {
       // Handle error

@@ -1,14 +1,14 @@
 // src/productsStore.ts
 import { create } from 'zustand';
 import { fetchAllProducts } from '../apiCalls/products';
-import { Product } from '../interfaces/Product';
+import { emptyProduct, Product } from '../interfaces/Product';
 
 interface ProductsState {
     products: Product[];
     availableProducts: Product[];
     loading: boolean;
     fetchProducts: () => Promise<void>;
-    getProductById: (id: string) => Product | undefined;
+    getProductById: (id: string) => Product;
 }
 
 export const useProductsStore = create<ProductsState>((set, get) => ({
@@ -29,6 +29,10 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
     },
     getProductById: (id: string) => {
         const { products } = get();
-        return products.find(product => product._id === id);
+        const foundProduct = products.find(product => product._id === id);
+        if (foundProduct)
+            return foundProduct
+        else
+            return emptyProduct
     }
 }));
