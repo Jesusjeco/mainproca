@@ -1,10 +1,9 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { editClientById, fetchClientById } from '../../apiCalls/clients'
+import { editClientById, fetchClientById, } from '../../apiCalls/clients'
 import { Client, ClientOffice, emptyClientOffice } from "../../interfaces/Client"
 import { useEffect, useState } from 'react'
 import { FetchErrorComponent } from '../../components/FetchErrorComponent'
 import { NotFoundComponent } from '../../components/NotFoundComponent'
-import { AvoidEnterKeyPress } from '../../utils/AvoidEnterKeyPress'
 
 export const Route = createFileRoute('/clients/edit/$clientId')({
   loader: async ({ params: { clientId } }) => fetchClientById(clientId),
@@ -54,7 +53,7 @@ function EditClient() {
     e.preventDefault();
 
     const response = await editClientById(newClient);
-    if (response.success) {
+    if (response?.ok) {
       navigate({ to: "/clients/" + newClient._id });
     } else {
       // Handle error
@@ -78,7 +77,7 @@ function EditClient() {
     <div className='flex items-center justify-center min-h-screen bg-gray-100'>
       <div className='w-full w-4/5 bg-white p-8 rounded-lg shadow-lg'>
         <h2 className='text-3xl font-bold mb-6 text-center'>Modificar cliente</h2>
-        <form onSubmit={modifyClientHandler} onKeyDown={AvoidEnterKeyPress} className='space-y-4'>
+        <form onSubmit={modifyClientHandler} className='space-y-4'>
           <div className='grid grid-cols-1 gap-5 lg:grid-cols-2 items-center'>
             <div>
               <label htmlFor='rif' className='block text-gray-700 font-bold'>RIF*</label>

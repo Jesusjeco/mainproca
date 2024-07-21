@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Product, emptyProduct } from "../../interfaces/Product"
 import { createProduct } from '../../apiCalls/products';
 import { FormEvent, useRef, useState } from 'react';
-import { ApiResponse } from '../../interfaces/ApiResponse';
 import { AvoidEnterKeyPress } from '../../utils/AvoidEnterKeyPress';
 
 export const Route = createFileRoute('/products/create')({
@@ -10,7 +9,6 @@ export const Route = createFileRoute('/products/create')({
 })
 
 function CreateProduct() {
-  const [apiResponse, setApiResponse] = useState<ApiResponse | null>(null);
   const [newProduct, setNewProduct] = useState<Product>(emptyProduct);
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
@@ -28,8 +26,6 @@ function CreateProduct() {
     e.preventDefault()
 
     const response = await createProduct(newProduct);
-    setApiResponse(response);
-
     // Reset the form after submission
     if (formRef.current)
       formRef.current.reset();
@@ -83,18 +79,6 @@ function CreateProduct() {
               </button>
             </div>
           </form>
-          {apiResponse && (
-            <div>
-              {apiResponse.success ?
-                <div>Producto agregado a inventario</div>
-                :
-                <div>Error: {apiResponse.message}</div>
-              }
-              {/* {apiResponse.data && (
-                <pre>{JSON.stringify(apiResponse.data, null, 2)}</pre>
-              )} */}
-            </div>
-          )}
         </div>
       </div>
     </div>

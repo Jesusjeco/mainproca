@@ -49,7 +49,7 @@ export async function fetchClientById(clientId: string) {
 }//fetchClientById
 
 //Creating a new client
-export async function createClient(newClient: Client) {
+export async function createClient(newClient: Client): Promise<Client | undefined> {
 
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -62,22 +62,10 @@ export async function createClient(newClient: Client) {
   };
 
   try {
-    const response = await fetch(API_CLIENTS_URL, requestOptions);
-    const result = await response.text();
-
-    return {
-      success: response.ok,
-      message: response.ok ? "Client created successfully" : "Failed to create client",
-      data: result,
-    };
-
+    const response = await fetch(API_CLIENTS_URL, requestOptions)
+    return await response.json();
   } catch (error) {
     console.error(error);
-
-    return {
-      success: false,
-      message: "Error creating client",
-    };
   };
 }//createClient
 
@@ -94,19 +82,9 @@ export async function editClientById(client: Client) {
   };
 
   try {
-    const response = await fetch(API_CLIENTS_URL + "/" + client._id, requestOptions);
-    const result = await response.text();
-    return {
-      success: response.ok,
-      message: response.ok ? "Client updated successfully" : "Failed to update client",
-      data: result,
-    };
+    return await fetch(API_CLIENTS_URL + "/" + client._id, requestOptions);
   } catch (error) {
     console.error(error);
-    return {
-      success: false,
-      message: "Error creating client",
-    };
   };
 }
 
@@ -118,11 +96,7 @@ export async function deleteClientById(clientId: string) {
   };
 
   try {
-    const response = await fetch(API_CLIENTS_URL + "/" + clientId, requestOptions);
-    //const result = await response.text();
-
-    return response;
-
+    return await fetch(API_CLIENTS_URL + "/" + clientId, requestOptions);
   } catch (error) {
     console.error(error);
   };
