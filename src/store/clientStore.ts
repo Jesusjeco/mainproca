@@ -1,14 +1,14 @@
 // src/clientsStore.ts
 import { create } from 'zustand';
 import { createClient, deleteClientById, editClientById, fetchAllClients } from '../apiCalls/clients';
-import { Client, emptyClient } from '../interfaces/Client';
+import { Client } from '../interfaces/Client';
 import { ApiResponse } from '../interfaces/ApiResponse';
 
 interface ClientsState {
     clients: Client[];
     loading: boolean;
     fetchClients: () => Promise<void>;
-    getClientById: (id: string) => Client;
+    getClientById: (id: string) => Client | undefined;
     createClient: (newClient: Client) => Promise<ApiResponse>;
     editClientById: (newClient: Client) => Promise<ApiResponse>
     deleteClientById: (id: string) => Promise<ApiResponse>;
@@ -26,13 +26,13 @@ export const useClientsStore = create<ClientsState>((set, get) => ({
             console.error('Failed to fetch clients', error);
         }
     },//fetchClients 
-    getClientById: (id: string): Client => {
+    getClientById: (id: string): Client | undefined => {
         const { clients } = get();
         const client = clients.find(client => client._id === id);
         if (client)
             return client
         else
-            return emptyClient
+            return undefined
     },//getClientById
     createClient: async (newClient: Client): Promise<ApiResponse> => {
         set({ loading: true });

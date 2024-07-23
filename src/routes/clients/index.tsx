@@ -4,29 +4,26 @@ import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { useClientsStore } from '../../store/clientStore';
-import { useEffect } from 'react';
 import { LoadingComponent } from '../../components/LoadingComponent';
+import { fetchAllClientsLoader } from '../../utils/fetchAllClientsLoader';
 
 export const Route = createFileRoute('/clients/')({
   errorComponent: FetchErrorComponent as any,
   notFoundComponent: () => <NotFoundComponent message="Cliente no encontrado" />,
+  loader: fetchAllClientsLoader,
   component: Clients,
 })
 
 function Clients() {
-  const fetchAllClients = useClientsStore(state => state.fetchClients)
   const loadingClients = useClientsStore(state => state.loading)
   const clients = useClientsStore(state => state.clients)
   const deleteClientById = useClientsStore(state => state.deleteClientById)
-  useEffect(() => {
-    fetchAllClients()
-  }, [])
 
   const navigate = useNavigate();
 
   const deleteClientHandler = async (clientId: string) => {
     const response = await deleteClientById(clientId);
-    if (response.success === true) {
+    if (response.success) {
       navigate({ to: "/clients" })
     }
   }
