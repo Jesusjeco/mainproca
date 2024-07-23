@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { Client, ClientOffice, emptyClient, emptyClientOffice } from "../../interfaces/Client"
+import { Client, ClientOffice, emptyClient } from "../../interfaces/Client"
 import { useEffect, useRef, useState } from 'react';
 import { AvoidEnterKeyPress } from '../../utils/AvoidEnterKeyPress';
 import { useClientsStore } from '../../store/clientStore';
+import { ClientSelectOffices } from '../../components/clients/ClientSelectOffices';
 
 export const Route = createFileRoute('/clients/create')({
   component: CreateClient
@@ -10,6 +11,7 @@ export const Route = createFileRoute('/clients/create')({
 
 function CreateClient() {
   const [newClient, setNewClient] = useState<Client>(emptyClient);
+
   const createClient = useClientsStore(state => state.createClient)
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
@@ -23,14 +25,8 @@ function CreateClient() {
   };
 
   const [offices, setOffices] = useState<ClientOffice[]>([]);
-  const addOffice = () => {
-    const auxOffices = [...offices, emptyClientOffice];
-    setOffices(auxOffices);
-  }
-  const setOfficesHandler = (office: ClientOffice, index: number) => {
-    const auxOffices = [...offices]
-    auxOffices[index] = office;
-    setOffices(auxOffices);
+  const setOfficesResult = (offices: ClientOffice[]) => {
+    setOffices(offices);
   }
   useEffect(() => {
     setNewClient(
@@ -101,17 +97,7 @@ function CreateClient() {
             </div>
 
             <div className="mb-4">
-              <div className='flex items-center justify-between mb-3'>
-                <label htmlFor="office" className="block text-gray-700 text-sm font-bold mb-2">Sucursales</label>
-                <button type="button" onClick={addOffice} className="bg-blue-500 text-white px-4 py-2 rounded-md">Agregar sucursal</button>
-              </div>
-
-              {offices.length > 0 ?
-                offices.map((_, index) =>
-                  <input key={index} type='text' name="office" id="office" placeholder="Enter office" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    onChange={(e) => setOfficesHandler({ address: e.target.value }, index)}
-                  />
-                ) : "Sin sucursales registradas"}
+              <ClientSelectOffices label="office" setOfficesResult={setOfficesResult} />
             </div>
 
             <div className="mb-4">
