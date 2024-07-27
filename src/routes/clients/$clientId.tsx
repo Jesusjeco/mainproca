@@ -5,18 +5,28 @@ import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { useClientsStore } from '../../store/clientStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
-import { fetchClientByIdLoader } from '../../utils/fetchClientByIdLoader';
+import { useEffect, useState } from 'react';
 
 export const Route = createFileRoute('/clients/$clientId')({
-  loader: async ({ params: { clientId } }) => fetchClientByIdLoader(clientId),
+  loader: ({ params: { clientId } }) => { return clientId },
   errorComponent: FetchErrorComponent as any,
   notFoundComponent: () => <NotFoundComponent message="Cliente no encontrado" />,
   component: SingleClient
 })
 
 function SingleClient() {
-  const client = Route.useLoaderData<Client | undefined>()
+  const clientId = Route.useLoaderData<string>()
+  const fetchAllClients = useClientsStore(state => state.fetchClients)
+  const getClientByID = useClientsStore(state => state.getClientById)
   const loadingClients = useClientsStore(state => state.loading)
+  useEffect(() => {
+    fetchAllClients()
+  }, [])
+  const [client, setClient] = useState<Client | undefined>(undefined)
+  useEffect(() => {
+    if (clientId !== "" && !loadingClients)
+      setClient(getClientByID(clientId))
+  }, [clientId, loadingClients])
 
   return (
     <>
