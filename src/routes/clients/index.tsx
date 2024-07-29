@@ -72,7 +72,7 @@ function Clients() {
                                 <FaEdit />
                               </Link>
                               <button
-                                onClick={() => { if (client._id) deleteClientHandler(client._id) }} className="text-red-500 hover:text-red-700">
+                                onClick={() => { deleteClientHandler(client._id) }} className="text-red-500 hover:text-red-700">
                                 <FaTrashAlt />
                               </button>
                             </div>

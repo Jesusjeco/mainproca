@@ -24,6 +24,7 @@ function CreateClient() {
     });
   };
 
+  //Variables to handle offices
   const [offices, setOffices] = useState<ClientOffice[]>([]);
   const setOfficesResult = (offices: ClientOffice[]) => {
     setOffices(offices);
