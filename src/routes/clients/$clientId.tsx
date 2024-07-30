@@ -7,15 +7,18 @@ import { useClientsStore } from '../../store/clientStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
 import { useEffect, useState } from 'react';
 
+interface SingleClientProps {
+  clientId: string
+}
 export const Route = createFileRoute('/clients/$clientId')({
-  loader: ({ params: { clientId } }) => { return clientId },
+  loader: ({ params }: { params: SingleClientProps }) => { return params.clientId },
   errorComponent: FetchErrorComponent as any,
   notFoundComponent: () => <NotFoundComponent message="Cliente no encontrado" />,
   component: SingleClient
 })
 
 function SingleClient() {
-  const clientId = Route.useLoaderData<string>()
+  const clientId = Route.useLoaderData() as string
   const fetchAllClients = useClientsStore(state => state.fetchClients)
   const getClientByID = useClientsStore(state => state.getClientById)
   const loadingClients = useClientsStore(state => state.loading)

@@ -1,4 +1,4 @@
-import { Link, createFileRoute, useParams } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import { Product } from "../../interfaces/Product"
 import { useEffect, useState } from 'react'
 import { FaEdit } from 'react-icons/fa';
@@ -7,25 +7,30 @@ import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { useProductsStore } from '../../store/productStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
 
+interface SingleProductProps {
+  productId: string
+}
 export const Route = createFileRoute('/products/$productId')({
-  //loader: async ({ params: { productId } }) => fetchProductById(productId),
+  loader: ({ params }: { params: SingleProductProps }) => { return params.productId },
   errorComponent: FetchErrorComponent as any,
   notFoundComponent: () => <NotFoundComponent message="Producto no encontrado" />,
   component: SingleProduct
 })
 
 function SingleProduct() {
-  const { productId } = useParams({ from: '/products/$productId' });
+  const productId = Route.useLoaderData() as string;
   const fetchAllProducts = useProductsStore(state => state.fetchProducts)
   const loadingProducts = useProductsStore(state => state.loading)
   const getProductById = useProductsStore(state => state.getProductById)
   useEffect(() => {
     fetchAllProducts()
   }, [])
+
+  const [product, setProduct] = useState<Product | undefined>(undefined);
   useEffect(() => {
-    setProduct(getProductById(productId))
+    if (productId && !loadingProducts)
+      setProduct(getProductById(productId))
   }, [loadingProducts, productId])
-  const [product, setProduct] = useState<Product>();
 
   return (
     <>

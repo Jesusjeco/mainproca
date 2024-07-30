@@ -4,7 +4,7 @@
 import { API_PRODUCTS_URL, Product } from "../interfaces/Product";
 
 //Fetching all products
-export async function fetchAllProducts(): Promise<Product[]>  {
+export async function fetchAllProducts(): Promise<Product[]> {
   const requestOptions: RequestInit = {
     method: "GET",
     redirect: "follow"
@@ -23,7 +23,7 @@ export async function fetchAllProducts(): Promise<Product[]>  {
     return allProducts;
   } catch (error) {
     console.error(error);
-    return []; 
+    return [];
   };
 }//fetchAllProducts
 
@@ -117,11 +117,7 @@ export async function deleteProductById(productId: string) {
   };
 
   try {
-    const response = await fetch(API_PRODUCTS_URL + "/" + productId, requestOptions);
-    //const result = await response.text();
-
-    return response;
-
+    return await fetch(API_PRODUCTS_URL + "/" + productId, requestOptions);
   } catch (error) {
     console.error(error);
   };
