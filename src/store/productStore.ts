@@ -1,7 +1,7 @@
 // src/productsStore.ts
 import { create } from 'zustand';
-import { deleteProductById, fetchAllProducts } from '../apiCalls/products';
-import { emptyProduct, Product } from '../interfaces/Product';
+import { createProduct, deleteProductById, fetchAllProducts } from '../apiCalls/products';
+import { Product } from '../interfaces/Product';
 import { ApiResponse } from '../interfaces/ApiResponse';
 
 interface ProductsState {
@@ -10,6 +10,7 @@ interface ProductsState {
     loading: boolean
     setLoading: (loading: boolean) => void
     fetchProducts: () => Promise<void>
+    createProduct: (newProduct: Product) => Promise<ApiResponse>
     getProductById: (id: string) => Product | undefined
     deleteProductById: (id: string) => Promise<ApiResponse>
 }
@@ -31,6 +32,37 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
             console.error('Failed to fetch products', error);
         }
     },//fetchProducts
+    createProduct: async (newProduct: Product): Promise<ApiResponse> => {
+        set({ loading: true });
+        try {
+            const product = await createProduct(newProduct);
+            if (product) {
+                set((state) => ({
+                    products: [...state.products, product],
+                }));
+                set({ loading: false });
+                return {
+                    success: true,
+                    message: "Product created succesfully",
+                    data: product,
+                }
+            } else {
+                return {
+                    success: false,
+                    message: "ERROR when creating product",
+                    data: null,
+                }
+            }
+
+        } catch (error) {
+            console.error('Failed to create product', error);
+            return {
+                success: false,
+                message: "ERROR when creating product",
+                data: error,
+            }
+        }
+    }, //createProduct
     getProductById: (id: string): Product | undefined => {
         const { products } = get();
         const foundProduct = products.find(product => product._id === id);

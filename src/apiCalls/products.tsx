@@ -62,14 +62,7 @@ export async function createProduct(newProduct: Product) {
 
   try {
     const response = await fetch(API_PRODUCTS_URL, requestOptions);
-    const result = await response.text();
-
-    return {
-      success: response.ok,
-      message: response.ok ? "Product created successfully" : "Failed to create product",
-      data: result,
-    };
-
+    return await response.json();
   } catch (error) {
     console.error(error);
 

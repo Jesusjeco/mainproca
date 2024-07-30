@@ -95,7 +95,7 @@ function CreateClient() {
               <label htmlFor="legal_address" className="block text-gray-700 text-sm font-bold mb-2">Dirección fiscal*</label>
               <textarea required name="legal_address" rows={4} id="legal_address" placeholder="Enter legal_address" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 onChange={updateInputHandler}
-              ></textarea>
+              ></textarea> 
             </div>
 
             <div className="mb-4">
