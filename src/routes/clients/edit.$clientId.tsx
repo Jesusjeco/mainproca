@@ -8,7 +8,7 @@ import { LoadingComponent } from '../../components/LoadingComponent'
 import { ClientSelectOffices } from '../../components/clients/ClientSelectOffices'
 
 interface EditClientProps {
-  clientId: string
+  clientId: string 
 }
 export const Route = createFileRoute('/clients/edit/$clientId')({
   loader: async ({ params }: { params: EditClientProps }) => { return params.clientId; },
@@ -75,12 +75,11 @@ function EditClient() {
 
     if (newClient) {
       const response = await editClientById(newClient);
-      if (response.success) {
+      if (response.success)
         navigate({ to: "/clients/" + newClient._id });
-      } else {
-        // Handle error
-        console.error('Failed to update client');
-      }
+    } else {
+      // Handle error
+      console.error('Failed to update client');
     }
   }//modifyClientHandler
 

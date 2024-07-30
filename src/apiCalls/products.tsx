@@ -4,7 +4,7 @@
 import { API_PRODUCTS_URL, Product } from "../interfaces/Product";
 
 //Fetching all products
-export async function fetchAllProducts(): Promise<Product[]>  {
+export async function fetchAllProducts(): Promise<Product[]> {
   const requestOptions: RequestInit = {
     method: "GET",
     redirect: "follow"
@@ -23,7 +23,7 @@ export async function fetchAllProducts(): Promise<Product[]>  {
     return allProducts;
   } catch (error) {
     console.error(error);
-    return []; 
+    return [];
   };
 }//fetchAllProducts
 
@@ -62,14 +62,7 @@ export async function createProduct(newProduct: Product) {
 
   try {
     const response = await fetch(API_PRODUCTS_URL, requestOptions);
-    const result = await response.text();
-
-    return {
-      success: response.ok,
-      message: response.ok ? "Product created successfully" : "Failed to create product",
-      data: result,
-    };
-
+    return await response.json();
   } catch (error) {
     console.error(error);
 
@@ -93,19 +86,9 @@ export async function editProductById(product: Product) {
   };
 
   try {
-    const response = await fetch(API_PRODUCTS_URL + "/" + product._id, requestOptions);
-    const result = await response.text();
-    return {
-      success: response.ok,
-      message: response.ok ? "Product updated successfully" : "Failed to update product",
-      data: result,
-    };
+    return await fetch(API_PRODUCTS_URL + "/" + product._id, requestOptions);
   } catch (error) {
     console.error(error);
-    return {
-      success: false,
-      message: "Error creating product",
-    };
   };
 }
 
@@ -117,11 +100,7 @@ export async function deleteProductById(productId: string) {
   };
 
   try {
-    const response = await fetch(API_PRODUCTS_URL + "/" + productId, requestOptions);
-    //const result = await response.text();
-
-    return response;
-
+    return await fetch(API_PRODUCTS_URL + "/" + productId, requestOptions);
   } catch (error) {
     console.error(error);
   };

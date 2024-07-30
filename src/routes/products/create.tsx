@@ -1,15 +1,17 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Product, emptyProduct } from "../../interfaces/Product"
-import { createProduct } from '../../apiCalls/products';
 import { FormEvent, useRef, useState } from 'react';
 import { AvoidEnterKeyPress } from '../../utils/AvoidEnterKeyPress';
+import { useProductsStore } from '../../store/productStore';
 
-export const Route = createFileRoute('/products/create')({
+export const Route = createFileRoute('/products/create')({  
   component: CreateProduct
 })
 
 function CreateProduct() {
   const [newProduct, setNewProduct] = useState<Product>(emptyProduct);
+
+  const createProduct = useProductsStore(state => state.createProduct)
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
 
@@ -26,12 +28,11 @@ function CreateProduct() {
     e.preventDefault()
 
     const response = await createProduct(newProduct);
-    // Reset the form after submission
-    if (formRef.current)
-      formRef.current.reset();
-
     //Redirecting user to products page
     if (response.success) {
+      if (formRef.current)
+        formRef.current.reset();
+
       navigate({ to: "/products" });
     } else {
       // Handle error
