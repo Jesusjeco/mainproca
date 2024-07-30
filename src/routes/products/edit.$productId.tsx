@@ -10,7 +10,7 @@ import { AvoidEnterKeyPress } from '../../utils/AvoidEnterKeyPress'
 interface EditProductProps {
   productId: string
 }
-export const Route = createFileRoute('/products/edit/$productId')({
+export const Route = createFileRoute('/products/edit/$productId')({ 
   loader: async ({ params }: { params: EditProductProps }) => { return params.productId },
   errorComponent: FetchErrorComponent as any,
   notFoundComponent: () => <NotFoundComponent message="Producto no encontrado" />,

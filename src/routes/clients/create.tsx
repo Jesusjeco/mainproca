@@ -5,7 +5,7 @@ import { AvoidEnterKeyPress } from '../../utils/AvoidEnterKeyPress';
 import { useClientsStore } from '../../store/clientStore';
 import { ClientSelectOffices } from '../../components/clients/ClientSelectOffices';
 
-export const Route = createFileRoute('/clients/create')({
+export const Route = createFileRoute('/clients/create')({ 
   component: CreateClient
 })
 

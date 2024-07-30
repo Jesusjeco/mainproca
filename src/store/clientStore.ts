@@ -15,7 +15,7 @@ interface ClientsState {
     deleteClientById: (id: string) => Promise<ApiResponse>
 }
 
-export const useClientsStore = create<ClientsState>((set, get) => ({
+export const useClientsStore = create<ClientsState>((set, get) => ({ 
     clients: [],
     loading: false,
     setLoading: (loading: boolean) => set({ loading }), // setLoading,

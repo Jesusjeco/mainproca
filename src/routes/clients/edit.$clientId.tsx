@@ -8,7 +8,7 @@ import { LoadingComponent } from '../../components/LoadingComponent'
 import { ClientSelectOffices } from '../../components/clients/ClientSelectOffices'
 
 interface EditClientProps {
-  clientId: string
+  clientId: string 
 }
 export const Route = createFileRoute('/clients/edit/$clientId')({
   loader: async ({ params }: { params: EditClientProps }) => { return params.clientId; },

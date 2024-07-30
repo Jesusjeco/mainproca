@@ -4,7 +4,7 @@ import { FormEvent, useRef, useState } from 'react';
 import { AvoidEnterKeyPress } from '../../utils/AvoidEnterKeyPress';
 import { useProductsStore } from '../../store/productStore';
 
-export const Route = createFileRoute('/products/create')({
+export const Route = createFileRoute('/products/create')({  
   component: CreateProduct
 })
 

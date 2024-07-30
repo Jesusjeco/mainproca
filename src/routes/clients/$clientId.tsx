@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 interface SingleClientProps {
   clientId: string
 }
-export const Route = createFileRoute('/clients/$clientId')({
+export const Route = createFileRoute('/clients/$clientId')({ 
   loader: ({ params }: { params: SingleClientProps }) => { return params.clientId },
   errorComponent: FetchErrorComponent as any,
   notFoundComponent: () => <NotFoundComponent message="Cliente no encontrado" />,
