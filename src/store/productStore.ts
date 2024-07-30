@@ -1,6 +1,6 @@
 // src/productsStore.ts
 import { create } from 'zustand';
-import { createProduct, deleteProductById, fetchAllProducts } from '../apiCalls/products';
+import { createProduct, deleteProductById, editProductById, fetchAllProducts } from '../apiCalls/products';
 import { Product } from '../interfaces/Product';
 import { ApiResponse } from '../interfaces/ApiResponse';
 
@@ -12,6 +12,7 @@ interface ProductsState {
     fetchProducts: () => Promise<void>
     createProduct: (newProduct: Product) => Promise<ApiResponse>
     getProductById: (id: string) => Product | undefined
+    editProductById: (product: Product) => Promise<ApiResponse>
     deleteProductById: (id: string) => Promise<ApiResponse>
 }
 
@@ -71,6 +72,36 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
         else
             return undefined
     },//getProductById
+    editProductById: async (product: Product): Promise<ApiResponse> => {
+        set({ loading: true });
+        try {
+            const response = await editProductById(product);
+            if (response && response.ok) {
+                set((state) => ({
+                    products: state.products.map((item) => item._id === product._id ? product : item)
+                }))
+                set({ loading: false });
+                return {
+                    success: true,
+                    message: "Product updated succesfully",
+                    data: response,
+                }
+            } else {
+                return {
+                    success: false,
+                    message: "ERROR when updating product",
+                    data: null,
+                }
+            }
+        } catch (error) {
+            console.error('Failed to update product', error);
+            return {
+                success: false,
+                message: "ERROR when updating product",
+                data: error,
+            }
+        }
+    },//editProductById
     deleteProductById: async (id: string): Promise<ApiResponse> => {
         set({ loading: true });
         try {

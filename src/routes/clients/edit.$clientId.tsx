@@ -75,12 +75,11 @@ function EditClient() {
 
     if (newClient) {
       const response = await editClientById(newClient);
-      if (response.success) {
+      if (response.success)
         navigate({ to: "/clients/" + newClient._id });
-      } else {
-        // Handle error
-        console.error('Failed to update client');
-      }
+    } else {
+      // Handle error
+      console.error('Failed to update client');
     }
   }//modifyClientHandler
 

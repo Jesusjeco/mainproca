@@ -86,19 +86,9 @@ export async function editProductById(product: Product) {
   };
 
   try {
-    const response = await fetch(API_PRODUCTS_URL + "/" + product._id, requestOptions);
-    const result = await response.text();
-    return {
-      success: response.ok,
-      message: response.ok ? "Product updated successfully" : "Failed to update product",
-      data: result,
-    };
+    return await fetch(API_PRODUCTS_URL + "/" + product._id, requestOptions);
   } catch (error) {
     console.error(error);
-    return {
-      success: false,
-      message: "Error creating product",
-    };
   };
 }
 
