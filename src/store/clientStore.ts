@@ -5,17 +5,17 @@ import { Client } from '../interfaces/Client';
 import { ApiResponse } from '../interfaces/ApiResponse';
 
 interface ClientsState {
-    clients: Client[];
-    loading: boolean;
-    setLoading: (loading: boolean) => void;
-    fetchClients: () => Promise<void>;
+    clients: Client[]
+    loading: boolean
+    setLoading: (loading: boolean) => void
+    fetchClients: () => Promise<void>
     getClientById: (id: string) => Client | undefined;
-    createClient: (newClient: Client) => Promise<ApiResponse>;
+    createClient: (newClient: Client) => Promise<ApiResponse>
     editClientById: (newClient: Client) => Promise<ApiResponse>
-    deleteClientById: (id: string) => Promise<ApiResponse>;
+    deleteClientById: (id: string) => Promise<ApiResponse>
 }
 
-export const useClientsStore = create<ClientsState>((set, get) => ({
+export const useClientsStore = create<ClientsState>((set, get) => ({ 
     clients: [],
     loading: false,
     setLoading: (loading: boolean) => set({ loading }), // setLoading,
