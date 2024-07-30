@@ -4,9 +4,9 @@ import { ClientOffice, emptyClientOffice } from "../../interfaces/Client";
 interface ClientSelectOfficesProps {
   label: string,
   setOfficesResult: (setOfficesResult: ClientOffice[]) => void,
-  selectedOffices: ClientOffice[]
+  selectedOffices?: ClientOffice[]
 }
-export const ClientSelectOffices = ({ label = "office", setOfficesResult, selectedOffices }: ClientSelectOfficesProps) => {
+export const ClientSelectOffices = ({ label = "office", setOfficesResult, selectedOffices=[] }: ClientSelectOfficesProps) => {
   const [offices, setOffices] = useState<ClientOffice[]>(selectedOffices);
   const addOffice = () => {
     const auxOffices = [...offices, emptyClientOffice];

@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { Client, ClientOffice, emptyClientOffice } from "../../interfaces/Client"
+import { Client, ClientOffice } from "../../interfaces/Client"
 import { useEffect, useState } from 'react'
 import { FetchErrorComponent } from '../../components/FetchErrorComponent'
 import { NotFoundComponent } from '../../components/NotFoundComponent'
@@ -57,7 +57,7 @@ function EditClient() {
   }, [offices]);
 
   //Updating all values
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const updateInputHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     if (newClient)
       setNewClient(
@@ -104,7 +104,7 @@ function EditClient() {
                     placeholder='Enter your rif'
                     className='w-full mt-2 p-2 border rounded'
                     value={newClient.rif}
-                  //onChange={handleInputChange}
+                  //onChange={updateInputHandler}
                   />
                 </div>
 
@@ -119,7 +119,7 @@ function EditClient() {
                     placeholder='Enter your name'
                     className='w-full mt-2 p-2 border rounded'
                     value={newClient.name}
-                  //onChange={handleInputChange}
+                  //onChange={updateInputHandler}
                   />
                 </div>
               </div>
@@ -134,7 +134,7 @@ function EditClient() {
                     placeholder='Enter your number'
                     className='w-full mt-2 p-2 border rounded'
                     value={newClient.number}
-                    onChange={handleInputChange}
+                    onChange={updateInputHandler}
                   />
                 </div>
 
@@ -147,7 +147,7 @@ function EditClient() {
                     placeholder='Enter your email'
                     className='w-full mt-2 p-2 border rounded'
                     value={newClient.email}
-                    onChange={handleInputChange}
+                    onChange={updateInputHandler}
                   />
                 </div>
               </div>
@@ -160,7 +160,7 @@ function EditClient() {
                   id='legal_address'
                   placeholder='Enter legal address'
                   className='w-full mt-2 p-2 border rounded'
-                  onChange={handleInputChange}
+                  onChange={updateInputHandler}
                   value={newClient.legal_address}
                 ></textarea>
               </div>
@@ -176,8 +176,8 @@ function EditClient() {
                   rows={4}
                   id='description'
                   placeholder='Enter description'
-                  className='w-full mt-2 p-2 border rounded'
-                  onChange={handleInputChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+                  onChange={updateInputHandler}
                   value={newClient.description}
                 ></textarea>
               </div>

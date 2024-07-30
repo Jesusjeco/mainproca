@@ -18,7 +18,8 @@ function CreateClient() {
 
   const updateInputHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setNewClient({
+    setNewClient(
+      {
       ...newClient,
       [name]: value
     });
@@ -102,9 +103,15 @@ function CreateClient() {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Descripción</label>
-              <textarea name="description" rows={4} id="description" placeholder="Enter description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              <label htmlFor='description' className='block text-gray-700 font-bold'>Descripción</label>
+              <textarea
+                name='description'
+                rows={4}
+                id='description'
+                placeholder='Enter description'
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
                 onChange={updateInputHandler}
+                value={newClient.description}
               ></textarea>
             </div>
 
