@@ -7,6 +7,7 @@ import { ApiResponse } from '../interfaces/ApiResponse';
 interface ClientsState {
     clients: Client[];
     loading: boolean;
+    setLoading: (loading: boolean) => void;
     fetchClients: () => Promise<void>;
     getClientById: (id: string) => Client | undefined;
     createClient: (newClient: Client) => Promise<ApiResponse>;
@@ -17,6 +18,7 @@ interface ClientsState {
 export const useClientsStore = create<ClientsState>((set, get) => ({
     clients: [],
     loading: false,
+    setLoading: (loading: boolean) => set({ loading }), // setLoading,
     fetchClients: async () => {
         set({ loading: true });
         try {
@@ -69,8 +71,6 @@ export const useClientsStore = create<ClientsState>((set, get) => ({
         set({ loading: true });
         try {
             const response = await editClientById(client);
-            console.log(response, "Store");
-
             if (response && response.ok) {
                 set((state) => ({
                     clients: state.clients.map((item) => item._id === client._id ? client : item)

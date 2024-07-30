@@ -18,6 +18,7 @@ function Clients() {
   const loadingClients = useClientsStore(state => state.loading)
   const clients = useClientsStore(state => state.clients)
   const deleteClientById = useClientsStore(state => state.deleteClientById)
+  const setLoading = useClientsStore(state => state.setLoading);
   useEffect(() => {
     fetchAllClients()
   }, [])
@@ -25,11 +26,15 @@ function Clients() {
   const navigate = useNavigate();
 
   const deleteClientHandler = async (clientId: string) => {
+    setLoading(true);
     const response = await deleteClientById(clientId);
     if (response.success) {
+      setLoading(false);
       navigate({ to: "/clients" })
+    } else {
+      console.log("Error when deleting client");
     }
-  }
+  }//deleteClientHandler
 
   return (
     <>
@@ -72,7 +77,7 @@ function Clients() {
                                 <FaEdit />
                               </Link>
                               <button
-                                onClick={() => { if (client._id) deleteClientHandler(client._id) }} className="text-red-500 hover:text-red-700">
+                                onClick={() => { deleteClientHandler(client._id) }} className="text-red-500 hover:text-red-700">
                                 <FaTrashAlt />
                               </button>
                             </div>
