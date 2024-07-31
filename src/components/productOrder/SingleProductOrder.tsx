@@ -11,7 +11,7 @@ interface SingleProductOrderProps {
 }
 
 export function SingleProductOrder({ products, selectedProductOrder = undefined, productOrderResult, index = 0 }: SingleProductOrderProps) {
-  const [productOrder, setProductOrder] = useState<ProductOrder | undefined>(selectedProductOrder)
+  const [productOrder, _] = useState<ProductOrder | undefined>(selectedProductOrder)
   useEffect(() => {
     if (productOrder) {
       const presetProduct = (products.find(product => product._id === productOrder.product_id))

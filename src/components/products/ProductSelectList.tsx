@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { emptyProduct, Product } from "../../interfaces/Product";
+import { Product } from "../../interfaces/Product";
 
 interface ProductSelectListProps {
   products: Product[]
