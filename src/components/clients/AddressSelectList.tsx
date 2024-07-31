@@ -3,19 +3,22 @@ import { Client } from "../../interfaces/Client"
 
 interface AddressSelectListProps {
   client: Client,
+  selectedAddress: string,
   resultAddress: (newAddress: string) => void;
   label: string,
   className?: string | undefined
 }
-export function AddressSelectList({ client, resultAddress, label = "address", className }: AddressSelectListProps) {
-  const [address, setAddress] = useState<string>("")
+export function AddressSelectList({ client, selectedAddress = "", resultAddress, label = "address", className }: AddressSelectListProps) {
+  const [address, setAddress] = useState<string>(selectedAddress)
   useEffect(() => {
     resultAddress(address)
   }, [address])
   return (
     <>
       {client._id !== "" ?
-        <select name={label} id={label} className={className} onChange={(e) => setAddress(e.target.value)}>
+        <select required name={label} id={label} className={className}
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}>
           <option value="">Elegir direccion de entrega</option>
           <option value={client.legal_address}>{client.legal_address}</option>
           {client.offices.length > 0 ?

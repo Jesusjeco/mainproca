@@ -3,22 +3,22 @@
 * based on the selected ID
 */
 import { useEffect, useState } from "react"
-import { Client, emptyClient } from "../../interfaces/Client"
+import { Client } from "../../interfaces/Client"
 
 interface ClientSelectListProps {
-  clients: Client[],
-  clientResult: (client: Client) => void,
-  className?: string | undefined,
+  clients: Client[]
+  selectedClientId?: string
+  clientResult: (client: Client | undefined) => void
+  className?: string | undefined
   label?: string
 }
-export function ClientSelectList({ clients, clientResult, className, label = "client_id" }: ClientSelectListProps) {
-  const [clientID, setClientID] = useState<string>("");
+export function ClientSelectList({ clients, selectedClientId = "", clientResult, className, label = "client_id" }: ClientSelectListProps) {
+  const [clientID, setClientID] = useState<string>(selectedClientId);
   useEffect(() => {
-    const client = clients.find((client) => client._id === clientID);
-    if (client)
+    if (clientID) {
+      const client = clients.find((client) => client._id === clientID);
       clientResult(client)
-    else
-      clientResult(emptyClient);
+    }
   }, [clientID]);
 
   return (
@@ -30,6 +30,7 @@ export function ClientSelectList({ clients, clientResult, className, label = "cl
             id={label}
             required
             onChange={(e) => { setClientID(e.target.value) }}
+            value={clientID}
             className={className}
           >
             <option value="">Select a client</option>
