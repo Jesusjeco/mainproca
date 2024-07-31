@@ -58,7 +58,7 @@ export const useSellOrdersStore = create<SellOrdersState>((set, get) => ({
                 }
             }
 
-        } catch (error) {
+        } catch (error) { 
             console.error('Failed to create sellOrder', error);
             return {
                 success: false,
@@ -71,7 +71,6 @@ export const useSellOrdersStore = create<SellOrdersState>((set, get) => ({
         set({ loading: true });
         try {
             const response = await editSellOrderById(sellOrder);
-            console.log(response, "response");
             if (response) {
                 set((state) => ({
                     sellOrders: state.sellOrders.map((item) => item._id === sellOrder._id ? sellOrder : item)
