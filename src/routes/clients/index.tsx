@@ -6,6 +6,7 @@ import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { useClientsStore } from '../../store/clientStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
 import { useEffect } from 'react';
+import { isdevelopment } from '../../utils/utils';
 
 export const Route = createFileRoute('/clients/')({
   errorComponent: FetchErrorComponent as any,
@@ -76,10 +77,12 @@ function Clients() {
                               <Link to={'/clients/edit/' + client._id} className="text-green-500 hover:text-green-700">
                                 <FaEdit />
                               </Link>
-                              <button
-                                onClick={() => { deleteClientHandler(client._id) }} className="text-red-500 hover:text-red-700">
-                                <FaTrashAlt />
-                              </button>
+                              {isdevelopment ?
+                                <button
+                                  onClick={() => { deleteClientHandler(client._id) }} className="text-red-500 hover:text-red-700">
+                                  <FaTrashAlt />
+                                </button>
+                                : ""}
                             </div>
                           </td>
                         </tr>
