@@ -1,7 +1,5 @@
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
-import { deleteSellOrderById, fetchAllSellOrders } from "../../apiCalls/sellOrders";
 import "./sellOrders.pcss";
-import { SellOrder } from "../../interfaces/SellOrder";
 import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
@@ -10,17 +8,22 @@ import { DMYdate } from '../../utils/dates';
 import { useClientsStore } from '../../store/clientStore';
 import { useProductsStore } from '../../store/productStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
+import { useSellOrdersStore } from '../../store/sellOrderStore';
 
 export const Route = createFileRoute('/sellOrders/')({
-  loader: fetchAllSellOrders,
   errorComponent: FetchErrorComponent as any,
   notFoundComponent: () => <NotFoundComponent message="Purchase Order no encontrado" />,
   component: SellOrders,
 });
 
 function SellOrders() {
-  const allSellOrders = Route.useLoaderData<SellOrder[]>();
   const navigate = useNavigate();
+
+  // Using Zustand Sell Order store
+  const fetchSellOrders = useSellOrdersStore(state => state.fetchSellOrders)
+  const sellOrders = useSellOrdersStore(state => state.sellOrders)
+  const sellOrdersLoading = useSellOrdersStore(state => state.loading)
+  const deleteSellOrderById = useSellOrdersStore(state => state.deleteSellOrderById)
 
   // Using Zustand Client store
   const fetchClients = useClientsStore(state => state.fetchClients);
@@ -32,23 +35,23 @@ function SellOrders() {
   const getProductById = useProductsStore(state => state.getProductById);
   const productsLoading = useProductsStore(state => state.loading);
 
-  const deleteSellOrderHandler = async (sellOrderId: string) => {
-    const response = await deleteSellOrderById(sellOrderId);
-
-    if (response?.status === 200) {
-      navigate({ to: "/sellOrders" });
-    }
-  };
-
   useEffect(() => {
+    fetchSellOrders()
     fetchClients();
     fetchProducts();
   }, []);
 
+  const deleteSellOrderHandler = async (sellOrderId: string) => {
+    const response = await deleteSellOrderById(sellOrderId);
+
+    if (response.success) {
+      navigate({ to: "/sellOrders" });
+    }
+  }//deleteSellOrderHandler
 
   return (
     <>
-      <LoadingComponent var1={clientsLoading} var2={productsLoading} />
+      <LoadingComponent var1={clientsLoading} var2={productsLoading} var3={sellOrdersLoading} />
       <section id='sellOrders'>
         <div className="bg-gray-100">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -72,8 +75,8 @@ function SellOrders() {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {
-                    allSellOrders && allSellOrders.length > 0 ?
-                      allSellOrders.map((sellOrder, index) => {
+                    sellOrders && sellOrders.length > 0 ?
+                      sellOrders.map((sellOrder, index) => {
                         const client = getClientById(sellOrder.client_id);
                         return (
                           <tr key={index}>
@@ -111,7 +114,7 @@ function SellOrders() {
                         )
                       })
                       :
-                      allSellOrders ?
+                      sellOrders ?
                         <tr>
                           <td colSpan={5}>Lista de órdenes de compra vacía</td>
                         </tr>

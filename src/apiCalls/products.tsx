@@ -90,7 +90,7 @@ export async function editProductById(product: Product) {
   } catch (error) {
     console.error(error);
   };
-}
+}//editProductById
 
 //Delete product by Id
 export async function deleteProductById(productId: string) {
@@ -104,4 +104,4 @@ export async function deleteProductById(productId: string) {
   } catch (error) {
     console.error(error);
   };
-}
+}//deleteProductById
