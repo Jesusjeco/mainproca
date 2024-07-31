@@ -6,6 +6,7 @@ import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { useProductsStore } from '../../store/productStore';
 import { useEffect } from 'react';
 import { LoadingComponent } from '../../components/LoadingComponent';
+import { isdevelopment } from "../../utils/utils"
 
 export const Route = createFileRoute('/products/')({
   errorComponent: FetchErrorComponent as any,
@@ -14,6 +15,7 @@ export const Route = createFileRoute('/products/')({
 })
 
 function Products() {
+
   const fetchProducts = useProductsStore(state => state.fetchProducts)
   const products = useProductsStore(state => state.products)
   const loadingProducts = useProductsStore(state => state.loading)
@@ -69,10 +71,12 @@ function Products() {
                               <Link to={'/products/edit/' + product._id} className="text-green-500 hover:text-green-700">
                                 <FaEdit />
                               </Link>
-                              <button
-                                onClick={() => { if (product._id) deleteProductHandler(product._id) }} className="text-red-500 hover:text-red-700">
-                                <FaTrashAlt />
-                              </button>
+                              {isdevelopment ?
+                                <button
+                                  onClick={() => { if (product._id) deleteProductHandler(product._id) }} className="text-red-500 hover:text-red-700">
+                                  <FaTrashAlt />
+                                </button>
+                                : ""}
                             </div>
                           </td>
                         </tr>
