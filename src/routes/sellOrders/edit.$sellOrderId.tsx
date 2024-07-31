@@ -1,5 +1,191 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import "react-datepicker/dist/react-datepicker.css";
+import { ClientSelectList } from "../../components/clients/ClientSelectList";
+import { useClientsStore } from "../../store/clientStore";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { LoadingComponent } from "../../components/LoadingComponent";
+import { Client, emptyClient } from "../../interfaces/Client";
+import DatePicker from "react-datepicker";
+import { AddressSelectList } from "../../components/clients/AddressSelectList";
+import { MultiProductOrder } from "../../components/sellOrder/MultiProductOrder";
+import { useProductsStore } from "../../store/productStore";
+import { ProductOrder } from "../../interfaces/ProductOrder";
+import { AvoidEnterKeyPress } from "../../utils/AvoidEnterKeyPress";
+import { useSellOrdersStore } from "../../store/sellOrderStore";
+import { NotFoundComponent } from "../../components/NotFoundComponent";
+import { FetchErrorComponent } from "../../components/FetchErrorComponent";
+import { SellOrder } from "../../interfaces/SellOrder";
 
+interface EditSellOrderProps {
+  sellOrderId: string
+}
 export const Route = createFileRoute('/sellOrders/edit/$sellOrderId')({
-  component: () => <div>Hello /sellOrders/edit/$sellOrderId!</div>
-})
+  loader: async ({ params }: { params: EditSellOrderProps }) => { return params.sellOrderId },
+  errorComponent: FetchErrorComponent as any,
+  notFoundComponent: () => <NotFoundComponent message="SellOrdere no encontrado" />,
+  component: EditSellOrder
+});
+
+function EditSellOrder() {
+  const sellOrderId = Route.useLoaderData() as string
+  const formRef = useRef<HTMLFormElement>(null);
+  const navigate = useNavigate();
+
+  const fetchSellOrders = useSellOrdersStore(state => state.fetchSellOrders)
+  const editSellOrderById = useSellOrdersStore(state => state.editSellOrderById);
+  const getSellOrderById = useSellOrdersStore(state => state.getSellOrderById);
+  const sellOrdersLoading = useSellOrdersStore(state => state.loading)
+
+  const fetchClients = useClientsStore(state => state.fetchClients);
+  const getClientById = useClientsStore(state => state.getClientById)
+  const clients = useClientsStore(state => state.clients);
+  const clientsLoading = useClientsStore(state => state.loading);
+
+  const fetchProducts = useProductsStore(state => state.fetchProducts);
+  const availableProducts = useProductsStore(state => state.availableProducts);
+  const productsLoading = useProductsStore(state => state.loading);
+
+  const [sellOrder, setSellOrder] = useState<SellOrder | undefined>(undefined)
+
+  useEffect(() => {
+    fetchSellOrders();
+    fetchClients();
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    if (!sellOrdersLoading && !clientsLoading && !productsLoading && sellOrderId)
+      setSellOrder(getSellOrderById(sellOrderId))
+  }, [sellOrdersLoading, clientsLoading, productsLoading, sellOrderId])
+
+  const [client, setClient] = useState<Client | undefined>(undefined);
+  const [orderDate, setOrderDate] = useState<Date>(new Date());
+  const [address, setAddress] = useState<string>("");
+  const [products, setProducts] = useState<ProductOrder[]>([]);
+  const [totalPrice, setTotalPrice] = useState<number>(0.00);
+
+  useEffect(() => {
+    if (sellOrder) {
+      setClient(getClientById(sellOrder.client_id));
+      setAddress(sellOrder.address);
+      setProducts(sellOrder.products);
+      setOrderDate(sellOrder.orderDate);
+      setTotalPrice(sellOrder.totalPrice);
+    }
+  }, [sellOrder]);
+
+  const clientResult = (newClient: Client | undefined) => {
+    if (newClient) {
+      if (newClient._id !== "")
+        setClient(newClient);
+      else {
+        setClient(emptyClient);
+        setAddress("");
+      }
+    }
+  };
+
+  const orderDateResult = (newDate: Date | null) => {
+    if (newDate)
+      setOrderDate(newDate);
+  };
+
+  const resultAddress = (newAddress: string) => {
+    setAddress(newAddress);
+  };
+
+  const resultProducts = (newProductsOrder: ProductOrder[]) => {
+    setProducts(newProductsOrder);
+  };
+
+  useEffect(() => {
+    const newTotalPrice = products.map(product => product.price * product.quantity);
+    setTotalPrice(newTotalPrice.reduce((acumulator, currentValue) => acumulator + currentValue, 0));
+  }, [products]);
+
+  const formHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (client && sellOrder) {
+      const updatedSellOrder = {
+        _id: sellOrderId,
+        orderNumber: sellOrder.orderNumber,
+        client_id: client._id,
+        address,
+        products,
+        orderDate,
+        totalPrice,
+      };
+
+      console.log(updatedSellOrder, "updatedSellOrder");
+
+
+      const response = await editSellOrderById(updatedSellOrder);
+      if (response.success) {
+        if (formRef.current)
+          formRef.current.reset();
+        navigate({ to: "/sellOrders" });
+      } else {
+        console.error('Failed to update sell order');
+      }
+    }
+  };
+
+  return (
+    <>
+      <LoadingComponent var1={clientsLoading} var2={productsLoading} var3={sellOrdersLoading} />
+      <div className="w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
+        <h2 className="text-2xl font-bold mb-6">Editar nota de entrega</h2>
+        {client ?
+          <form onSubmit={formHandler} ref={formRef} onKeyDown={AvoidEnterKeyPress}>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="mb-4">
+                <label htmlFor="client_id" className="block text-gray-700 font-medium mb-2">Cliente</label>
+                <ClientSelectList clients={clients} selectedClientId={client._id} clientResult={clientResult} className="w-full border border-gray-300 rounded-md p-2" label="client_id" />
+              </div>
+              <div className="mb-4 flex flex-col">
+                <label htmlFor="orderDate" className="block text-gray-700 font-medium mb-2">Fecha de orden</label>
+                <DatePicker
+                  id="orderDate"
+                  name="orderDate"
+                  required
+                  selected={orderDate}
+                  onChange={orderDateResult}
+                  className="w-full border border-gray-300 rounded-md p-2"
+                  dateFormat={"dd MMMM yyyy"}
+                />
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="address" className="block text-gray-700 font-medium mb-2">Dirección</label>
+              {client ?
+                <AddressSelectList client={client} selectedAddress={address} resultAddress={resultAddress} label="address" className="w-full border border-gray-300 rounded-md p-2" />
+                : <div>Debe escoger un cliente</div>}
+            </div>
+
+            {availableProducts ?
+              <div className="mb-4">
+                <MultiProductOrder products={availableProducts} initialProductOrders={products} resultProducts={resultProducts} />
+              </div>
+              : <div>No se encuentran productos para mostrar</div>
+            }
+
+            <div className="mb-4">
+              <div className="block text-gray-700 font-medium mb-2 text-right">Precio total*</div>
+              <p id="totalPrice" className="w-full border border-gray-300 rounded-md p-2 text-right">{totalPrice.toFixed(2)}</p>
+            </div>
+
+            <div className="text-right">
+              <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">
+                Guardar
+              </button>
+            </div>
+          </form>
+          : "Cargando clientes..."}
+      </div>
+    </>
+  );
+}
+
+export default EditSellOrder;

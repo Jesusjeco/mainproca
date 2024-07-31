@@ -3,7 +3,7 @@ import { Client } from "../../interfaces/Client"
 
 interface AddressSelectListProps {
   client: Client,
-  selectedAddress: string,
+  selectedAddress?: string,
   resultAddress: (newAddress: string) => void;
   label: string,
   className?: string | undefined
