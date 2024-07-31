@@ -5,11 +5,22 @@ import { ProductOrder } from "../../interfaces/ProductOrder";
 
 interface SingleProductOrderProps {
   products: Product[];
+  selectedProductOrder?: ProductOrder
   productOrderResult: (index: number, newProductOrder: ProductOrder) => void;
   index?: number;
 }
 
-export function SingleProductOrder({ products, productOrderResult, index = 0 }: SingleProductOrderProps) {
+export function SingleProductOrder({ products, selectedProductOrder = undefined, productOrderResult, index = 0 }: SingleProductOrderProps) {
+  const [productOrder, _] = useState<ProductOrder | undefined>(selectedProductOrder)
+  useEffect(() => {
+    if (productOrder) {
+      const presetProduct = (products.find(product => product._id === productOrder.product_id))
+      if (presetProduct)
+        setProduct(presetProduct);
+      setAlternativePrice(productOrder.price)
+      setQuantity(productOrder.quantity)
+    }
+  }, [productOrder])
   //Single product
   const [product, setProduct] = useState<Product>(emptyProduct);
   const productResult = (newProduct: Product) => {
@@ -19,7 +30,7 @@ export function SingleProductOrder({ products, productOrderResult, index = 0 }: 
   const [alternativePrice, setAlternativePrice] = useState<number>(0.00);
   useEffect(() => {
     setAlternativePrice(product.price)
-    setQuantity(1)
+    //setQuantity(1)
   }, [product]);
 
   //Quantity
@@ -50,7 +61,7 @@ export function SingleProductOrder({ products, productOrderResult, index = 0 }: 
       <div className="grid grid-cols-4 gap-4">
         <div>
           <label htmlFor="product" className="block text-gray-700 font-medium">Producto:</label>
-          <ProductSelectList products={products} productResult={productResult} label={"product"}
+          <ProductSelectList products={products} selectedProductId={product._id} productResult={productResult} label={"product"}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300" />
         </div>
         <div>
