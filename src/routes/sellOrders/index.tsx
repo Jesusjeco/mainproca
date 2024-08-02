@@ -96,7 +96,7 @@ function SellOrders() {
                               })}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {sellOrder.subTotal.toFixed(2)}</td>
+                              {sellOrder.subTotal ? sellOrder.subTotal.toFixed(2) : ""}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                               <div className="flex space-x-4">
                                 <Link to={'/sellOrders/' + sellOrder._id} className="text-blue-500 hover:text-blue-700">
