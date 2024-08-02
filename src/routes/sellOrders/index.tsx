@@ -105,12 +105,16 @@ function SellOrders() {
                                 <Link to={'/sellOrders/edit/' + sellOrder._id} className="text-green-500 hover:text-green-700">
                                   <FaEdit />
                                 </Link>
-                                {isdevelopment ?
+                                <button
+                                    onClick={() => { if (sellOrder._id) deleteSellOrderHandler(sellOrder._id) }} className="text-red-500 hover:text-red-700">
+                                    <FaTrashAlt />
+                                  </button>
+                                {/* {isdevelopment ?
                                   <button
                                     onClick={() => { if (sellOrder._id) deleteSellOrderHandler(sellOrder._id) }} className="text-red-500 hover:text-red-700">
                                     <FaTrashAlt />
                                   </button>
-                                  : ""}
+                                  : ""} */}
                               </div>
                             </td>
                           </tr>
