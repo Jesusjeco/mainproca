@@ -9,6 +9,7 @@ import { useProductsStore } from '../../store/productStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
 import { Client } from '../../interfaces/Client';
 import { useSellOrdersStore } from '../../store/sellOrderStore';
+import FooterSellOrder from '../../components/sellOrder/FooterSellOrder';
 
 interface SingleSellOrderProps {
   sellOrderId: string
@@ -61,32 +62,25 @@ function SingleSellOrder() {
     <>
       <LoadingComponent var1={clientsLoading} var2={productsLoading} var3={sellOrdersLoading} />
       {sellOrder && client ?
-        <div className="w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold mb-6">Nota de entrega</h2>
-            <p className="text-2xl text-gray-700 font-medium mb-2">N° {sellOrder.orderNumber}</p>
+        <div className="SingleSellOrder w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="text-2xl font-bold">Nota de entrega</h2>
+            <p className="text-2xl text-gray-700 font-medium">N° {sellOrder.orderNumber}</p>
           </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="mb-4">
-              <p className="block text-gray-700 font-medium mb-2">Cliente</p>
-              <p className="w-full border border-gray-300 rounded-md p-2">
-                {client.rif} - {client.name}
-              </p>
+          <div className="section2">
+            <div className='flex flex-col'>
+              <p>Señores: <b>{client.name}</b></p>
+              <p>RIF: {client.rif}</p>
             </div>
-            <div className="mb-4 flex flex-col">
-              <label htmlFor="orderDate" className="block text-gray-700 font-medium mb-2">Fecha de orden</label>
-              <div className="w-full border border-gray-300 rounded-md p-2">{DMYdate(sellOrder.orderDate)}</div>
+            <div className='text-right'>
+              <p><b>Fecha</b> : {DMYdate(sellOrder.orderDate)}</p>
             </div>
           </div>
-
-
           <div className="mb-4">
-            <p className="block text-gray-700 font-medium mb-2">Dirección</p>
-            <p>{sellOrder.address}</p>
+            <p className="block text-gray-700 font-medium mb-2">Dirección: {sellOrder.address}</p>
           </div>
 
           <div className="mb-4">
-            <h2 className="text-2xl font-bold mb-6 inline">Productos</h2>
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white border border-gray-300">
                 <thead>
@@ -94,7 +88,7 @@ function SingleSellOrder() {
                     <th className="py-2 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Productos</th>
                     <th className="py-2 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Precio</th>
                     <th className="py-2 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Cantidad</th>
-                    <th className="py-2 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Total</th>
+                    <th className="py-2 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Total USD</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -105,7 +99,6 @@ function SingleSellOrder() {
                         </td>
                         <td id="price" className='py-2 px-4 border border-gray-300'>
                           {product.price}
-                          <span className="text-gray-500">$</span>
                         </td>
                         <td className='py-2 px-4 border border-gray-300'>{product.quantity}</td>
                         <td className='py-2 px-4 border border-gray-300'>{product.price * product.quantity}</td>
@@ -121,6 +114,8 @@ function SingleSellOrder() {
           </div>
         </div>
         : "Orden no encontrada"}
+
+      <FooterSellOrder className='w-full lg:w-4/5 mx-auto ' />
     </>
   )
 }
