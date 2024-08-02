@@ -34,8 +34,6 @@ function EditClient() {
         setNewClient(response)
         setOffices(response.offices)
       }
-      else
-        console.log("Client is undefined");
     }
   }, [clientId, loading])
 
