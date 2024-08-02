@@ -26,7 +26,7 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
 
         <div className="companyInformation">
           <h2 className="text-lg font-bold">Cuentas bancarias</h2>
-          <div className="wrapper">
+          <div className="wrapper text-sm ">
             <div>
               <p><b>Banco Mercantil</b></p>
               <p>Cuenta corriente 0105 0624 7116 2407 4383</p>
@@ -50,19 +50,19 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
               <p>Nombre: Jesús Carrero</p>
               <p>Correo: jescar4@gmail.com</p>
             </div>
+            <div className="contactWrapper">
+              <div>
+                <p>Ing. Jesús Ulises Carrero García</p>
+                <p>+58 414 3764486</p>
+                <p>jescar4@gmail.com</p>
+              </div>
+              <div>
+                <p>Ing. Yadelsi Omaña de Carrero</p>
+                <p>+58 414 7076311</p>
+              </div>
+            </div>
           </div>
 
-          <div className="contactWrapper">
-            <div>
-              <p>Ing. Jesús Ulises Carrero García</p>
-              <p>+58 414 3764486</p>
-              <p>jescar4@gmail.com</p>
-            </div>
-            <div>
-              <p>Ing. Yadelsi Omaña de Carrero</p>
-              <p>+58 414 7076311</p>
-            </div>
-          </div>
         </div>
       </div>
     </>

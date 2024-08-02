@@ -40,8 +40,8 @@
 	.companyInformation {
 		.wrapper {
 			display: grid;
-			grid-template-columns: 1fr 1fr;
-			gap: 10px;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 0;
 
 			> div {
 				border: 1px solid black;
@@ -51,9 +51,7 @@
 	}
 
 	.contactWrapper {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		text-align: center;
-		margin-top: 10px;
+		text-align: right;
+		grid-column: 2 / 4;
 	}
 }
