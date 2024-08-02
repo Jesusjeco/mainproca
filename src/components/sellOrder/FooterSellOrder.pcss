@@ -1,0 +1,59 @@
+.FooterSellOrder {
+	margin-top: 20px;
+	margin-bottom: 30px;
+
+	hr {
+		height: 1px;
+		background-color: black;
+		border: none;
+		margin-bottom: 5px;
+	}
+
+	.notes {
+		font-size: 14px;
+		border: 2px solid black;
+		margin-bottom: 20px;
+		padding: 0.25rem;
+	}
+
+	.clientData {
+		display: grid;
+		grid-template-columns: 5fr 2fr;
+		gap: 30px;
+		margin-bottom: 20px;
+
+		.idAndDate {
+			display: grid;
+			grid-template-columns: 1fr 6fr 2fr 6fr;
+			align-items: end;
+		}
+	}
+
+	.stamp {
+		border: 1px solid black;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.companyInformation {
+		.wrapper {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 10px;
+
+			> div {
+				border: 1px solid black;
+				padding: 5px;
+			}
+		}
+	}
+
+	.contactWrapper {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		text-align: center;
+		margin-top: 10px;
+	}
+}
