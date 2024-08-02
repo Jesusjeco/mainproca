@@ -51,7 +51,9 @@ function Products() {
                 <thead className="bg-gray-50">
                   <tr>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Costo inventario</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Opciones</th>
                   </tr>
                 </thead>
@@ -62,7 +64,9 @@ function Products() {
                         <tr key={index}>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             <Link to={'/products/' + product._id}>{product.name}</Link></td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.price}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.quantity}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.price * product.quantity}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div className="flex space-x-4">
                               <Link to={'/products/' + product._id} className="text-blue-500 hover:text-blue-700">
