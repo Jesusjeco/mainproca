@@ -13,6 +13,8 @@ interface SingleProductOrderProps {
 export function SingleProductOrder({ products, selectedProductOrder = undefined, productOrderResult, index = 0 }: SingleProductOrderProps) {
   const [productOrder, _] = useState<ProductOrder | undefined>(selectedProductOrder)
   useEffect(() => {
+    console.log(productOrder,"productOrder");
+    
     if (productOrder) {
       const presetProduct = (products.find(product => product._id === productOrder.product_id))
       if (presetProduct)
@@ -28,18 +30,14 @@ export function SingleProductOrder({ products, selectedProductOrder = undefined,
   }
   7//Alternative price
   const [alternativePrice, setAlternativePrice] = useState<number>(0.00);
-  useEffect(() => {
-    setAlternativePrice(product.price)
-    //setQuantity(1)
-  }, [product]);
 
   //Quantity
   const [quantity, setQuantity] = useState<number>(0)
 
   //Total price
-  const [totalPrice, setTotalPrice] = useState<number>(0.00);
+  const [subTotal, setSubTotal] = useState<number>(0.00);
   useEffect(() => {
-    setTotalPrice(alternativePrice * quantity)
+    setSubTotal(alternativePrice * quantity)
   }, [alternativePrice, quantity])
 
   useEffect(() => {
@@ -48,7 +46,7 @@ export function SingleProductOrder({ products, selectedProductOrder = undefined,
       price: alternativePrice,
       quantity: quantity
     })
-  }, [product, totalPrice])
+  }, [product, subTotal])
 
   const quantityLimitReach: CSSProperties = {
     color: 'red',
@@ -83,7 +81,7 @@ export function SingleProductOrder({ products, selectedProductOrder = undefined,
         </div>
         <div>
           <label className="block text-gray-700 font-medium">Acumulado:</label>
-          <div className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300">${totalPrice.toFixed(2)}</div>
+          <div className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300">${subTotal.toFixed(2)}</div>
         </div>
       </div>
     </>

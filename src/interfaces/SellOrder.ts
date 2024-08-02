@@ -4,20 +4,22 @@ export interface SellOrder {
   _id: string
   orderNumber: string,
   client_id: string;
+  orderDate: Date;
   address: string;
   products: ProductOrder[];
-  totalPrice: number;
-  orderDate: Date;
+  subTotal: number;
+  total: number;
 }
 
 export const emptySellOrder = {
   _id: "",
   orderNumber: "",
   client_id: "",
+  orderDate: new Date(),
   address: "",
   products: [],
-  orderDate: new Date(),
-  totalPrice: 0
+  subTotal: 0,
+  total: 0,
 }
 
 
