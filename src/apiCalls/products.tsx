@@ -18,8 +18,6 @@ export async function fetchAllProducts(): Promise<Product[]> {
     }
 
     const allProducts = await response.json();
-    // console.log('Respuesta de fetchAllProducts');
-    //console.log(allProducts)
     return allProducts;
   } catch (error) {
     console.error(error);

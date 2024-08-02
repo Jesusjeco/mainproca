@@ -18,8 +18,6 @@ export async function fetchAllClients(): Promise<Client[]> {
     }
 
     const allClients = await response.json();
-    // console.log('Respuesta de fetchAllClients');
-    // console.log(allClients);
     return allClients;
   } catch (error) {
     console.error(error);

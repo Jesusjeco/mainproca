@@ -12,6 +12,7 @@ import { useProductsStore } from "../../store/productStore";
 import { ProductOrder } from "../../interfaces/ProductOrder";
 import { AvoidEnterKeyPress } from "../../utils/AvoidEnterKeyPress";
 import { useSellOrdersStore } from "../../store/sellOrderStore";
+import { factura_iva } from "../../utils/utils";
 
 export const Route = createFileRoute('/sellOrders/create')({
   component: CreateSellOrder
@@ -73,11 +74,16 @@ function CreateSellOrder() {
   }
 
   //total price
-  const [totalPrice, setTotalPrice] = useState<number>(0.00);
+  const [subTotal, setSubTotal] = useState<number>(0.00);
   useEffect(() => {
-    const newTotalPrice = products.map(product => product.price * product.quantity)
-    setTotalPrice(newTotalPrice.reduce((acumulator, currentValue) => acumulator + currentValue, 0))
+    const newSubTotal = products.map(product => product.price * product.quantity)
+    setSubTotal(newSubTotal.reduce((acumulator, currentValue) => acumulator + currentValue, 0))
   }, [products])
+
+  const [total, setTotal] = useState<number>(0)
+  useEffect(() => {
+    setTotal(subTotal * factura_iva)
+  }, [subTotal])
 
   //Form Handler
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -91,7 +97,8 @@ function CreateSellOrder() {
         address,
         products,
         orderDate,
-        totalPrice,
+        subTotal,
+        total
       }
 
       const response = await createSellOrder(newSellOrder);
@@ -107,7 +114,7 @@ function CreateSellOrder() {
       }
     }
   }//formHandler
-  
+
   return (
     <>
       <LoadingComponent var1={clientsLoading} var2={productsLoading} />
@@ -152,11 +159,25 @@ function CreateSellOrder() {
               : <div>No se encuentran productos para mostrar</div>
             }
 
-            <div className="mb-4">
-              <div className="block text-gray-700 font-medium mb-2 text-right">
-                Precio total*</div>
-              <p id="totalPrice" className="w-full border border-gray-300 rounded-md p-2 text-right">
-                {totalPrice.toFixed(2)}</p>
+            <div className="mb-4 flex items-center justify-end gap-2">
+              <div className="text-gray-700 font-medium">
+                Sub total</div>
+              <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
+                {subTotal.toFixed(2)}</p>
+            </div>
+
+            <div className="mb-4 flex items-center justify-end gap-2">
+              <div className="text-gray-700 font-medium">
+                IVA</div>
+              <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
+                {(subTotal * (factura_iva - 1)).toFixed(2)}</p>
+            </div>
+
+            <div className="mb-4 flex items-center justify-end gap-2">
+              <div className="text-gray-700 font-medium">
+                Total</div>
+              <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
+                {total.toFixed(2)}</p>
             </div>
 
             <div className="flex justify-end">
