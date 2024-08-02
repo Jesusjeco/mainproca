@@ -15,6 +15,7 @@ import { useSellOrdersStore } from "../../store/sellOrderStore";
 import { NotFoundComponent } from "../../components/NotFoundComponent";
 import { FetchErrorComponent } from "../../components/FetchErrorComponent";
 import { SellOrder } from "../../interfaces/SellOrder";
+import { factura_iva } from "../../utils/utils";
 
 interface EditSellOrderProps {
   sellOrderId: string
@@ -62,15 +63,17 @@ function EditSellOrder() {
   const [orderDate, setOrderDate] = useState<Date>(new Date());
   const [address, setAddress] = useState<string>("");
   const [products, setProducts] = useState<ProductOrder[]>([]);
-  const [totalPrice, setTotalPrice] = useState<number>(0.00);
+  const [subTotal, setSubTotal] = useState<number>(0.00);
+  const [total, setTotal] = useState<number>(0)
 
   useEffect(() => {
     if (sellOrder) {
-      setClient(getClientById(sellOrder.client_id));
-      setAddress(sellOrder.address);
-      setProducts(sellOrder.products);
-      setOrderDate(sellOrder.orderDate);
-      setTotalPrice(sellOrder.totalPrice);
+      setClient(getClientById(sellOrder.client_id))
+      setAddress(sellOrder.address)
+      setProducts(sellOrder.products)
+      setOrderDate(sellOrder.orderDate)
+      setSubTotal(sellOrder.subTotal)
+      setTotal(sellOrder.total)
     }
   }, [sellOrder]);
 
@@ -100,8 +103,12 @@ function EditSellOrder() {
 
   useEffect(() => {
     const newTotalPrice = products.map(product => product.price * product.quantity);
-    setTotalPrice(newTotalPrice.reduce((acumulator, currentValue) => acumulator + currentValue, 0));
+    setSubTotal(newTotalPrice.reduce((acumulator, currentValue) => acumulator + currentValue, 0));
   }, [products]);
+
+  useEffect(() => {
+    setTotal(subTotal * factura_iva)
+  }, [subTotal])
 
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -114,11 +121,9 @@ function EditSellOrder() {
         address,
         products,
         orderDate,
-        totalPrice,
+        subTotal,
+        total,
       };
-
-      console.log(updatedSellOrder, "updatedSellOrder");
-
 
       const response = await editSellOrderById(updatedSellOrder);
       if (response.success) {
@@ -171,9 +176,25 @@ function EditSellOrder() {
               : <div>No se encuentran productos para mostrar</div>
             }
 
-            <div className="mb-4">
-              <div className="block text-gray-700 font-medium mb-2 text-right">Precio total*</div>
-              <p id="totalPrice" className="w-full border border-gray-300 rounded-md p-2 text-right">{totalPrice.toFixed(2)}</p>
+            <div className="mb-4 flex items-center justify-end gap-2">
+              <div className="text-gray-700 font-medium">
+                Sub total</div>
+              <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
+                {subTotal.toFixed(2)}</p>
+            </div>
+
+            <div className="mb-4 flex items-center justify-end gap-2">
+              <div className="text-gray-700 font-medium">
+                IVA</div>
+              <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
+                {(subTotal * (factura_iva - 1)).toFixed(2)}</p>
+            </div>
+
+            <div className="mb-4 flex items-center justify-end gap-2">
+              <div className="text-gray-700 font-medium">
+                Total</div>
+              <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
+                {total.toFixed(2)}</p>
             </div>
 
             <div className="text-right">
