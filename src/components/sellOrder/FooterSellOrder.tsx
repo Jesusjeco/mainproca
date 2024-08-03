@@ -26,7 +26,7 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
 
         <div className="companyInformation">
           <h2 className="text-lg font-bold">Cuentas bancarias</h2>
-          <div className="wrapper text-sm ">
+          <div className="wrapper">
             <div>
               <p><b>Banco Mercantil</b></p>
               <p>Cuenta corriente 0105 0624 7116 2407 4383</p>
