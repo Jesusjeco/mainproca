@@ -119,20 +119,27 @@ function SingleSellOrder() {
               </div>
             </div>
 
-            <div className="mb-1 flex items-center justify-end gap-2">
-              <div className="text-gray-700 font-medium mb-2">Sub total</div>
-              <p id="subTotal" className="w-[100px] border border-gray-300 px-2 py-1">{sellOrder.subTotal.toFixed(2)}</p>
+            <div className='relative'>
+              <div className="mb-1 flex items-center justify-end gap-2">
+                <div className="text-gray-700 font-medium mb-2">Sub total</div>
+                <p id="subTotal" className="w-[100px] border border-gray-300 px-2 py-1">{sellOrder.subTotal.toFixed(2)}</p>
+              </div>
+
+              <div className="mb-1 flex items-center justify-end gap-2">
+                <div className="text-gray-700 font-medium mb-2">IVA</div>
+                <p id="iva" className="w-[100px] border border-gray-300 px-2 py-1">{(sellOrder.total - sellOrder.subTotal).toFixed(2)}</p>
+              </div>
+
+              <div className="mb-1 flex items-center justify-end gap-2">
+                <div className="text-gray-700 font-medium mb-2">Total</div>
+                <p id="total" className="w-[100px] border border-gray-300  px-2 py-1">{sellOrder.total.toFixed(2)}</p>
+              </div>
+
+              <div className='amountNumber'>
+                {(sellOrder.subTotal + ((sellOrder.total - sellOrder.subTotal) * 0.25))}
+              </div>
             </div>
 
-            <div className="mb-1 flex items-center justify-end gap-2">
-              <div className="text-gray-700 font-medium mb-2">IVA</div>
-              <p id="iva" className="w-[100px] border border-gray-300 px-2 py-1">{(sellOrder.total - sellOrder.subTotal).toFixed(2)}</p>
-            </div>
-
-            <div className="mb-1 flex items-center justify-end gap-2">
-              <div className="text-gray-700 font-medium mb-2">Total</div>
-              <p id="total" className="w-[100px] border border-gray-300  px-2 py-1">{sellOrder.total.toFixed(2)}</p>
-            </div>
 
           </div>
           : "Orden no encontrada"}
