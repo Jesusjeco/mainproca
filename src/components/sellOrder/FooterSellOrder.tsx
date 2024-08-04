@@ -50,6 +50,11 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
               <p>Nombre: Jesús Carrero</p>
               <p>Correo: jescar4@gmail.com</p>
             </div>
+            <div>
+              <p><b>Zelle</b></p>
+              <p>Nombre: Oralis Yadelsi Omana</p>
+              <p>Correo: yadelsiog@gmail.com</p>
+            </div>
             <div className="contactWrapper">
               <div>
                 <p>Ing. Jesús Ulises Carrero García</p>
