@@ -120,15 +120,17 @@ function SingleSellOrder() {
             </div>
 
             <div className='relative'>
-              <div className="mb-1 flex items-center justify-end gap-2">
-                <div className="text-gray-700 font-medium">Sub total</div>
-                <p id="subTotal" className="w-[100px] border-b border-gray-300 ">{sellOrder.subTotal.toFixed(2)}</p>
+              <div className="flex items-center justify-end gap-2 mb-2">
+                <div className="flex items-center justify-end gap-2">
+                  <div className="text-gray-700 font-medium">Sub total</div>
+                  <p id="subTotal" className="w-[100px] border-b border-gray-300 ">{sellOrder.subTotal.toFixed(2)}</p>
+                </div>
+                <div className="flex items-center justify-end gap-2">
+                  <div className="text-gray-700 font-medium">IVA</div>
+                  <p id="iva" className="w-[100px] border-b border-gray-300">{(sellOrder.total - sellOrder.subTotal).toFixed(2)}</p>
+                </div>
               </div>
 
-              <div className="mb-1 flex items-center justify-end gap-2">
-                <div className="text-gray-700 font-medium">IVA</div>
-                <p id="iva" className="w-[100px] border-b border-gray-300">{(sellOrder.total - sellOrder.subTotal).toFixed(2)}</p>
-              </div>
 
               <div className="mb-1 flex items-center justify-end gap-2">
                 <div className="text-gray-700 font-medium">Total</div>
@@ -139,7 +141,6 @@ function SingleSellOrder() {
                 {(sellOrder.subTotal + ((sellOrder.total - sellOrder.subTotal) * 0.25))}
               </div>
             </div>
-
 
           </div>
           : "Orden no encontrada"}
