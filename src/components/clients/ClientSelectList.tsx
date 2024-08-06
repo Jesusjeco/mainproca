@@ -35,7 +35,7 @@ export function ClientSelectList({ clients, selectedClientId = "", clientResult,
           >
             <option value="">Select a client</option>
             {clients.map((client) => (
-              <option key={client._id} value={client._id}>{client.rif} - {client.name}</option>
+              <option key={client._id} value={client._id}>{client.name} - {client.rif}</option>
             ))}
           </select>
         ) : (
