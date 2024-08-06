@@ -6,7 +6,7 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
   return (
     <>
       <div className={"FooterSellOrder " + className}>
-        <div className="notes">
+        <div className="notes text-sm">
           <p>NOTA: El pago de esta mercancía se recibirá en Dólares Americanos USD o en Pesos Colombianos, tal y como se especifica en cada renglón recibido en su Descripción.</p>
           <b>NOTA: Pago en Bolívares a Tasa promedio entre el BCV y Monitor Dólar del momento de la transferencia.</b>
           <p>NOTA: La condición de tiempo de pago máximo será de 7 días contínuos a partir de la fecha de recepción de esta nota de entrega.</p>
@@ -25,7 +25,7 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
         </div>
 
         <div className="companyInformation">
-          <h2 className="text-lg font-bold">Cuentas bancarias</h2>
+          <h2 className="text-md font-bold">Cuentas bancarias</h2>
           <div className="wrapper">
             <div>
               <p><b>Banco Mercantil</b></p>
