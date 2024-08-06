@@ -95,14 +95,14 @@ function SingleSellOrder() {
             <div className="section2">
               <div className='flex flex-col'>
                 <p className='text-lg'>Señores: <b>{client.name}</b></p>
-                <p>RIF: {client.rif}</p>
+                <p className='text-sm'>RIF: {client.rif}</p>
               </div>
             </div>
             <div className="mb-4">
-              <p className="block text-gray-700 font-medium mb-2">Dirección: {sellOrder.address}</p>
+              <p className="text-sm text-gray-700 mb-2">Dirección: {sellOrder.address}</p>
             </div>
 
-            <div className="mb-4  text-sm">
+            <div className="mb-2 text-sm">
               <div className="overflow-x-auto">
                 <table className="min-w-full bg-white border border-gray-300">
                   <thead>
@@ -117,12 +117,12 @@ function SingleSellOrder() {
                     {
                       sellOrder.products.map((product, index) =>
                         <tr key={index} className="border border-gray-300">
-                          <td className='py-1 px-4 border border-gray-300'>{getProductById(product.product_id)?.name + " x " + product.quantity}
+                          <td className='py-1 px-4 border border-gray-300'>{getProductById(product.product_id)?.name}
                           </td>
                           <td id="price" className='py-1 px-4 border border-gray-300'>
                             {product.price}
                           </td>
-                          <td className='py-1 px-4 border border-gray-300'>{product.quantity}</td>
+                          <td className='py-1 px-4 border border-gray-300 text-center'>{product.quantity}</td>
                           <td className='py-1 px-4 border border-gray-300'>{(product.price * product.quantity).toFixed(2)}</td>
                         </tr>
                       )}
@@ -132,17 +132,15 @@ function SingleSellOrder() {
             </div>
 
             <div className='relative text-sm'>
-              <div className="flex items-center justify-end gap-2 mb-2">
-                <div className="flex items-center justify-end gap-2">
-                  <div className="text-gray-700 font-medium">Sub total</div>
-                  <p id="subTotal" className="w-[100px] border-b border-gray-300 ">{sellOrder.subTotal.toFixed(2)}</p>
-                </div>
-                <div className="flex items-center justify-end gap-2">
-                  <div className="text-gray-700 font-medium">IVA</div>
-                  <p id="iva" className="w-[100px] border-b border-gray-300">{(sellOrder.total - sellOrder.subTotal).toFixed(2)}</p>
-                </div>
+              <div className="flex items-center justify-end gap-2">
+                <div className="text-gray-700 font-medium">Sub total</div>
+                <p id="subTotal" className="w-[100px] border-b border-gray-300 ">{sellOrder.subTotal.toFixed(2)}</p>
               </div>
 
+              <div className="flex items-center justify-end gap-2">
+                <div className="text-gray-700 font-medium">IVA</div>
+                <p id="iva" className="w-[100px] border-b border-gray-300">{(sellOrder.total - sellOrder.subTotal).toFixed(2)}</p>
+              </div>
 
               <div className="mb-1 flex items-center justify-end gap-2">
                 <div className="text-gray-700 font-medium">Total</div>
