@@ -71,7 +71,7 @@ export function SingleProductOrder({ products, selectedProductOrder = undefined,
         <div>
           <label htmlFor="quantity" className="block text-gray-700 font-medium">Cantidad
             <span className="text-sm text-gray-500">(max: {product.quantity})</span>:</label>
-          <input type="number" step={0.1} min="0" name="quantity" id="quantity" max={product.quantity}
+          <input type="number" step={0.01} min="0" name="quantity" id="quantity" max={product.quantity}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
             style={quantity === product.quantity ? quantityLimitReach : undefined}
             onChange={(e) => setQuantity(Number(e.target.value))}
