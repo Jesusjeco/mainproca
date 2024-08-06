@@ -73,24 +73,28 @@ function SingleSellOrder() {
       <div ref={componentRef} className='m-5'>
         {sellOrder && client ?
           <div className="SingleSellOrder w-full lg:w-4/5 mx-auto bg-white">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-2xl font-bold">Nota de entrega</h2>
-              <p className="text-2xl text-gray-700 font-medium">N° {sellOrder.orderNumber}</p>
+            <div className='header'>
+              <div className='logo'>
+                <img src="/mainproca_logo.png" alt="" />
+              </div>
+              <div className="">
+                <p className="font-bold">Nota de entrega</p> <p className="text-gray-700 font-medium">N° {sellOrder.orderNumber}</p>
+                <div className='date'>
+                  <p><b>Fecha</b> : {DMYdate(sellOrder.orderDate)}</p>
+                </div>
+              </div>
             </div>
             <div className="section2">
               <div className='flex flex-col'>
                 <p className='text-lg'>Señores: <b>{client.name}</b></p>
                 <p>RIF: {client.rif}</p>
               </div>
-              <div className='date text-right'>
-                <p><b>Fecha</b> : {DMYdate(sellOrder.orderDate)}</p>
-              </div>
             </div>
             <div className="mb-4">
               <p className="block text-gray-700 font-medium mb-2">Dirección: {sellOrder.address}</p>
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4  text-sm">
               <div className="overflow-x-auto">
                 <table className="min-w-full bg-white border border-gray-300">
                   <thead>
@@ -119,7 +123,7 @@ function SingleSellOrder() {
               </div>
             </div>
 
-            <div className='relative'>
+            <div className='relative text-sm'>
               <div className="flex items-center justify-end gap-2 mb-2">
                 <div className="flex items-center justify-end gap-2">
                   <div className="text-gray-700 font-medium">Sub total</div>
