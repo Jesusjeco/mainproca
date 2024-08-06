@@ -104,9 +104,7 @@ function CreateSellOrder() {
       const response = await createSellOrder(newSellOrder);
       //Redirecting user to clients page
       if (response.success) {
-        console.log(response.data, "response.data");
         const newID = response.data._id;
-
         // Reset the form after submission
         if (formRef.current)
           formRef.current.reset();
