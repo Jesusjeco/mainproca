@@ -28,6 +28,9 @@ export function SingleProductOrder({ products, selectedProductOrder = undefined,
   }
   7//Alternative price
   const [alternativePrice, setAlternativePrice] = useState<number>(0.00);
+  useEffect(()=>{
+    setAlternativePrice(product.price)
+  },[product])
 
   //Quantity
   const [quantity, setQuantity] = useState<number>(0)
