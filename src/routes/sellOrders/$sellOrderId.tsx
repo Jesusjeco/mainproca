@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { SellOrder } from "../../interfaces/SellOrder"
 import { useEffect, useRef, useState } from 'react'
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
@@ -11,6 +11,7 @@ import { Client } from '../../interfaces/Client';
 import { useSellOrdersStore } from '../../store/sellOrderStore';
 import FooterSellOrder from '../../components/sellOrder/FooterSellOrder';
 import ReactToPrint from 'react-to-print';
+import { FaEdit, FaPrint } from 'react-icons/fa';
 
 interface SingleSellOrderProps {
   sellOrderId: string
@@ -64,10 +65,17 @@ function SingleSellOrder() {
 
   return (
     <>
-      <ReactToPrint
-        trigger={() => <button className="bg-green-500 text-white px-4 py-1 rounded-md">Imprimir</button>}
-        content={() => componentRef.current}
-      />
+      <div className="buttons">
+        <ReactToPrint
+          trigger={() => <button className="flex items-center gap-3 bg-green-500 text-white px-4 py-1 rounded-md">Imprimir <FaPrint /></button>}
+          content={() => componentRef.current}
+        />
+        <div>
+          <Link to={'/sellOrders/edit/' + sellOrderId} className="flex items-center gap-3 bg-green-500 text-white px-4 py-1 rounded-md">
+            Editar orden <FaEdit />
+          </Link>
+        </div>
+      </div>
 
       <LoadingComponent var1={clientsLoading} var2={productsLoading} var3={sellOrdersLoading} />
       <div ref={componentRef} className='m-5'>
@@ -115,7 +123,7 @@ function SingleSellOrder() {
                             {product.price}
                           </td>
                           <td className='py-1 px-4 border border-gray-300'>{product.quantity}</td>
-                          <td className='py-1 px-4 border border-gray-300'>{product.price * product.quantity}</td>
+                          <td className='py-1 px-4 border border-gray-300'>{(product.price * product.quantity).toFixed(2)}</td>
                         </tr>
                       )}
                   </tbody>
@@ -142,7 +150,7 @@ function SingleSellOrder() {
               </div>
 
               <div className='amountNumber'>
-                {(sellOrder.subTotal + ((sellOrder.total - sellOrder.subTotal) * 0.25))}
+                {(sellOrder.subTotal + ((sellOrder.total - sellOrder.subTotal) * 0.25)).toFixed(2)}
               </div>
             </div>
 

@@ -104,10 +104,11 @@ function CreateSellOrder() {
       const response = await createSellOrder(newSellOrder);
       //Redirecting user to clients page
       if (response.success) {
+        const newID = response.data._id;
         // Reset the form after submission
         if (formRef.current)
           formRef.current.reset();
-        navigate({ to: "/sellOrders" });
+        navigate({ to: "/sellOrders/" + newID });
       } else {
         // Handle error
         console.error('Failed to update client');
