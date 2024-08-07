@@ -62,7 +62,7 @@ function SellOrders() {
               <Link to='/sellOrders/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Crear nota</Link>
             </div>
 
-            <div className="overflow-hidden border border-gray-200 sm:rounded-lg">
+            <div className="overflow-scroll border border-gray-200 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
@@ -81,7 +81,10 @@ function SellOrders() {
                         return (
                           <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {client ? client.name : 'Cliente no encontrado'}</td>
+                              <Link to={'/sellOrders/' + sellOrder._id} >
+                                {client ? client.name : 'Cliente no encontrado'}
+                              </Link>
+                            </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               {DMYdate(sellOrder.orderDate)}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -89,7 +92,7 @@ function SellOrders() {
                                 const productDetails = getProductById(product.product_id);
                                 return (
                                   <div key={index2}>
-                                    {productDetails ? productDetails.name : 'Producto no encontrado'} x {product.quantity}
+                                    {productDetails ? productDetails.name : 'Producto no encontrado'}
                                   </div>
                                 );
                               })}
@@ -105,9 +108,9 @@ function SellOrders() {
                                   <FaEdit />
                                 </Link>
                                 <button
-                                    onClick={() => { if (sellOrder._id) deleteSellOrderHandler(sellOrder._id) }} className="text-red-500 hover:text-red-700">
-                                    <FaTrashAlt />
-                                  </button>
+                                  onClick={() => { if (sellOrder._id) deleteSellOrderHandler(sellOrder._id) }} className="text-red-500 hover:text-red-700">
+                                  <FaTrashAlt />
+                                </button>
                                 {/* {isdevelopment ?
                                   <button
                                     onClick={() => { if (sellOrder._id) deleteSellOrderHandler(sellOrder._id) }} className="text-red-500 hover:text-red-700">

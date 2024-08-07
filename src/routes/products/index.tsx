@@ -46,7 +46,7 @@ function Products() {
               <Link to='/products/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Agregar producto</Link>
             </div>
 
-            <div className="overflow-hidden border border-gray-200 sm:rounded-lg">
+            <div className="overflow-scroll border border-gray-200 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
