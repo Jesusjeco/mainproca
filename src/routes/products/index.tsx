@@ -66,7 +66,7 @@ function Products() {
                             <Link to={'/products/' + product._id}>{product.name}</Link></td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.price}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.quantity}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.price * product.quantity}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{(product.price * product.quantity).toFixed(2)}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div className="flex space-x-4">
                               <Link to={'/products/' + product._id} className="text-blue-500 hover:text-blue-700">
