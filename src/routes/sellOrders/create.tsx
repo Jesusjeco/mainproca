@@ -34,7 +34,7 @@ function CreateSellOrder() {
 
   // Using Zustand Product store
   const fetchProducts = useProductsStore(state => state.fetchProducts);
-  const availableProducts = useProductsStore(state => state.availableProducts)
+  const productsList = useProductsStore(state => state.products)
   const productsLoading = useProductsStore(state => state.loading);
 
   useEffect(() => {
@@ -153,9 +153,9 @@ function CreateSellOrder() {
                 : <div>Debe escoger un cliente</div>}
             </div>
 
-            {availableProducts ?
+            {productsList ?
               <div className="mb-4">
-                <MultiProductOrder products={availableProducts} resultProducts={resultProducts} />
+                <MultiProductOrder products={productsList} resultProducts={resultProducts} />
               </div>
               : <div>No se encuentran productos para mostrar</div>
             }

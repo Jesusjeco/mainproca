@@ -28,9 +28,9 @@ export function SingleProductOrder({ products, selectedProductOrder = undefined,
   }
   7//Alternative price
   const [alternativePrice, setAlternativePrice] = useState<number>(0.00);
-  useEffect(()=>{
+  useEffect(() => {
     setAlternativePrice(product.price)
-  },[product])
+  }, [product])
 
   //Quantity
   const [quantity, setQuantity] = useState<number>(0)
@@ -73,10 +73,10 @@ export function SingleProductOrder({ products, selectedProductOrder = undefined,
         </div>
         <div>
           <label htmlFor="quantity" className="block text-gray-700 font-medium">Cantidad
-            <span className="text-sm text-gray-500">(max: {product.quantity})</span>:</label>
-          <input type="number" step={0.01} min="0" name="quantity" id="quantity" max={product.quantity}
+            <span className="text-sm text-gray-500">(max: {(product.quantity).toFixed(2)})</span>:</label>
+          <input type="number" step={0.01} min="0" name="quantity" id="quantity"
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-            style={quantity === product.quantity ? quantityLimitReach : undefined}
+            style={quantity >= product.quantity ? quantityLimitReach : undefined}
             onChange={(e) => setQuantity(Number(e.target.value))}
             value={quantity} />
         </div>

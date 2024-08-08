@@ -62,7 +62,7 @@ function SellOrders() {
               <Link to='/sellOrders/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Crear nota</Link>
             </div>
 
-            <div className="overflow-scroll border border-gray-200 sm:rounded-lg">
+            <div className="overflow-x-auto border border-gray-200 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
