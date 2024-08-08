@@ -11,14 +11,10 @@ interface ProductSelectListProps {
 export function ProductSelectList({ products, selectedProductId, className, productResult, label }: ProductSelectListProps) {
   const [productID, setProductID] = useState<string>("");
   useEffect(() => {
-    console.log(selectedProductId, "selectedProductId");
-
     if (selectedProductId)
       setProductID(selectedProductId)
   }, [selectedProductId])
   useEffect(() => {
-    console.log(productID, "productID");
-
     const product = products.find(product => product._id === productID);
     if (product)
       productResult(product)
