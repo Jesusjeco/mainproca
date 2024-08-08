@@ -8,7 +8,6 @@ interface ProductsState {
     products: Product[]
     availableProducts: Product[]
     loading: boolean
-    setLoading: (loading: boolean) => void
     fetchProducts: () => Promise<void>
     createProduct: (newProduct: Product) => Promise<ApiResponse>
     getProductById: (id: string) => Product | undefined
@@ -20,7 +19,6 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
     products: [],
     availableProducts: [],
     loading: false,
-    setLoading: (loading: boolean) => set({ loading }), // setLoading,
     fetchProducts: async () => {
         set({ loading: true });
         try {
