@@ -4,14 +4,14 @@
 import { API_PURCHASE_ORDER_URL, SellOrder } from "../interfaces/SellOrder";
 
 //Fetching all sellOrders
-export async function fetchAllSellOrders() {
+export async function fetchAllSellOrders(page: number = 1) {
   const requestOptions: RequestInit = {
     method: "GET",
     redirect: "follow"
   };
 
   try {
-    const response = await fetch(API_PURCHASE_ORDER_URL, requestOptions);
+    const response = await fetch(API_PURCHASE_ORDER_URL + `/?page=${page}&limit=10`, requestOptions);
 
     if (!response.ok) {
       throw new Error('Failed to fetch All SellOrders');

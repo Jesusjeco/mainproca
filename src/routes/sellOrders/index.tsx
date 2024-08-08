@@ -3,7 +3,7 @@ import "./sellOrders.pcss";
 import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DMYdate } from '../../utils/dates';
 import { useClientsStore } from '../../store/clientStore';
 import { useProductsStore } from '../../store/productStore';
@@ -18,11 +18,13 @@ export const Route = createFileRoute('/sellOrders/')({
 
 function SellOrders() {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Using Zustand Sell Order store
   const fetchSellOrders = useSellOrdersStore(state => state.fetchSellOrders)
   const sellOrders = useSellOrdersStore(state => state.sellOrders)
   const sellOrdersLoading = useSellOrdersStore(state => state.loading)
+  const totalPages = useSellOrdersStore(state => state.totalPages);
   const deleteSellOrderById = useSellOrdersStore(state => state.deleteSellOrderById)
 
   // Using Zustand Client store
@@ -36,10 +38,17 @@ function SellOrders() {
   const productsLoading = useProductsStore(state => state.loading);
 
   useEffect(() => {
-    fetchSellOrders()
+    fetchSellOrders(currentPage);
+  }, [currentPage]);
+  useEffect(() => {
     fetchClients();
     fetchProducts();
   }, []);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    fetchSellOrders(newPage);
+  };
 
   const deleteSellOrderHandler = async (sellOrderId: string) => {
     const response = await deleteSellOrderById(sellOrderId);
@@ -111,12 +120,6 @@ function SellOrders() {
                                   onClick={() => { if (sellOrder._id) deleteSellOrderHandler(sellOrder._id) }} className="text-red-500 hover:text-red-700">
                                   <FaTrashAlt />
                                 </button>
-                                {/* {isdevelopment ?
-                                  <button
-                                    onClick={() => { if (sellOrder._id) deleteSellOrderHandler(sellOrder._id) }} className="text-red-500 hover:text-red-700">
-                                    <FaTrashAlt />
-                                  </button>
-                                  : ""} */}
                               </div>
                             </td>
                           </tr>
@@ -135,6 +138,25 @@ function SellOrders() {
                 </tbody>
               </table>
             </div>
+
+            <div className="flex justify-between mt-4">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="bg-gray-500 text-white font-bold py-2 px-4 rounded"
+              >
+                Anterior
+              </button>
+              <span>Page {currentPage} of {totalPages}</span>
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="bg-gray-500 text-white font-bold py-2 px-4 rounded"
+              >
+                Siguiente
+              </button>
+            </div>
+
           </div>
         </div>
       </section>
