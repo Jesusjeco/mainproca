@@ -51,12 +51,16 @@ function SellOrders() {
   };
 
   const deleteSellOrderHandler = async (sellOrderId: string) => {
-    const response = await deleteSellOrderById(sellOrderId);
-
-    if (response.success) {
-      navigate({ to: "/sellOrders" });
+    if (window.confirm('¿Seguro quieres borrar esta orden?')) {
+      const response = await deleteSellOrderById(sellOrderId);
+      if (response.success) {
+        navigate({ to: "/sellOrders" });
+      } else {
+        alert('Failed to delete sell order');
+      }
     }
-  }//deleteSellOrderHandler
+  };
+  //deleteSellOrderHandler
 
   return (
     <>
