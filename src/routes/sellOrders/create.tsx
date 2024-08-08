@@ -26,6 +26,7 @@ function CreateSellOrder() {
 
   // Using Zustand Sell Order store
   const createSellOrder = useSellOrdersStore(state => state.createSellOrder)
+  const loadingSellOrder = useSellOrdersStore(state => state.loading)
 
   // Using Zustand Client store
   const fetchClients = useClientsStore(state => state.fetchClients);
@@ -89,7 +90,7 @@ function CreateSellOrder() {
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (client) {
+    if (client && products.length > 0) {
       const newSellOrder = {
         _id: "",
         orderNumber: "",
@@ -113,12 +114,14 @@ function CreateSellOrder() {
         // Handle error
         console.error('Failed to update client');
       }
+    } else {
+      alert("Orden incompleta. Falta el cliente o agregar productos")
     }
   }//formHandler
 
   return (
     <>
-      <LoadingComponent var1={clientsLoading} var2={productsLoading} />
+      <LoadingComponent var1={clientsLoading} var2={productsLoading} var3={loadingSellOrder} />
       <div className="w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
         <h2 className="text-2xl font-bold mb-6">
           Crear nota de entrega</h2>
@@ -150,7 +153,8 @@ function CreateSellOrder() {
                 Dirección</label>
               {client ?
                 <AddressSelectList client={client} resultAddress={resultAddress} label="address" className="w-full border border-gray-300 rounded-md p-2" />
-                : <div>Debe escoger un cliente</div>}
+                : <div>Debe escoger un cliente</div>
+              }
             </div>
 
             {productsList ?
@@ -183,8 +187,9 @@ function CreateSellOrder() {
 
             <div className="flex justify-end">
               <button type="submit"
-                disabled={!client}
-                className="bg-green-500 text-white px-4 py-2 rounded-md">Crear orden</button>
+                className="text-white px-4 py-2 rounded-md bg-green-500" >
+                Crear orden
+              </button>
             </div>
           </form>
           : "No hay clientes registrados"}
