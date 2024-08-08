@@ -43,7 +43,7 @@ function EditSellOrder() {
   const clientsLoading = useClientsStore(state => state.loading);
 
   const fetchProducts = useProductsStore(state => state.fetchProducts);
-  const availableProducts = useProductsStore(state => state.availableProducts);
+  const productsList = useProductsStore(state => state.products);
   const productsLoading = useProductsStore(state => state.loading);
 
   const [sellOrder, setSellOrder] = useState<SellOrder | undefined>(undefined)
@@ -169,9 +169,9 @@ function EditSellOrder() {
                 : <div>Debe escoger un cliente</div>}
             </div>
 
-            {availableProducts ?
+            {productsList ?
               <div className="mb-4">
-                <MultiProductOrder products={availableProducts} initialProductOrders={products} resultProducts={resultProducts} />
+                <MultiProductOrder products={productsList} initialProductOrders={products} resultProducts={resultProducts} />
               </div>
               : <div>No se encuentran productos para mostrar</div>
             }
