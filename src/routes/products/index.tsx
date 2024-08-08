@@ -20,18 +20,19 @@ function Products() {
   const products = useProductsStore(state => state.products)
   const loadingProducts = useProductsStore(state => state.loading)
   const deleteProductById = useProductsStore(state => state.deleteProductById)
-  const setLoading = useProductsStore(state => state.setLoading)
   useEffect(() => {
     fetchProducts()
   }, []);
   const navigate = useNavigate();
 
   const deleteProductHandler = async (productId: string) => {
-    setLoading(true);
-    const response = await deleteProductById(productId);
-    if (response.success) {
-      setLoading(false);
-      navigate({ to: "/products" });
+    if (window.confirm('¿Seguro quieres borrar este producto?')) {
+      const response = await deleteProductById(productId);
+      if (response.success) {
+        navigate({ to: "/products" });
+      }else {
+        console.log("Error when deleting product");
+      }
     }
   }//deleteProductHandler
 

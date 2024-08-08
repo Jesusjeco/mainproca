@@ -19,7 +19,6 @@ function Clients() {
   const loadingClients = useClientsStore(state => state.loading)
   const clients = useClientsStore(state => state.clients)
   const deleteClientById = useClientsStore(state => state.deleteClientById)
-  const setLoading = useClientsStore(state => state.setLoading);
   useEffect(() => {
     fetchAllClients()
   }, [])
@@ -27,13 +26,13 @@ function Clients() {
   const navigate = useNavigate();
 
   const deleteClientHandler = async (clientId: string) => {
-    setLoading(true);
-    const response = await deleteClientById(clientId);
-    if (response.success) {
-      setLoading(false);
-      navigate({ to: "/clients" })
-    } else {
-      console.log("Error when deleting client");
+    if (window.confirm('¿Seguro quieres borrar este cliente?')) {
+      const response = await deleteClientById(clientId);
+      if (response.success) {
+        navigate({ to: "/clients" })
+      } else {
+        console.log("Error when deleting client");
+      }
     }
   }//deleteClientHandler
 
@@ -65,7 +64,7 @@ function Clients() {
 
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             <Link to={'/clients/' + client._id}>{client.name}</Link></td>
-                            
+
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             <Link to={'/clients/' + client._id}>{client.rif}</Link></td>
 
