@@ -113,7 +113,7 @@ function EditSellOrder() {
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (client && sellOrder) {
+    if (client && sellOrder && products.length > 0) {
       const updatedSellOrder = {
         _id: sellOrderId,
         orderNumber: sellOrder.orderNumber,
@@ -133,6 +133,8 @@ function EditSellOrder() {
       } else {
         console.error('Failed to update sell order');
       }
+    } else {
+      alert("Ordern incomplpeta. Revizar cliente y productos")
     }
   };
 
