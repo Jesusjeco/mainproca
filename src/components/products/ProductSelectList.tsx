@@ -11,10 +11,14 @@ interface ProductSelectListProps {
 export function ProductSelectList({ products, selectedProductId, className, productResult, label }: ProductSelectListProps) {
   const [productID, setProductID] = useState<string>("");
   useEffect(() => {
+    console.log(selectedProductId, "selectedProductId");
+
     if (selectedProductId)
       setProductID(selectedProductId)
   }, [selectedProductId])
   useEffect(() => {
+    console.log(productID, "productID");
+
     const product = products.find(product => product._id === productID);
     if (product)
       productResult(product)
@@ -28,8 +32,7 @@ export function ProductSelectList({ products, selectedProductId, className, prod
           onChange={(e) => setProductID(e.target.value)}>
           <option value="">Select a product</option>
           {products.map((product, index) =>
-            //Making sure not to show products that are run out in the inventory
-            product.quantity > 0 ? <option key={index} value={product._id}>{product.name}</option> : ""
+            <option key={index} value={product._id}>{product.name}</option>
           )}
         </select>
         : "Lista de productos vacia"}
