@@ -109,7 +109,6 @@ function EditClient() {
                   <label htmlFor='name' className='block text-gray-700 font-bold'>Nombre*</label>
                   <input
                     required
-                    disabled
                     type='text'
                     id='name'
                     name='name'
