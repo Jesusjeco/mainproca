@@ -80,6 +80,7 @@ function PurchaseOrders() {
                 <thead className="bg-gray-50">
                   <tr>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Factura</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proveedor</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Productos</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Opciones</th>
@@ -94,6 +95,8 @@ function PurchaseOrders() {
                           <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               {DMYdate(purchaseOrder.orderDate)}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {purchaseOrder.orderNumber}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               <Link to={'/purchaseOrders/' + purchaseOrder._id} >
                                 {client ? client.name : 'Cliente no encontrado'}

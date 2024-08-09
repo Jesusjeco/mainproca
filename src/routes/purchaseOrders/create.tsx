@@ -71,6 +71,8 @@ function CreatePurchaseOrder() {
       setProductsOrder([])
   }//setProductsOrderResult
 
+  const [description, setDescription] = useState<string>("")
+
   //Form Handler
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,6 +84,7 @@ function CreatePurchaseOrder() {
         client_id: client._id,
         productsOrder,
         orderDate,
+        description
       }
 
       const response = await createPurchaseOrder(newPurchaseOrder);
@@ -140,6 +143,14 @@ function CreatePurchaseOrder() {
 
             <div className="mb-4">
               <ProductsOrderComponent setProductsOrderResult={setProductsOrderResult} />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Descripción</label>
+              <textarea required rows={4} id="description" name="description" placeholder="Enter description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
             </div>
 
             <div className="flex justify-end">

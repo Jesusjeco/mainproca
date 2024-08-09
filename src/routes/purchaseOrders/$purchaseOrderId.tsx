@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { PurchaseOrder } from "../../interfaces/PurchaseOrder"
 import { useEffect, useState } from 'react'
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
@@ -9,7 +9,7 @@ import { useProductsStore } from '../../store/productStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
 import { Client } from '../../interfaces/Client';
 import { usePurchaseOrdersStore } from '../../store/purchaseOrderStore';
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 interface SinglePurchaseOrderProps {
   purchaseOrderId: string
@@ -22,12 +22,14 @@ export const Route = createFileRoute('/purchaseOrders/$purchaseOrderId')({
 })
 
 function SinglePurchaseOrder() {
+  const navigate = useNavigate();
   const purchaseOrderId = Route.useLoaderData() as string
 
   // Using Zustand Sell Order store
   const fetchPurchaseOrders = usePurchaseOrdersStore(state => state.fetchPurchaseOrders)
   const purchaseOrdersLoading = usePurchaseOrdersStore(state => state.loading)
   const getPurchaseOrderById = usePurchaseOrdersStore(state => state.getPurchaseOrderById)
+  const deletePurchaseOrderById = usePurchaseOrdersStore(state => state.deletePurchaseOrderById)
 
   // Using Zustand Client store
   const fetchClients = useClientsStore(state => state.fetchClients);
@@ -58,14 +60,35 @@ function SinglePurchaseOrder() {
       setClient(getClientById(purchaseOrder.client_id))
   }, [clientsLoading, purchaseOrder])
 
+  const deletePurchaseOrderHandler = async (purchaseOrderId: string) => {
+    if (window.confirm('¿Seguro quieres borrar esta orden?')) {
+      const response = await deletePurchaseOrderById(purchaseOrderId);
+      if (response.success) {
+        navigate({ to: "/purchaseOrders" });
+      } else {
+        alert('Failed to delete sell order');
+      }
+    }
+  };
+  //deletePurchaseOrderHandler
+
   return (
     <>
       <LoadingComponent var1={clientsLoading} var2={productsLoading} var3={purchaseOrdersLoading} />
 
-      <div className='w-[150px]'>
-        <Link to={'/purchaseOrders/edit/' + purchaseOrderId} className="flex items-center gap-3 bg-green-500 text-white px-4 py-1 rounded-md">
-          Editar factura<FaEdit />
-        </Link>
+      <div className="flex items-center gap-3">
+        <div className='w-[175px]'>
+          <Link to={'/purchaseOrders/edit/' + purchaseOrderId} className="flex items-center gap-2 bg-green-500 text-white px-4 py-1 rounded-md">
+            Editar factura<FaEdit />
+          </Link>
+        </div>
+
+        <button
+          onClick={() => { if (purchaseOrderId) deletePurchaseOrderHandler(purchaseOrderId) }}
+          className="w-[175px] bg-red-500 text-white hover:bg-red-700 flex items-center gap-3 px-4 py-1 rounded-md">
+          Eliminar factura
+          <FaTrashAlt />
+        </button>
       </div>
 
       <div className='m-5'>
@@ -93,7 +116,7 @@ function SinglePurchaseOrder() {
                   <thead>
                     <tr>
                       <th className="py-1 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Productos</th>
-                      <th className="py-1 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Precio</th>
+                      <th className="py-1 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Costo</th>
                       <th className="py-1 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Cantidad</th>
                       <th className="py-1 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Total USD</th>
                     </tr>
@@ -115,6 +138,12 @@ function SinglePurchaseOrder() {
                 </table>
               </div>
             </div>
+
+            <div className="description">
+              <p className="font-bold">Descripción</p>
+              <div>{purchaseOrder.description}</div>
+            </div>
+
           </div>
           : "Orden no encontrada"}
       </div >
