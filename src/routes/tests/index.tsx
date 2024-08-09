@@ -5,9 +5,10 @@ export const Route = createFileRoute('/tests/')({
 })
 
 function renderComponent() {
+
   return (
     <>
-      <h1>Test index</h1>
+      <h2>test index</h2>
     </>
   )
 }
