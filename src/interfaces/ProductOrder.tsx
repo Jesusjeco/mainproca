@@ -7,5 +7,5 @@ export interface ProductOrder {
 export const emptyProductOrder = {
   product_id: "",
   price: 0.00,
-  quantity: 0
+  quantity: 0.00
 }

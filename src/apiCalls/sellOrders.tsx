@@ -1,7 +1,7 @@
 /************************************
  * File with all Fetch calls for the model SellOrder
 *************************************/
-import { API_PURCHASE_ORDER_URL, SellOrder } from "../interfaces/SellOrder";
+import { API_SELL_ORDER_URL, SellOrder } from "../interfaces/SellOrder";
 
 //Fetching all sellOrders
 export async function fetchAllSellOrders(page: number = 1) {
@@ -11,7 +11,7 @@ export async function fetchAllSellOrders(page: number = 1) {
   };
 
   try {
-    const response = await fetch(API_PURCHASE_ORDER_URL + `/?page=${page}&limit=10`, requestOptions);
+    const response = await fetch(API_SELL_ORDER_URL + `/?page=${page}&limit=10`, requestOptions);
 
     if (!response.ok) {
       throw new Error('Failed to fetch All SellOrders');
@@ -31,7 +31,7 @@ export async function fetchSellOrderById(sellOrderId: string) {
   };
 
   try {
-    const response = await fetch(API_PURCHASE_ORDER_URL + "/" + sellOrderId, requestOptions);
+    const response = await fetch(API_SELL_ORDER_URL + "/" + sellOrderId, requestOptions);
 
     if (!response.ok) {
       throw new Error('Failed to fetch SellOrder by Id');
@@ -57,7 +57,7 @@ export async function createSellOrder(newSellOrder: SellOrder) {
   };
 
   try {
-    const response = await fetch(API_PURCHASE_ORDER_URL, requestOptions);
+    const response = await fetch(API_SELL_ORDER_URL, requestOptions);
     return await response.json();
   } catch (error) {
     console.error(error);
@@ -77,7 +77,7 @@ export async function editSellOrderById(sellOrder: SellOrder) {
   };
 
   try {
-    const response = await fetch(API_PURCHASE_ORDER_URL + "/" + sellOrder._id, requestOptions);
+    const response = await fetch(API_SELL_ORDER_URL + "/" + sellOrder._id, requestOptions);
     return await response.json();
   } catch (error) {
     console.error(error);
@@ -92,7 +92,7 @@ export async function deleteSellOrderById(sellOrderId: string) {
   };
 
   try {
-    return await fetch(API_PURCHASE_ORDER_URL + "/" + sellOrderId, requestOptions);
+    return await fetch(API_SELL_ORDER_URL + "/" + sellOrderId, requestOptions);
   } catch (error) {
     console.error(error);
   };

@@ -1,0 +1,38 @@
+.buttons {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 1rem;
+}
+.SingleSellOrder {
+	.header {
+		display: grid;
+		grid-template-columns: 4fr 1fr;
+
+		.logo img {
+			height: 90px;
+			object-fit: contain;
+			object-position: top;
+		}
+	}
+	.section2 {
+		display: flex;
+		gap: 10px;
+		align-items: start;
+		justify-content: space-between;
+	}
+
+	.amountNumber {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		text-align: center;
+	}
+
+	/* print.css */
+	@media print {
+		@page {
+			size: letter portrait;
+		}
+	}
+}
