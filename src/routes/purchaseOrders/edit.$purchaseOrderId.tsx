@@ -76,6 +76,7 @@ function EditPurchaseOrder() {
       setClient(getClientById(purchaseOrder.client_id))
       setProductsOrder(purchaseOrder.productsOrder)
       setOrderDate(purchaseOrder.orderDate)
+      setDescription(purchaseOrder.description)
     }
   }, [purchaseOrder]);
 
@@ -95,6 +96,7 @@ function EditPurchaseOrder() {
       setOrderDate(newDate);
   };
 
+  const [description, setDescription] = useState<string>("")
 
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -105,14 +107,15 @@ function EditPurchaseOrder() {
         orderNumber,
         client_id: client._id,
         productsOrder,
-        orderDate
+        orderDate,
+        description
       };
 
       const response = await editPurchaseOrderById(updatedPurchaseOrder);
       if (response.success) {
         if (formRef.current)
           formRef.current.reset();
-        navigate({ to: "/purchaseOrders" });
+        navigate({ to: "/purchaseOrders/" + purchaseOrderId });
       } else {
         console.error('Failed to update sell order');
       }
@@ -157,6 +160,14 @@ function EditPurchaseOrder() {
 
             <div className="mb-4">
               <ProductsOrderComponent setProductsOrderResult={setProductsOrderResult} initialProductsOrder={productsOrder} />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">Descripción</label>
+              <textarea required rows={4} id="description" name="description" placeholder="Enter description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
             </div>
 
             <div className="text-right">
