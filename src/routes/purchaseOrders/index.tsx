@@ -70,9 +70,9 @@ function PurchaseOrders() {
           <div className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex justify-between items-center mb-8">
               <div>
-                <h2 className="text-3xl font-bold text-gray-800">Órdenes de compra</h2>
+                <h2 className="text-3xl font-bold text-gray-800">Compras</h2>
               </div>
-              <Link to='/purchaseOrders/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Crear nota</Link>
+              <Link to='/purchaseOrders/create' className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Registrar compra</Link>
             </div>
 
             <div className="overflow-x-auto border border-gray-200 sm:rounded-lg">
@@ -80,7 +80,7 @@ function PurchaseOrders() {
                 <thead className="bg-gray-50">
                   <tr>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proveedor</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Productos</th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Opciones</th>
                   </tr>
@@ -129,7 +129,7 @@ function PurchaseOrders() {
                       :
                       purchaseOrders ?
                         <tr>
-                          <td colSpan={5}>Lista de órdenes de compra vacía</td>
+                          <td colSpan={5}>Lista de compras vacía</td>
                         </tr>
                         :
                         <tr>

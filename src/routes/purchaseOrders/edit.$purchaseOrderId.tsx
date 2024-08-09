@@ -125,11 +125,11 @@ function EditPurchaseOrder() {
     <>
       <LoadingComponent var1={clientsLoading} var2={productsOrderLoading} var3={purchaseOrdersLoading} />
       <div className="w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
-        <h2 className="text-2xl font-bold mb-6">Editar nota de compra</h2>
+        <h2 className="text-2xl font-bold mb-6">Editar factura de compra</h2>
         {client ?
           <form onSubmit={formHandler} ref={formRef} onKeyDown={AvoidEnterKeyPress}>
             <div className="mb-4">
-              <label htmlFor="orderNumber" className="block text-gray-700 text-sm font-bold mb-2">Número de orden*</label>
+              <label htmlFor="orderNumber" className="block text-gray-700 text-sm font-bold mb-2">Número de factura*</label>
               <input required type="text" id="orderNumber" name="orderNumber" placeholder="Enter orderNumber" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 value={orderNumber}
                 onChange={(e) => setOrderNumber(e.target.value)}
@@ -138,11 +138,11 @@ function EditPurchaseOrder() {
 
             <div className="grid gap-4 md:grid-cols-2">
               <div className="mb-4">
-                <label htmlFor="client_id" className="block text-gray-700 font-medium mb-2">Cliente</label>
+                <label htmlFor="client_id" className="block text-gray-700 font-medium mb-2">Proveedor</label>
                 <ClientSelectList clients={clients} selectedClientId={client._id} clientResult={clientResult} className="w-full border border-gray-300 rounded-md p-2" label="client_id" />
               </div>
               <div className="mb-4 flex flex-col">
-                <label htmlFor="orderDate" className="block text-gray-700 font-medium mb-2">Fecha de orden</label>
+                <label htmlFor="orderDate" className="block text-gray-700 font-medium mb-2">Fecha de factura</label>
                 <DatePicker
                   id="orderDate"
                   name="orderDate"
