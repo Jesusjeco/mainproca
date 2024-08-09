@@ -64,7 +64,7 @@ function SinglePurchaseOrder() {
 
       <div className='w-[150px]'>
         <Link to={'/purchaseOrders/edit/' + purchaseOrderId} className="flex items-center gap-3 bg-green-500 text-white px-4 py-1 rounded-md">
-          Editar orden <FaEdit />
+          Editar factura<FaEdit />
         </Link>
       </div>
 
@@ -73,7 +73,7 @@ function SinglePurchaseOrder() {
           <div className="SinglePurchaseOrder w-full lg:w-4/5 mx-auto bg-white">
             <div className='header'>
               <div className="">
-                <p className="font-bold">Nota de entrega</p>
+                <p className="font-bold">Número de factura</p>
                 <p className="text-gray-700 font-medium">N° {purchaseOrder.orderNumber}</p>
                 <div className='date'>
                   <p><b>Fecha</b> : {DMYdate(purchaseOrder.orderDate)}</p>
@@ -82,7 +82,7 @@ function SinglePurchaseOrder() {
             </div>
             <div className="section2">
               <div className='flex flex-col'>
-                <p className='text-lg'>Señores: <b>{client.name}</b></p>
+                <p className='text-lg'>Proveedor: <b>{client.name}</b></p>
                 <p className='text-sm'>RIF: {client.rif}</p>
               </div>
             </div>
