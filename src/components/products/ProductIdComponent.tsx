@@ -10,19 +10,7 @@ export function ProductIdComponent({ productIdResult, initialProductId }: Produc
     if (initialProductId)
       setProductId(initialProductId)
   }, [initialProductId])
-  const fetchProducts = useProductsStore(state => state.fetchProducts)
   const products = useProductsStore(state => state.products)
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        await fetchProducts()
-      } catch (error) {
-        console.log("error: " + error);
-
-      }
-    }
-    fetchData()
-  }, [])
 
   const [productId, setProductId] = useState<string | undefined>(undefined)
   useEffect(() => {
