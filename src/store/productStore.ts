@@ -1,6 +1,6 @@
 // src/productsStore.ts
 import { create } from 'zustand';
-import { createProduct, deleteProductById, editProductById, fetchAllProducts } from '../apiCalls/products';
+import { createProduct, deleteProductById, editProductById, fetchAllProducts, fetchProductById } from '../apiCalls/products';
 import { Product } from '../interfaces/Product';
 import { ApiResponse } from '../interfaces/ApiResponse';
 
@@ -10,7 +10,7 @@ interface ProductsState {
     loading: boolean
     fetchProducts: () => Promise<void>
     createProduct: (newProduct: Product) => Promise<ApiResponse>
-    getProductById: (id: string) => Product | undefined
+    getProductById: (id: string) => Promise<Product | undefined> 
     editProductById: (product: Product) => Promise<ApiResponse>
     deleteProductById: (id: string) => Promise<ApiResponse>
 }
@@ -24,9 +24,7 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
         try {
             const products = await fetchAllProducts();
             const availableProducts = products.filter(product => product.quantity > 0)
-            set({ products });
-            set({ availableProducts });
-            set({ loading: false })
+            set({ products, availableProducts, loading: false });
         } catch (error) {
             console.error('Failed to fetch products', error);
         }
@@ -62,13 +60,13 @@ export const useProductsStore = create<ProductsState>((set, get) => ({
             }
         }
     }, //createProduct
-    getProductById: (id: string): Product | undefined => {
+    getProductById: async (id: string): Promise<Product | undefined> => {
         const { products } = get();
         const foundProduct = products.find(product => product._id === id);
-        if (foundProduct)
+        if(foundProduct)
             return foundProduct
-        else
-            return undefined
+
+        return await fetchProductById(id)
     },//getProductById
     editProductById: async (product: Product): Promise<ApiResponse> => {
         set({ loading: true });
