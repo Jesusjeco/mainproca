@@ -10,7 +10,7 @@ import { AvoidEnterKeyPress } from '../../utils/AvoidEnterKeyPress'
 interface EditProductProps {
   productId: string
 }
-export const Route = createFileRoute('/products/edit/$productId')({ 
+export const Route = createFileRoute('/products/edit/$productId')({
   loader: async ({ params }: { params: EditProductProps }) => { return params.productId },
   errorComponent: FetchErrorComponent as any,
   notFoundComponent: () => <NotFoundComponent message="Producto no encontrado" />,
@@ -19,17 +19,17 @@ export const Route = createFileRoute('/products/edit/$productId')({
 
 function EditProduct() {
   const productId = Route.useLoaderData() as string
-  const fetchAllProducts = useProductsStore(state => state.fetchProducts)
   const loadingProducts = useProductsStore(state => state.loading)
   const getProductById = useProductsStore(state => state.getProductById)
   const editProductById = useProductsStore(state => state.editProductById)
   const [product, setProduct] = useState<Product | undefined>(undefined)
+
   useEffect(() => {
-    fetchAllProducts()
-  }, [])
-  useEffect(() => {
-    setProduct(getProductById(productId))
-  }, [loadingProducts, productId])
+    const fetchData = async () => {
+      setProduct(await getProductById(productId))
+    }
+    fetchData();
+  }, [getProductById, productId])
 
   const navigate = useNavigate();
 
@@ -75,7 +75,7 @@ function EditProduct() {
                 <div className="mb-4">
                   <label htmlFor="quantity" className="block text-gray-700 text-sm font-bold mb-2">Cantidad*</label>
                   <input required min={0} type="number" step={0.01} id="quantity" name="quantity"
-                  placeholder="Enter quantity" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="Enter quantity" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     value={product.quantity}
                     onChange={handleInputChange}
                   />

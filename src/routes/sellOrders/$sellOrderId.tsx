@@ -38,7 +38,7 @@ function SingleSellOrder() {
 
   // Using Zustand Product store
   const fetchProducts = useProductsStore(state => state.fetchProducts);
-  const getProductById = useProductsStore(state => state.getProductById);
+  const getFetchedProductById = useProductsStore(state => state.getFetchedProductById);
   const productsLoading = useProductsStore(state => state.loading);
 
   useEffect(() => {
@@ -117,7 +117,7 @@ function SingleSellOrder() {
                     {
                       sellOrder.products.map((product, index) =>
                         <tr key={index} className="border border-gray-300">
-                          <td className='py-1 px-4 border border-gray-300'>{getProductById(product.product_id)?.name}
+                          <td className='py-1 px-4 border border-gray-300'>{getFetchedProductById(product.product_id)?.name}
                           </td>
                           <td id="price" className='py-1 px-4 border border-gray-300'>
                             {product.price}
