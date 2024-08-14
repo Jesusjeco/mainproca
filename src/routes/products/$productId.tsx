@@ -7,6 +7,7 @@ import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { useProductsStore } from '../../store/productStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
 import ProductRecentSellOrder from '../../components/products/ProductRecentSellOrder';
+import ProductRecentPurchaseOrder from '../../components/products/ProductRecentPurchaseOrder';
 
 interface SingleProductProps {
   productId: string
@@ -75,7 +76,8 @@ function SingleProduct() {
             </div>
           </div>
 
-          <ProductRecentSellOrder productID={productId} />
+          <ProductRecentSellOrder productId={productId} />
+          <ProductRecentPurchaseOrder productId={productId} />
         </div>
         : <h1>Producto no encontrado</h1>
       }
