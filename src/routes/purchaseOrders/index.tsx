@@ -34,7 +34,7 @@ function PurchaseOrders() {
 
   // Using Zustand Product store
   const fetchProducts = useProductsStore(state => state.fetchProducts);
-  const getProductById = useProductsStore(state => state.getProductById);
+  const getFetchedProductById = useProductsStore(state => state.getFetchedProductById);
   const productsLoading = useProductsStore(state => state.loading);
 
   useEffect(() => {
@@ -104,7 +104,7 @@ function PurchaseOrders() {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               {purchaseOrder.productsOrder.map((product, index2) => {
-                                const productDetails = getProductById(product.product_id);
+                                const productDetails = getFetchedProductById(product.product_id);
                                 return (
                                   <div key={index2}>
                                     {productDetails ? productDetails.name : 'Producto no encontrado'}
