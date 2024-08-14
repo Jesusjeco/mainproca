@@ -22,9 +22,7 @@ interface SellOrdersState {
 	createSellOrder: (newSellOrder: SellOrder) => Promise<ApiResponse>;
 	editSellOrderById: (newSellOrder: SellOrder) => Promise<ApiResponse>;
 	deleteSellOrderById: (id: string) => Promise<ApiResponse>;
-	getSellOrderByProductID: (
-		productId: string
-	) => Promise<SellOrder[] | undefined>;
+	getSellOrderByProductID: (productId: string) => Promise<SellOrder[] | undefined>;
 }
 
 export const useSellOrdersStore = create<SellOrdersState>((set, get) => ({
