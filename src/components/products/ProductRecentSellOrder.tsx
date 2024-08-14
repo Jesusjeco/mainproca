@@ -10,10 +10,11 @@ interface ProductRecentSellOrderProps {
 export default function ProductRecentSellOrder({ productId }: ProductRecentSellOrderProps) {
   const getSellOrderByProductID = useSellOrdersStore(state => state.getSellOrderByProductID)
   const [orders, setOrders] = useState<SellOrder[] | undefined>(undefined)
-
   useEffect(() => {
-    if (productId)
-      setOrders(getSellOrderByProductID(productId))
+    const fetchData = async () => {
+      setOrders(await getSellOrderByProductID(productId))
+    }
+    fetchData();
   }, [productId])
   return (
     <div className="w-full lg:w-4/5 mx-auto bg-white p-4 rounded-lg shadow-lg mt-4">
@@ -22,7 +23,7 @@ export default function ProductRecentSellOrder({ productId }: ProductRecentSellO
       </p>
 
       {orders && orders.length > 0 ?
-        orders.map((order,index) =>
+        orders.map((order, index) =>
           <div key={index} className="order">
             <SellOrderByOrder sellOrder={order} />
           </div>

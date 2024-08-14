@@ -5,6 +5,7 @@ import {
 	deleteSellOrderById,
 	editSellOrderById,
 	fetchAllSellOrders,
+	getSellOrderByProductId,
 } from "../apiCalls/sellOrders";
 import { SellOrder } from "../interfaces/SellOrder";
 import { ApiResponse } from "../interfaces/ApiResponse";
@@ -21,7 +22,9 @@ interface SellOrdersState {
 	createSellOrder: (newSellOrder: SellOrder) => Promise<ApiResponse>;
 	editSellOrderById: (newSellOrder: SellOrder) => Promise<ApiResponse>;
 	deleteSellOrderById: (id: string) => Promise<ApiResponse>;
-	getSellOrderByProductID: (productId: string) => SellOrder[];
+	getSellOrderByProductID: (
+		productId: string
+	) => Promise<SellOrder[] | undefined>;
 }
 
 export const useSellOrdersStore = create<SellOrdersState>((set, get) => ({
@@ -141,12 +144,18 @@ export const useSellOrdersStore = create<SellOrdersState>((set, get) => ({
 			};
 		}
 	}, //deleteSellOrderById
-	getSellOrderByProductID: (productId: string): SellOrder[] => {
+	getSellOrderByProductID: async (productId: string): Promise<SellOrder[] | undefined> => {
 		const { sellOrders } = get();
-		return sellOrders
+		const foundSelOrders = sellOrders
 			.filter((sellOrder) =>
-				sellOrder.products.some((product) => product.product_id === productId)
+				sellOrder.products.some(
+					(product) => product.product_id === productId
+				)
 			)
 			.slice(-5);
-	},
+
+		if (foundSelOrders && foundSelOrders.length > 0) return foundSelOrders;
+
+		return await getSellOrderByProductId(productId);
+	}, //getSellOrderByProductID
 }));

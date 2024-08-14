@@ -6,6 +6,7 @@ export const Route = createFileRoute('/')({
 })
 
 function Index() {
+
   return (
     <div className="bg-gray-100 flex items-center justify-center min-h-screen">
       <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 w-full justify-center">
