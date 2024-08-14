@@ -97,3 +97,23 @@ export async function deleteSellOrderById(sellOrderId: string) {
     console.error(error);
   };
 }
+
+//Get sell orders by productId in the ProductOrder
+export async function getSellOrderByProductId(productId: string) {
+  const requestOptions: RequestInit = {
+    method: "GET",
+    redirect: "follow"
+  };
+
+  try {
+    const response = await fetch(API_SELL_ORDER_URL + "/product/" + productId, requestOptions);
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch SellOrder by Id');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  };
+}

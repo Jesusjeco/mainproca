@@ -4,7 +4,6 @@ import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { useProductsStore } from '../../store/productStore';
-import { useEffect } from 'react';
 import { LoadingComponent } from '../../components/LoadingComponent';
 import { isdevelopment } from "../../utils/utils"
 
@@ -15,14 +14,10 @@ export const Route = createFileRoute('/products/')({
 })
 
 function Products() {
-
-  const fetchProducts = useProductsStore(state => state.fetchProducts)
   const products = useProductsStore(state => state.products)
   const loadingProducts = useProductsStore(state => state.loading)
   const deleteProductById = useProductsStore(state => state.deleteProductById)
-  useEffect(() => {
-    fetchProducts()
-  }, []);
+  
   const navigate = useNavigate();
 
   const deleteProductHandler = async (productId: string) => {

@@ -5,7 +5,6 @@ import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { useClientsStore } from '../../store/clientStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
-import { useEffect } from 'react';
 import { isdevelopment } from '../../utils/utils';
 
 export const Route = createFileRoute('/clients/')({
@@ -15,13 +14,9 @@ export const Route = createFileRoute('/clients/')({
 })
 
 function Clients() {
-  const fetchAllClients = useClientsStore(state => state.fetchClients)
   const loadingClients = useClientsStore(state => state.loading)
   const clients = useClientsStore(state => state.clients)
   const deleteClientById = useClientsStore(state => state.deleteClientById)
-  useEffect(() => {
-    fetchAllClients()
-  }, [])
 
   const navigate = useNavigate();
 

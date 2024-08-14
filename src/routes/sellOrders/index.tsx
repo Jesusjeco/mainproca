@@ -3,7 +3,7 @@ import "./sellOrders.pcss";
 import { FaEye, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DMYdate } from '../../utils/dates';
 import { useClientsStore } from '../../store/clientStore';
 import { useProductsStore } from '../../store/productStore';
@@ -28,22 +28,12 @@ function SellOrders() {
   const deleteSellOrderById = useSellOrdersStore(state => state.deleteSellOrderById)
 
   // Using Zustand Client store
-  const fetchClients = useClientsStore(state => state.fetchClients);
   const getClientById = useClientsStore(state => state.getClientById);
   const clientsLoading = useClientsStore(state => state.loading);
 
   // Using Zustand Product store
-  const fetchProducts = useProductsStore(state => state.fetchProducts);
   const getFetchedProductById = useProductsStore(state => state.getFetchedProductById);
   const productsLoading = useProductsStore(state => state.loading);
-
-  useEffect(() => {
-    fetchSellOrders(currentPage);
-  }, [currentPage]);
-  useEffect(() => {
-    fetchClients();
-    fetchProducts();
-  }, []);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
