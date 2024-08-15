@@ -5,6 +5,8 @@ import {
 	deletePurchaseOrderById,
 	editPurchaseOrderById,
 	fetchAllPurchaseOrders,
+	getPurchaseOrderByClientID,
+	getPurchaseOrderByProductId,
 } from "../apiCalls/purchaseOrders";
 import { PurchaseOrder } from "../interfaces/PurchaseOrder";
 import { ApiResponse } from "../interfaces/ApiResponse";
@@ -25,7 +27,8 @@ interface PurchaseOrdersState {
 		newPurchaseOrder: PurchaseOrder
 	) => Promise<ApiResponse>;
 	deletePurchaseOrderById: (id: string) => Promise<ApiResponse>;
-	getPurchaseOrderByProductID: (productId: string) => PurchaseOrder[];
+	getPurchaseOrderByProductID: (productId: string) => Promise<PurchaseOrder[] | undefined>
+	getPurchaseOrderByClientID: (clientId: string) => Promise<PurchaseOrder[] | undefined>
 }
 
 export const usePurchaseOrdersStore = create<PurchaseOrdersState>(
@@ -163,15 +166,22 @@ export const usePurchaseOrdersStore = create<PurchaseOrdersState>(
 				};
 			}
 		}, //deletePurchaseOrderById
-		getPurchaseOrderByProductID: (productId: string): PurchaseOrder[] => {
+		getPurchaseOrderByProductID: async (productId: string): Promise<PurchaseOrder[] | undefined> => {
 			const { purchaseOrders } = get();
-			return purchaseOrders
-				.filter((purchaseOrder) =>
-					purchaseOrder.productsOrder.some(
-						(productOrder) => productOrder.product_id === productId
-					)
-				)
-				.slice(-5);
+			const foundPurchaseOrder = purchaseOrders.filter((purchaseOrder) =>
+				purchaseOrder.productsOrder.some((productOrder) => productOrder.product_id === productId)).slice(-5);
+
+			if (foundPurchaseOrder && foundPurchaseOrder.length > 0) return foundPurchaseOrder
+
+			return await getPurchaseOrderByProductId(productId)
 		},
+		getPurchaseOrderByClientID: async (clientId: string): Promise<PurchaseOrder[] | undefined> => {
+			const { purchaseOrders } = get();
+			const foundSelOrders = purchaseOrders.filter((purchaseOrder) => purchaseOrder.client_id === clientId).slice(-5);
+
+			if (foundSelOrders && foundSelOrders.length > 0) return foundSelOrders;
+
+			return await getPurchaseOrderByClientID(clientId);
+		}, //getPurchaseOrderByProductID
 	})
 );

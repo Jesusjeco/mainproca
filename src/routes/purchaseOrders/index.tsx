@@ -28,7 +28,7 @@ function PurchaseOrders() {
   const deletePurchaseOrderById = usePurchaseOrdersStore(state => state.deletePurchaseOrderById)
 
   // Using Zustand Client store
-  const getClientById = useClientsStore(state => state.getClientById);
+  const getFetchedClientById = useClientsStore(state => state.getFetchedClientById);
   const clientsLoading = useClientsStore(state => state.loading);
 
   // Using Zustand Product store
@@ -80,7 +80,7 @@ function PurchaseOrders() {
                   {
                     purchaseOrders && purchaseOrders.length > 0 ?
                       purchaseOrders.map((purchaseOrder, index) => {
-                        const client = getClientById(purchaseOrder.client_id);
+                        const client = getFetchedClientById(purchaseOrder.client_id);
                         return (
                           <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">

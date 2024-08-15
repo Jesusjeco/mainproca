@@ -3,20 +3,20 @@ import { PurchaseOrder } from "../../interfaces/PurchaseOrder"
 import { usePurchaseOrdersStore } from "../../store/purchaseOrderStore"
 import PurchaseOrderByOrder from "../purchaseOrder/PurchaseOrderByOrder"
 
-interface ProductRecentPurchaseOrderProps {
-  productId: string
+interface ClientRecentPurchaseOrderProps {
+  clientId: string
 }
 
-export default function ProductRecentPurchaseOrder({ productId }: ProductRecentPurchaseOrderProps) {
-  const getPurchaseOrderByProductID = usePurchaseOrdersStore(state => state.getPurchaseOrderByProductID)
+export default function ClientRecentPurchaseOrder({ clientId }: ClientRecentPurchaseOrderProps) {
+  const getPurchaseOrderByClientID = usePurchaseOrdersStore(state => state.getPurchaseOrderByClientID)
   const [orders, setOrders] = useState<PurchaseOrder[] | undefined>(undefined)
 
   useEffect(() => {
     const fetchData = async () => {
-      setOrders(await getPurchaseOrderByProductID(productId))
+      setOrders(await getPurchaseOrderByClientID(clientId))
     }
     fetchData()
-  }, [productId])
+  }, [clientId])
   return (
     <div className="w-full lg:w-4/5 mx-auto bg-white p-4 rounded-lg shadow-lg mt-4">
       <p className="text-2xl font-bold text-gray-800 mb-2">
