@@ -11,7 +11,7 @@ interface EditProductProps {
   productId: string
 }
 export const Route = createFileRoute('/products/edit/$productId')({
-  loader: async ({ params }: { params: EditProductProps }) => { return params.productId },
+  loader: async ({ params }: { params: EditProductProps }) => params.productId,
   errorComponent: FetchErrorComponent as any,
   notFoundComponent: () => <NotFoundComponent message="Producto no encontrado" />,
   component: EditProduct

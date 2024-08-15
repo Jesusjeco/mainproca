@@ -13,6 +13,7 @@ interface SingleProductOrderProps {
 export function SingleProductOrder({ products, selectedProductOrder = undefined, productOrderResult, index = 0 }: SingleProductOrderProps) {
   const [productOrder, _] = useState<ProductOrder | undefined>(selectedProductOrder)
   useEffect(() => {
+
     if (productOrder) {
       const presetProduct = (products.find(product => product._id === productOrder.product_id))
       if (presetProduct)
@@ -28,9 +29,6 @@ export function SingleProductOrder({ products, selectedProductOrder = undefined,
   }
   7//Alternative price
   const [alternativePrice, setAlternativePrice] = useState<number>(0.00);
-  useEffect(() => {
-    setAlternativePrice(product.price)
-  }, [product])
 
   //Quantity
   const [quantity, setQuantity] = useState<number>(0)

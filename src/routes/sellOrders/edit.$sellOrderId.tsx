@@ -32,27 +32,18 @@ function EditSellOrder() {
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
 
-  const fetchSellOrders = useSellOrdersStore(state => state.fetchSellOrders)
   const editSellOrderById = useSellOrdersStore(state => state.editSellOrderById);
   const getSellOrderById = useSellOrdersStore(state => state.getSellOrderById);
   const sellOrdersLoading = useSellOrdersStore(state => state.loading)
 
-  const fetchClients = useClientsStore(state => state.fetchClients);
   const getClientById = useClientsStore(state => state.getClientById)
   const clients = useClientsStore(state => state.clients);
   const clientsLoading = useClientsStore(state => state.loading);
 
-  const fetchProducts = useProductsStore(state => state.fetchProducts);
   const productsList = useProductsStore(state => state.products);
   const productsLoading = useProductsStore(state => state.loading);
 
   const [sellOrder, setSellOrder] = useState<SellOrder | undefined>(undefined)
-
-  useEffect(() => {
-    fetchSellOrders();
-    fetchClients();
-    fetchProducts();
-  }, []);
 
   useEffect(() => {
     if (!sellOrdersLoading && !clientsLoading && !productsLoading && sellOrderId)
@@ -67,15 +58,18 @@ function EditSellOrder() {
   const [total, setTotal] = useState<number>(0)
 
   useEffect(() => {
-    if (sellOrder) {
-      setClient(getClientById(sellOrder.client_id))
-      setAddress(sellOrder.address)
-      setProducts(sellOrder.products)
-      setOrderDate(sellOrder.orderDate)
-      setSubTotal(sellOrder.subTotal)
-      setTotal(sellOrder.total)
-    }
-  }, [sellOrder]);
+    const fetchData = async () => {
+      if (sellOrder) {
+        setClient(await getClientById(sellOrder.client_id))
+        setAddress(sellOrder.address)
+        setProducts(sellOrder.products)
+        setOrderDate(sellOrder.orderDate)
+        setSubTotal(sellOrder.subTotal)
+        setTotal(sellOrder.total)
+      }
+    }//fetchData
+    fetchData()
+  }, [getClientById,sellOrder]);
 
   const clientResult = (newClient: Client | undefined) => {
     if (newClient) {
@@ -129,7 +123,7 @@ function EditSellOrder() {
       if (response.success) {
         if (formRef.current)
           formRef.current.reset();
-        navigate({ to: "/sellOrders" });
+        navigate({ to: "/sellOrders/" + sellOrderId });
       } else {
         console.error('Failed to update sell order');
       }
@@ -140,10 +134,11 @@ function EditSellOrder() {
 
   return (
     <>
-      <LoadingComponent var1={clientsLoading} var2={productsLoading} var3={sellOrdersLoading} />
-      <div className="w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
-        <h2 className="text-2xl font-bold mb-6">Editar nota de entrega</h2>
-        {client ?
+      {clientsLoading && productsLoading && sellOrdersLoading && !client ? (
+        <LoadingComponent var1={clientsLoading} var2={productsLoading} var3={sellOrdersLoading} />
+      ) : client ? (
+        <div className="w-full lg:w-4/5 mx-auto p-6 bg-white shadow-md rounded-md">
+          <h2 className="text-2xl font-bold mb-6">Editar nota de entrega</h2>
           <form onSubmit={formHandler} ref={formRef} onKeyDown={AvoidEnterKeyPress}>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="mb-4">
@@ -205,10 +200,9 @@ function EditSellOrder() {
               </button>
             </div>
           </form>
-          : "Cargando clientes..."}
-      </div>
+        </div>
+      ) : "Cargando clientes"
+      }
     </>
   );
 }
-
-export default EditSellOrder;

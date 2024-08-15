@@ -14,8 +14,10 @@ export default function SellOrderByOrder({ sellOrder }: SellOrderByOrderProps) {
 
   const getClientById = useClientsStore(state => state.getClientById);
   useEffect(() => {
-    if (sellOrder)
-      setClient(getClientById(sellOrder.client_id))
+    const fetchData = async () => {
+      setClient(await getClientById(sellOrder.client_id))
+    }
+    fetchData()
   }, [sellOrder])
   return (
     <>
@@ -28,12 +30,10 @@ export default function SellOrderByOrder({ sellOrder }: SellOrderByOrderProps) {
               </Link>
             </div>
             <div className=" whitespace-nowrap text-sm font-medium text-gray-900">
-              <Link to={'/sellOrders/' + sellOrder._id} >
-                {client ? client.name : 'Cliente no encontrado'}
-              </Link>
+              {client ? client.name : 'Cliente no encontrado'}
             </div>
             <div className=" whitespace-nowrap text-sm font-medium text-gray-900">
-              {DMYdate(sellOrder.orderDate)}</div>
+              Fecha: {DMYdate(sellOrder.orderDate)}</div>
           </div>
           <hr className="my-2" />
         </>

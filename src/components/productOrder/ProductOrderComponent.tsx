@@ -48,17 +48,17 @@ export function ProductOrderComponent({ setProductOrderResult, index, selectedPr
     <div className="grid grid-cols-3 gap-4">
       <ProductIdComponent productIdResult={productIdResult} initialProductId={productId} />
       <div>
+        <label htmlFor="price" className="block text-gray-700 text-sm font-bold mb-2">Costo*</label>
+        <input required min={0.01} type="number" step="0.01" id="price" name="price" placeholder="Enter price" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          value={price}
+          onChange={(e) => setPrice(Number(e.target.value))}
+        />
+      </div>
+      <div>
         <label htmlFor="quantity" className="block text-gray-700 text-sm font-bold mb-2">Cantidad*</label>
         <input required min={0.01} type="number" step={0.01} id="quantity" name="quantity" placeholder="Enter quantity" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           value={quantity}
           onChange={(e) => setQuantity(Number(e.target.value))}
-        />
-      </div>
-      <div>
-        <label htmlFor="price" className="block text-gray-700 text-sm font-bold mb-2">Precio*</label>
-        <input required min={0.01} type="number" step="0.01" id="price" name="price" placeholder="Enter price" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={price}
-          onChange={(e) => setPrice(Number(e.target.value))}
         />
       </div>
     </div>
