@@ -97,3 +97,43 @@ export async function deletePurchaseOrderById(purchaseOrderId: string) {
     console.error(error);
   };
 }
+
+//Get sell orders by productId in the ProductOrder
+export async function getPurchaseOrderByProductId(productId: string) {
+  const requestOptions: RequestInit = {
+    method: "GET",
+    redirect: "follow"
+  };
+
+  try {
+    const response = await fetch(API_PURCHASE_ORDER_URL + "/product/" + productId, requestOptions);
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch PurchaseOrder by product Id');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  };
+}
+
+//Get sell orders by clientId in the ProductOrder
+export async function getPurchaseOrderByClientID(clientId: string) {
+  const requestOptions: RequestInit = {
+    method: "GET",
+    redirect: "follow"
+  };
+
+  try {
+    const response = await fetch(API_PURCHASE_ORDER_URL + "/client/" + clientId, requestOptions);
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch PurchaseOrder by client Id');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  };
+}

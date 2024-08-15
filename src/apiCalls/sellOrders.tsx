@@ -109,7 +109,27 @@ export async function getSellOrderByProductId(productId: string) {
     const response = await fetch(API_SELL_ORDER_URL + "/product/" + productId, requestOptions);
 
     if (!response.ok) {
-      throw new Error('Failed to fetch SellOrder by Id');
+      throw new Error('Failed to fetch SellOrder by product Id');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  };
+}
+
+//Get sell orders by clientId in the ProductOrder
+export async function getSellOrderByClientID(clientId: string) {
+  const requestOptions: RequestInit = {
+    method: "GET",
+    redirect: "follow"
+  };
+
+  try {
+    const response = await fetch(API_SELL_ORDER_URL + "/client/" + clientId, requestOptions);
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch SellOrder by client Id');
     }
 
     return await response.json();

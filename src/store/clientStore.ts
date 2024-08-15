@@ -1,6 +1,6 @@
 // src/clientsStore.ts
 import { create } from 'zustand';
-import { createClient, deleteClientById, editClientById, fetchAllClients } from '../apiCalls/clients';
+import { createClient, deleteClientById, editClientById, fetchAllClients, fetchClientById } from '../apiCalls/clients';
 import { Client } from '../interfaces/Client';
 import { ApiResponse } from '../interfaces/ApiResponse';
 
@@ -8,13 +8,14 @@ interface ClientsState {
     clients: Client[]
     loading: boolean
     fetchClients: () => Promise<void>
-    getClientById: (id: string) => Client | undefined;
+    getClientById: (id: string) => Promise<Client | undefined>;
+    getFetchedClientById: (id: string) => Client | undefined;
     createClient: (newClient: Client) => Promise<ApiResponse>
     editClientById: (newClient: Client) => Promise<ApiResponse>
     deleteClientById: (id: string) => Promise<ApiResponse>
 }
 
-export const useClientsStore = create<ClientsState>((set, get) => ({ 
+export const useClientsStore = create<ClientsState>((set, get) => ({
     clients: [],
     loading: false,
     fetchClients: async () => {
@@ -26,13 +27,16 @@ export const useClientsStore = create<ClientsState>((set, get) => ({
             console.error('Failed to fetch clients', error);
         }
     },//fetchClients 
-    getClientById: (id: string): Client | undefined => {
+    getClientById: async (id: string): Promise<Client | undefined> => {
         const { clients } = get();
-        const client = clients.find(client => client._id === id);
-        if (client)
-            return client
-        else
-            return undefined
+        const foundClient = clients.find(client => client._id === id);
+        if (foundClient) return foundClient
+
+        return await fetchClientById(id)
+    },//getClientById
+    getFetchedClientById: (id: string): Client | undefined => {
+        const { clients } = get();
+        return clients.find(client => client._id === id);
     },//getClientById
     createClient: async (newClient: Client): Promise<ApiResponse> => {
         set({ loading: true });

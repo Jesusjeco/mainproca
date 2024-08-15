@@ -35,8 +35,7 @@ function EditPurchaseOrder() {
   const getPurchaseOrderById = usePurchaseOrdersStore(state => state.getPurchaseOrderById);
   const purchaseOrdersLoading = usePurchaseOrdersStore(state => state.loading)
 
-  const fetchClients = useClientsStore(state => state.fetchClients);
-  const getClientById = useClientsStore(state => state.getClientById)
+  const getFetchedClientById = useClientsStore(state => state.getFetchedClientById)
   const clients = useClientsStore(state => state.clients);
   const clientsLoading = useClientsStore(state => state.loading);
 
@@ -49,7 +48,6 @@ function EditPurchaseOrder() {
 
   useEffect(() => {
     fetchPurchaseOrders();
-    fetchClients();
   }, []);
 
   useEffect(() => {
@@ -73,7 +71,7 @@ function EditPurchaseOrder() {
   useEffect(() => {
     if (purchaseOrder) {
       setOrderNumber(purchaseOrder.orderNumber)
-      setClient(getClientById(purchaseOrder.client_id))
+      setClient(getFetchedClientById(purchaseOrder.client_id))
       setProductsOrder(purchaseOrder.productsOrder)
       setOrderDate(purchaseOrder.orderDate)
       setDescription(purchaseOrder.description)

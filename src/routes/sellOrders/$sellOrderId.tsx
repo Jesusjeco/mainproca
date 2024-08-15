@@ -27,25 +27,16 @@ function SingleSellOrder() {
   const sellOrderId = Route.useLoaderData() as string
 
   // Using Zustand Sell Order store
-  const fetchSellOrders = useSellOrdersStore(state => state.fetchSellOrders)
   const sellOrdersLoading = useSellOrdersStore(state => state.loading)
   const getSellOrderById = useSellOrdersStore(state => state.getSellOrderById)
 
   // Using Zustand Client store
-  const fetchClients = useClientsStore(state => state.fetchClients);
   const getClientById = useClientsStore(state => state.getClientById);
   const clientsLoading = useClientsStore(state => state.loading);
 
   // Using Zustand Product store
-  const fetchProducts = useProductsStore(state => state.fetchProducts);
   const getFetchedProductById = useProductsStore(state => state.getFetchedProductById);
   const productsLoading = useProductsStore(state => state.loading);
-
-  useEffect(() => {
-    fetchSellOrders()
-    fetchClients();
-    fetchProducts();
-  }, []);
 
   const [sellOrder, setSellOrder] = useState<SellOrder | undefined>(undefined)
   useEffect(() => {
@@ -56,9 +47,12 @@ function SingleSellOrder() {
 
   const [client, setClient] = useState<Client | undefined>(undefined);
   useEffect(() => {
-    if (!clientsLoading && sellOrder)
-      setClient(getClientById(sellOrder.client_id))
-  }, [clientsLoading, sellOrder])
+    const fetchData = async () => {
+      if (sellOrder)
+        setClient(await getClientById(sellOrder.client_id))
+    }
+    fetchData()
+  }, [getClientById, sellOrder])
 
   //Reference used to print the component
   const componentRef = useRef(null);

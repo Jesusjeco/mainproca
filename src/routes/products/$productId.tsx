@@ -60,7 +60,7 @@ function SingleProduct() {
               <div>
                 <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">Cantidad</label>
                 <div className="mt-1">
-                  <p id="quantity" className="text-lg font-semibold text-gray-900">{product.quantity}</p>
+                  <p id="quantity" className="text-lg font-semibold text-gray-900">{product.quantity.toFixed(2)}</p>
                 </div>
               </div>
               <div>

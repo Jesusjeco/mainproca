@@ -56,9 +56,12 @@ function SinglePurchaseOrder() {
 
   const [client, setClient] = useState<Client | undefined>(undefined);
   useEffect(() => {
-    if (!clientsLoading && purchaseOrder)
-      setClient(getClientById(purchaseOrder.client_id))
-  }, [clientsLoading, purchaseOrder])
+    const fetchData = async () => {
+      if (purchaseOrder)
+        setClient(await getClientById(purchaseOrder.client_id))
+    }
+    fetchData()
+  }, [getClientById, purchaseOrder])
 
   const deletePurchaseOrderHandler = async (purchaseOrderId: string) => {
     if (window.confirm('¿Seguro quieres borrar esta orden?')) {

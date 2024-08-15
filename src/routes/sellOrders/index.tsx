@@ -28,7 +28,7 @@ function SellOrders() {
   const deleteSellOrderById = useSellOrdersStore(state => state.deleteSellOrderById)
 
   // Using Zustand Client store
-  const getClientById = useClientsStore(state => state.getClientById);
+  const getFetchedClientById = useClientsStore(state => state.getFetchedClientById);
   const clientsLoading = useClientsStore(state => state.loading);
 
   // Using Zustand Product store
@@ -80,7 +80,7 @@ function SellOrders() {
                   {
                     sellOrders && sellOrders.length > 0 ?
                       sellOrders.map((sellOrder, index) => {
-                        const client = getClientById(sellOrder.client_id);
+                        const client = getFetchedClientById(sellOrder.client_id);
                         return (
                           <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
