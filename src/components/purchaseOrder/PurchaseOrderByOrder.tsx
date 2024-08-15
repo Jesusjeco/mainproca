@@ -35,12 +35,10 @@ export default function PurchaseOrderByOrder({ purchaseOrder }: PurchaseOrderByO
               </Link>
             </div>
             <div className=" whitespace-nowrap text-sm font-medium text-gray-900">
-              <Link to={'/purchaseOrders/' + purchaseOrder._id} >
-                {client ? client.name : 'Cliente no encontrado'}
-              </Link>
+              {client ? client.name : 'Cliente no encontrado'}
             </div>
             <div className=" whitespace-nowrap text-sm font-medium text-gray-900">
-              {DMYdate(purchaseOrder.orderDate)}</div>
+              Fecha: {DMYdate(purchaseOrder.orderDate)}</div>
           </div>
           <hr className="my-2" />
         </>
