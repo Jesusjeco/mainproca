@@ -9,6 +9,7 @@ export interface SellOrder {
   products: ProductOrder[];
   subTotal: number;
   total: number;
+  description: string;
 }
 
 export const emptySellOrder = {
@@ -20,6 +21,7 @@ export const emptySellOrder = {
   products: [],
   subTotal: 0,
   total: 0,
+  description: ""
 }
 
 

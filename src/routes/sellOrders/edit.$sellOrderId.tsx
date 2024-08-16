@@ -66,10 +66,11 @@ function EditSellOrder() {
         setOrderDate(sellOrder.orderDate)
         setSubTotal(sellOrder.subTotal)
         setTotal(sellOrder.total)
+        setDescription(sellOrder.description)
       }
     }//fetchData
     fetchData()
-  }, [getClientById,sellOrder]);
+  }, [getClientById, sellOrder]);
 
   const clientResult = (newClient: Client | undefined) => {
     if (newClient) {
@@ -95,6 +96,8 @@ function EditSellOrder() {
     setProducts(newProductsOrder);
   };
 
+  const [description, setDescription] = useState<string>("")
+
   useEffect(() => {
     const newTotalPrice = products.map(product => product.price * product.quantity);
     setSubTotal(newTotalPrice.reduce((acumulator, currentValue) => acumulator + currentValue, 0));
@@ -117,6 +120,7 @@ function EditSellOrder() {
         orderDate,
         subTotal,
         total,
+        description
       };
 
       const response = await editSellOrderById(updatedSellOrder);
@@ -173,25 +177,36 @@ function EditSellOrder() {
               : <div>No se encuentran productos para mostrar</div>
             }
 
-            <div className="mb-4 flex items-center justify-end gap-2">
-              <div className="text-gray-700 font-medium">
-                Sub total</div>
-              <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
-                {subTotal.toFixed(2)}</p>
-            </div>
+            <div className="mb-4 grid grid-cols-[2fr_1fr]">
+              <div className="flex flex-col">
+                <label htmlFor="description">Descripción y notas</label>
+                <textarea name="description" id="description" rows={5}
+                  className="border border-gray-300 p-2"
+                  value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+              </div>
 
-            <div className="mb-4 flex items-center justify-end gap-2">
-              <div className="text-gray-700 font-medium">
-                IVA</div>
-              <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
-                {(subTotal * (factura_iva - 1)).toFixed(2)}</p>
-            </div>
+              <div>
+                <div className="flex items-center justify-end gap-2">
+                  <div className="text-gray-700 font-medium">
+                    Sub total</div>
+                  <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
+                    {subTotal.toFixed(2)}</p>
+                </div>
 
-            <div className="mb-4 flex items-center justify-end gap-2">
-              <div className="text-gray-700 font-medium">
-                Total</div>
-              <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
-                {total.toFixed(2)}</p>
+                <div className="flex items-center justify-end gap-2">
+                  <div className="text-gray-700 font-medium">
+                    IVA</div>
+                  <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
+                    {(subTotal * (factura_iva - 1)).toFixed(2)}</p>
+                </div>
+
+                <div className="flex items-center justify-end gap-2">
+                  <div className="text-gray-700 font-medium">
+                    Total</div>
+                  <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
+                    {total.toFixed(2)}</p>
+                </div>
+              </div>
             </div>
 
             <div className="text-right">

@@ -29,19 +29,12 @@ function CreateSellOrder() {
   const loadingSellOrder = useSellOrdersStore(state => state.loading)
 
   // Using Zustand Client store
-  const fetchClients = useClientsStore(state => state.fetchClients);
   const clients = useClientsStore(state => state.clients)
   const clientsLoading = useClientsStore(state => state.loading);
 
   // Using Zustand Product store
-  const fetchProducts = useProductsStore(state => state.fetchProducts);
   const productsList = useProductsStore(state => state.products)
   const productsLoading = useProductsStore(state => state.loading);
-
-  useEffect(() => {
-    fetchClients()
-    fetchProducts();
-  }, []);
 
   //Client 
   const [client, setClient] = useState<Client | undefined>(undefined)
@@ -86,6 +79,8 @@ function CreateSellOrder() {
     setTotal(subTotal * factura_iva)
   }, [subTotal])
 
+  const [description, setDescription] = useState<string>("")
+
   //Form Handler
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -99,7 +94,8 @@ function CreateSellOrder() {
         products,
         orderDate,
         subTotal,
-        total
+        total,
+        description
       }
 
       const response = await createSellOrder(newSellOrder);
@@ -164,25 +160,37 @@ function CreateSellOrder() {
               : <div>No se encuentran productos para mostrar</div>
             }
 
-            <div className="mb-4 flex items-center justify-end gap-2">
-              <div className="text-gray-700 font-medium">
-                Sub total</div>
-              <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
-                {subTotal.toFixed(2)}</p>
-            </div>
+            <div className="mb-4 grid grid-cols-[2fr_1fr]">
+              <div className="flex flex-col">
+                <label htmlFor="description">Descripción y notas</label>
+                <textarea name="description" id="description" rows={5}
+                  className="border border-gray-300 p-2"
+                  value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+              </div>
 
-            <div className="mb-4 flex items-center justify-end gap-2">
-              <div className="text-gray-700 font-medium">
-                IVA</div>
-              <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
-                {(subTotal * (factura_iva - 1)).toFixed(2)}</p>
-            </div>
+              <div>
+                <div className="flex items-center justify-end gap-2">
+                  <div className="text-gray-700 font-medium">
+                    Sub total</div>
+                  <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
+                    {subTotal.toFixed(2)}</p>
+                </div>
 
-            <div className="mb-4 flex items-center justify-end gap-2">
-              <div className="text-gray-700 font-medium">
-                Total</div>
-              <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
-                {total.toFixed(2)}</p>
+                <div className="flex items-center justify-end gap-2">
+                  <div className="text-gray-700 font-medium">
+                    IVA</div>
+                  <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
+                    {(subTotal * (factura_iva - 1)).toFixed(2)}</p>
+                </div>
+
+                <div className="flex items-center justify-end gap-2">
+                  <div className="text-gray-700 font-medium">
+                    Total</div>
+                  <p id="subTotal" className="w-[100px] border border-gray-300 p-2">
+                    {total.toFixed(2)}</p>
+                </div>
+              </div>
+
             </div>
 
             <div className="flex justify-end">
