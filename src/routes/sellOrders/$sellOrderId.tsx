@@ -47,11 +47,19 @@ function SingleSellOrder() {
 
   const [client, setClient] = useState<Client | undefined>(undefined);
   useEffect(() => {
+    const originalTitle = import.meta.env.VITE_APP_NAME;
     const fetchData = async () => {
-      if (sellOrder)
+      if (sellOrder) {
         setClient(await getClientById(sellOrder.client_id))
+        document.title = "Mainproca venta " + sellOrder.orderNumber;
+      }
     }
     fetchData()
+
+    // Cleanup function to restore the original title
+    return () => {
+      document.title = originalTitle;
+    };
   }, [getClientById, sellOrder])
 
   //Reference used to print the component
@@ -129,8 +137,7 @@ function SingleSellOrder() {
 
               <div className='text-sm grid items-end grid-cols-[2fr_1fr_1fr]'>
                 <div>
-                  <p>Descripción y notas</p>
-                  <p>{sellOrder.description}</p>
+                  <p>{sellOrder.description ?? ""}</p>
                 </div>
 
                 <div className='text-center'>
