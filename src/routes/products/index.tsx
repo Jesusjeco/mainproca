@@ -6,6 +6,7 @@ import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { useProductsStore } from '../../store/productStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
 import { isdevelopment } from "../../utils/utils"
+import { useEffect, useState } from 'react';
 
 export const Route = createFileRoute('/products/')({
   errorComponent: FetchErrorComponent as any,
@@ -17,7 +18,14 @@ function Products() {
   const products = useProductsStore(state => state.products)
   const loadingProducts = useProductsStore(state => state.loading)
   const deleteProductById = useProductsStore(state => state.deleteProductById)
-  
+
+  const [totalInventoryCost, setTotalInventoryCost] = useState(0.00);
+  useEffect(() => {
+    const priceQuantity = products.map(product => product.price * product.quantity)
+    const total = priceQuantity.reduce((acumulator, currentValue) => acumulator + currentValue, 0)
+    setTotalInventoryCost(total)
+  }, [products])
+
   const navigate = useNavigate();
 
   const deleteProductHandler = async (productId: string) => {
@@ -25,7 +33,7 @@ function Products() {
       const response = await deleteProductById(productId);
       if (response.success) {
         navigate({ to: "/products" });
-      }else {
+      } else {
         console.log("Error when deleting product");
       }
     }
@@ -93,6 +101,9 @@ function Products() {
                   }
                 </tbody>
               </table>
+              <div>
+                <p>Precio total del inventario: {totalInventoryCost.toFixed(2)}</p>
+              </div>
             </div>
           </div>
         </div>
