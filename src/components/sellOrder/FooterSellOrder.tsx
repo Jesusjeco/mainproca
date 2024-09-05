@@ -9,7 +9,7 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
         <div className="notes text-sm">
           <p>NOTA: El pago de esta mercancía se recibirá en Dólares Americanos USD o en Pesos Colombianos, tal y como se especifica en cada renglón recibido en su Descripción.</p>
           <b>NOTA: Pago en Bolívares a Tasa promedio al momento de la transferencia.</b>
-          <p>NOTA: La condición de tiempo de pago máximo será de 7 días contínuos a partir de la fecha de recepción de esta nota de entrega.</p>
+          <p>NOTA: La condición de tiempo de pago máximo será de 7 días contínuos a partir de la fecha de recepción de esta nota de entrega. <b>LA FACTURA SE ELABORA AL  MOMENTO DEL PAGO</b></p>
         </div>
 
         <div className="clientData">
