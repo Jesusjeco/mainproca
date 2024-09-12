@@ -5,6 +5,7 @@ import {
 	deleteSellOrderById,
 	editSellOrderById,
 	fetchAllSellOrders,
+	fetchSellOrderById,
 	getSellOrderByClientID,
 	getSellOrderByProductId,
 } from "../apiCalls/sellOrders";
@@ -19,7 +20,7 @@ interface SellOrdersState {
 	setLoading: (loading: boolean) => void;
 	setPage: (page: number) => void;
 	fetchSellOrders: (page?: number) => Promise<void>;
-	getSellOrderById: (id: string) => SellOrder | undefined;
+	getSellOrderById: (id: string) => Promise<SellOrder | undefined>;
 	createSellOrder: (newSellOrder: SellOrder) => Promise<ApiResponse>;
 	editSellOrderById: (newSellOrder: SellOrder) => Promise<ApiResponse>;
 	deleteSellOrderById: (id: string) => Promise<ApiResponse>;
@@ -44,11 +45,13 @@ export const useSellOrdersStore = create<SellOrdersState>((set, get) => ({
 			console.error("Failed to fetch sellOrders", error);
 		}
 	}, //fetchSellOrders
-	getSellOrderById: (id: string): SellOrder | undefined => {
+	getSellOrderById: async (id: string): Promise<SellOrder | undefined> => {
 		const { sellOrders } = get();
 		const sellOrder = sellOrders.find((sellOrder) => sellOrder._id === id);
 		if (sellOrder) return sellOrder;
-		else return undefined;
+
+		return await fetchSellOrderById(id);
+		
 	}, //getSellOrderById
 	createSellOrder: async (newSellOrder: SellOrder): Promise<ApiResponse> => {
 		set({ loading: true });
