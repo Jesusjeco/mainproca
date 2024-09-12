@@ -5,6 +5,7 @@ import {
 	deletePurchaseOrderById,
 	editPurchaseOrderById,
 	fetchAllPurchaseOrders,
+	fetchPurchaseOrderById,
 	getPurchaseOrderByClientID,
 	getPurchaseOrderByProductId,
 } from "../apiCalls/purchaseOrders";
@@ -19,7 +20,7 @@ interface PurchaseOrdersState {
 	setLoading: (loading: boolean) => void;
 	setPage: (page: number) => void;
 	fetchPurchaseOrders: (page?: number) => Promise<void>;
-	getPurchaseOrderById: (id: string) => PurchaseOrder | undefined;
+	getPurchaseOrderById: (id: string) => Promise<PurchaseOrder | undefined> ;
 	createPurchaseOrder: (
 		newPurchaseOrder: PurchaseOrder
 	) => Promise<ApiResponse>;
@@ -54,13 +55,13 @@ export const usePurchaseOrdersStore = create<PurchaseOrdersState>(
 				console.error("Failed to fetch purchaseOrders", error);
 			}
 		}, //fetchPurchaseOrders
-		getPurchaseOrderById: (id: string): PurchaseOrder | undefined => {
+		getPurchaseOrderById: async (id: string): Promise<PurchaseOrder | undefined> => {
 			const { purchaseOrders } = get();
 			const purchaseOrder = purchaseOrders.find(
 				(purchaseOrder) => purchaseOrder._id === id
 			);
 			if (purchaseOrder) return purchaseOrder;
-			else return undefined;
+			return await fetchPurchaseOrderById(id);
 		}, //getPurchaseOrderById
 		createPurchaseOrder: async (
 			newPurchaseOrder: PurchaseOrder

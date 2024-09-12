@@ -49,10 +49,12 @@ function SinglePurchaseOrder() {
 
   const [purchaseOrder, setPurchaseOrder] = useState<PurchaseOrder | undefined>(undefined)
   useEffect(() => {
-    if (!purchaseOrdersLoading && !clientsLoading && !productsLoading && purchaseOrderId) {
-      setPurchaseOrder(getPurchaseOrderById(purchaseOrderId))
+    const fetchData = async (purchaseOrderId: string) => {
+      const purchaseOrderById = await getPurchaseOrderById(purchaseOrderId);
+      setPurchaseOrder(purchaseOrderById)
     }
-  }, [purchaseOrdersLoading, clientsLoading, productsLoading, purchaseOrderId])
+    fetchData(purchaseOrderId);
+  }, [getPurchaseOrderById, purchaseOrderId])
 
   const [client, setClient] = useState<Client | undefined>(undefined);
   useEffect(() => {
