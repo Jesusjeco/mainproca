@@ -10,7 +10,7 @@ interface ProductRecentSellOrderProps {
 export default function ProductRecentSellOrder({ productId }: ProductRecentSellOrderProps) {
   const getSellOrderByProductID = useSellOrdersStore(state => state.getSellOrderByProductID)
   const [orders, setOrders] = useState<SellOrder[] | undefined>(undefined)
-  
+
   useEffect(() => {
     const fetchData = async () => {
       setOrders(await getSellOrderByProductID(productId))
