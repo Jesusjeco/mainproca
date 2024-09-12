@@ -51,9 +51,12 @@ function EditPurchaseOrder() {
   }, []);
 
   useEffect(() => {
-    if (!purchaseOrdersLoading && !clientsLoading && purchaseOrderId)
-      setPurchaseOrder(getPurchaseOrderById(purchaseOrderId))
-  }, [purchaseOrdersLoading, clientsLoading, productsOrderLoading, purchaseOrderId])
+    const fetchData = async (purchaseOrderId: string) => {
+      const purchaseOrderById = await getPurchaseOrderById(purchaseOrderId);
+      setPurchaseOrder(purchaseOrderById)
+    }
+    fetchData(purchaseOrderId);
+  }, [getPurchaseOrderById, purchaseOrderId])
 
   const [client, setClient] = useState<Client | undefined>(undefined);
   const [orderDate, setOrderDate] = useState<Date>(new Date());

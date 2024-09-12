@@ -40,10 +40,13 @@ function SingleSellOrder() {
 
   const [sellOrder, setSellOrder] = useState<SellOrder | undefined>(undefined)
   useEffect(() => {
-    if (!sellOrdersLoading && !clientsLoading && !productsLoading && sellOrderId) {
-      setSellOrder(getSellOrderById(sellOrderId))
+    const fetchData = async (sellOrderId: string) => {
+      const sellOrderById = await getSellOrderById(sellOrderId);
+      if (sellOrderById)
+        setSellOrder(sellOrderById)
     }
-  }, [sellOrdersLoading, clientsLoading, productsLoading, sellOrderId])
+    fetchData(sellOrderId);
+  }, [getSellOrderById, sellOrderId])
 
   const [client, setClient] = useState<Client | undefined>(undefined);
   useEffect(() => {

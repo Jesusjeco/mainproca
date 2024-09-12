@@ -12,11 +12,11 @@ export default function ClientRecentPurchaseOrder({ clientId }: ClientRecentPurc
   const [orders, setOrders] = useState<PurchaseOrder[] | undefined>(undefined)
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (clientId : string) => {
       setOrders(await getPurchaseOrderByClientID(clientId))
     }
-    fetchData()
-  }, [clientId])
+    fetchData(clientId)
+  }, [getPurchaseOrderByClientID, clientId])
   return (
     <div className="w-full lg:w-4/5 mx-auto bg-white p-4 rounded-lg shadow-lg mt-4">
       <p className="text-2xl font-bold text-gray-800 mb-2">
