@@ -16,7 +16,7 @@ export default function ProductRecentPurchaseOrder({ productId }: ProductRecentP
       setOrders(await getPurchaseOrderByProductID(productId))
     }
     fetchData()
-  }, [productId])
+  }, [getPurchaseOrderByProductID])
   return (
     <div className="w-full lg:w-4/5 mx-auto bg-white p-4 rounded-lg shadow-lg mt-4">
       <p className="text-2xl font-bold text-gray-800 mb-2">
