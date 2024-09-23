@@ -39,22 +39,6 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
               <p>Cédula: 5.656.032</p>
               <p>Teléfono: 04147076311</p>
             </div>
-            <div>
-              <p><b>Banco Mercatil Panamá</b></p>
-              <p>Nombre: Jesús Carrero</p>
-              <p>Cédula: 5.663.875</p>
-              <p>Cuenta de ahorros. Número 420273956</p>
-            </div>
-            <div>
-              <p><b>Zelle</b></p>
-              <p>Nombre: Jesús Carrero</p>
-              <p>Correo: jescar4@gmail.com</p>
-            </div>
-            <div>
-              <p><b>Zelle</b></p>
-              <p>Nombre: Oralis Yadelsi Omana</p>
-              <p>Correo: yadelsiog@gmail.com</p>
-            </div>
             <div className="contactWrapper">
               <div>
                 <p>Ing. Jesús Ulises Carrero García</p>
@@ -67,7 +51,6 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </>
