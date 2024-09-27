@@ -6,13 +6,13 @@
 		height: 1px;
 		background-color: black;
 		border: none;
-		margin-bottom: 5px;
+		margin-bottom: 10px;
 	}
 
 	.notes {
 		font-size: 14px;
 		border: 2px solid black;
-		margin-bottom: 20px;
+		margin-bottom: 10px;
 		padding: 0.25rem;
 	}
 
@@ -21,12 +21,19 @@
 		display: grid;
 		grid-template-columns: 5fr 2fr;
 		gap: 15px;
-		margin-bottom: 10px;
+		margin-top: 15px;
 
 		.idAndDate {
 			display: grid;
 			grid-template-columns: 1fr 6fr 2fr 6fr;
 			align-items: end;
+
+			hr {
+				margin-bottom: 0px;
+				&:first-of-type {
+					width: 90%;
+				}
+			}
 		}
 	}
 

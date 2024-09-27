@@ -12,18 +12,6 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
           <p>NOTA: La condición de tiempo de pago máximo será de 7 días contínuos a partir de la fecha de recepción de esta nota de entrega. <b>LA FACTURA SE ELABORA AL  MOMENTO DEL PAGO</b></p>
         </div>
 
-        <div className="clientData">
-          <div>
-            <div>RECIBIDO POR: </div><hr />
-            <div>FIRMA: </div><hr />
-            <div className="idAndDate">
-              <div>C.I. </div><hr />
-              <div>FECHA: </div><hr />
-            </div>
-          </div>
-          <div className="stamp"><span>SELLO</span></div>
-        </div>
-
         <div className="companyInformation">
           <h2 className="text-md font-bold">Cuentas bancarias</h2>
           <div className="wrapper">
@@ -52,6 +40,19 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
             </div>
           </div>
         </div>
+
+        <div className="clientData">
+          <div>
+            <div>RECIBIDO POR: </div><hr />
+            <div>FIRMA: </div><hr />
+            <div className="idAndDate">
+              <div>C.I. </div><hr />
+              <div>FECHA: </div><hr />
+            </div>
+          </div>
+          <div className="stamp"><span>SELLO</span></div>
+        </div>
+
       </div>
     </>
   )
