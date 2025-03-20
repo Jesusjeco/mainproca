@@ -21,10 +21,10 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
               <p>RIF J-30385897-0</p>
             </div>
             <div>
-              <p><b>Pago Movil</b> (Enviar captura al mismo número de celular)</p>
-              <p>Banco Mercantil</p>
-              <p>Cédula: 5.656.032</p>
-              <p>Teléfono: 04147076311</p>
+              <p><b>Banco de Venezuela</b></p>
+              <p>Cuenta corriente 0102 0446 14 0000028503</p>
+              <p>Nombre: Mantenimiento Industrial Productos CA.</p>
+              <p>RIF. J 30385897 0</p>
             </div>
             <div className="contactWrapper">
               <div>
