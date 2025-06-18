@@ -7,7 +7,7 @@ export default function FooterSellOrder({ className = "" }: FooterSellOrderProps
     <>
       <div className={"FooterSellOrder " + className}>
         <div className="notes text-sm">
-          <p>NOTA: El pago de esta mercancía se puede recibir en Dólares Americanos USD o en Pesos Colombianos, tal y como se especifica en cada renglón recibido en su descripción.</p>
+          <p>NOTA: El pago de esta mercancía se puede recibir en Dólares Americanos USD o en Pesos Colombianos.</p>
           <p>NOTA: La condición de tiempo de pago máximo será de 7 días contínuos a partir de la fecha de recepción de esta nota de entrega. <b>LA FACTURA SE ELABORA AL  MOMENTO DEL PAGO</b></p>
         </div>
 
