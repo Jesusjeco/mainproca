@@ -117,7 +117,7 @@ function SingleSellOrder() {
                         <th className="py-1 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Productos</th>
                         <th className="py-1 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Precio</th>
                         <th className="py-1 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Cantidad</th>
-                        <th className="py-1 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Total USD</th>
+                        <th className="py-1 px-4 border border-gray-300 bg-gray-100 text-left text-gray-700">Total Ref</th>
                       </tr>
                     </thead>
                     <tbody>
