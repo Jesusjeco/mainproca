@@ -79,12 +79,10 @@ function Products() {
                               <Link to={'/products/edit/' + product._id} className="text-green-500 hover:text-green-700">
                                 <FaEdit aria-label="Edit product" />
                               </Link>
-                              {isdevelopment ?
                                 <button
                                   onClick={() => { if (product._id) deleteProductHandler(product._id) }} className="text-red-500 hover:text-red-700">
                                   <FaTrashAlt aria-label="Delete product" />
                                 </button>
-                                : ""}
                             </div>
                           </td>
                         </tr>
