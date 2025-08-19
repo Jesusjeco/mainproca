@@ -5,7 +5,6 @@ import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { useProductsStore } from '../../store/productStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
-import { isdevelopment } from "../../utils/utils"
 import { useEffect, useState } from 'react';
 
 export const Route = createFileRoute('/products/')({
