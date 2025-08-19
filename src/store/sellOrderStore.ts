@@ -24,7 +24,7 @@ interface SellOrdersState {
 	createSellOrder: (newSellOrder: SellOrder) => Promise<ApiResponse>;
 	editSellOrderById: (newSellOrder: SellOrder) => Promise<ApiResponse>;
 	deleteSellOrderById: (id: string) => Promise<ApiResponse>;
-	getSellOrderByProductID: (productId: string) => Promise<SellOrder[] | undefined>;
+	getSellOrderByProductID: (productId: string, page?: number, limit?: number) => Promise<{ sellOrders: SellOrder[]; totalPages: number; currentPage: number } | undefined>;
 	getSellOrderByClientID: (clientId: string) => Promise<SellOrder[] | undefined>;
 }
 
@@ -147,19 +147,30 @@ export const useSellOrdersStore = create<SellOrdersState>((set, get) => ({
 			};
 		}
 	}, //deleteSellOrderById
-	getSellOrderByProductID: async (productId: string): Promise<SellOrder[] | undefined> => {
+	getSellOrderByProductID: async (productId: string, page: number = 1, limit: number = 5): Promise<{ sellOrders: SellOrder[]; totalPages: number; currentPage: number } | undefined> => {
 		const { sellOrders } = get();
 		const foundSelOrders = sellOrders
 			.filter((sellOrder) =>
 				sellOrder.products.some(
 					(product) => product.product_id === productId
 				)
-			)
-			.slice(-5);
+			);
 
-		if (foundSelOrders && foundSelOrders.length > 0) return foundSelOrders;
+		// If we have orders in store, use local pagination
+		if (foundSelOrders && foundSelOrders.length > 0) {
+			const startIndex = (page - 1) * limit;
+			const endIndex = startIndex + limit;
+			const paginatedOrders = foundSelOrders.slice(startIndex, endIndex);
+			const totalPages = Math.ceil(foundSelOrders.length / limit);
+			return {
+				sellOrders: paginatedOrders,
+				totalPages,
+				currentPage: page
+			};
+		}
 
-		return await getSellOrderByProductId(productId);
+		// Otherwise, fetch from API with pagination
+		return await getSellOrderByProductId(productId, page, limit);
 	}, //getSellOrderByProductID
 	getSellOrderByClientID: async (clientId: string): Promise<SellOrder[] | undefined> => {
 		const { sellOrders } = get();
