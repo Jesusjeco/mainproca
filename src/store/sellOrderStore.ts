@@ -6,7 +6,7 @@ import {
 	editSellOrderById,
 	fetchAllSellOrders,
 	fetchSellOrderById,
-	getSellOrderByClientID,
+	getSellOrderByClientID as fetchSellOrderByClientID,
 	getSellOrderByProductId,
 } from "../apiCalls/sellOrders";
 import { SellOrder } from "../interfaces/SellOrder";
@@ -162,6 +162,7 @@ export const useSellOrdersStore = create<SellOrdersState>((set, get) => ({
 			const endIndex = startIndex + limit;
 			const paginatedOrders = foundSelOrders.slice(startIndex, endIndex);
 			const totalPages = Math.ceil(foundSelOrders.length / limit);
+			
 			return {
 				sellOrders: paginatedOrders,
 				totalPages,
@@ -172,12 +173,20 @@ export const useSellOrdersStore = create<SellOrdersState>((set, get) => ({
 		// Otherwise, fetch from API with pagination
 		return await getSellOrderByProductId(productId, page, limit);
 	}, //getSellOrderByProductID
+	
 	getSellOrderByClientID: async (clientId: string): Promise<SellOrder[] | undefined> => {
 		const { sellOrders } = get();
-		const foundSelOrders = sellOrders.filter((sellOrder) => sellOrder.client_id === clientId).slice(-5);
+		const foundSelOrders = sellOrders.filter((sellOrder) => sellOrder.client_id === clientId);
 
-		if (foundSelOrders && foundSelOrders.length > 0) return foundSelOrders;
-
-		return await getSellOrderByClientID(clientId);
-	}, //getSellOrderByProductID
+		// Always fetch from API for client-specific queries to ensure completeness
+		// Store data might be incomplete (only contains paginated results from main list)
+		try {
+			const apiResult = await fetchSellOrderByClientID(clientId);
+			return apiResult;
+		} catch (error) {
+			console.error('Error fetching sell orders by client ID:', error);
+			// Fallback to store data if API fails
+			return foundSelOrders.length > 0 ? foundSelOrders : undefined;
+		}
+	}, //getSellOrderByClientID
 }));
