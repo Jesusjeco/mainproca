@@ -23,7 +23,7 @@ export const ClientSelectOffices = ({ label = "office", setOfficesResult, select
   }
   useEffect(() => {
     setOfficesResult(offices)
-  }, [offices])
+  }, [offices, setOfficesResult])
 
   return <>
     <div className='flex items-center justify-between mb-3'>

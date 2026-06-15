@@ -5,7 +5,6 @@ import { FetchErrorComponent } from '../../components/FetchErrorComponent';
 import { NotFoundComponent } from '../../components/NotFoundComponent';
 import { useProductsStore } from '../../store/productStore';
 import { LoadingComponent } from '../../components/LoadingComponent';
-import { useEffect, useState } from 'react';
 
 export const Route = createFileRoute('/products/')({
   errorComponent: FetchErrorComponent as any,
@@ -18,12 +17,7 @@ function Products() {
   const loadingProducts = useProductsStore(state => state.loading)
   const deleteProductById = useProductsStore(state => state.deleteProductById)
 
-  const [totalInventoryCost, setTotalInventoryCost] = useState(0.00);
-  useEffect(() => {
-    const priceQuantity = products.map(product => product.price * product.quantity)
-    const total = priceQuantity.reduce((acumulator, currentValue) => acumulator + currentValue, 0)
-    setTotalInventoryCost(total)
-  }, [products])
+  const totalInventoryCost = products.reduce((acc, product) => acc + (product.price * product.quantity), 0);
 
   const navigate = useNavigate();
 

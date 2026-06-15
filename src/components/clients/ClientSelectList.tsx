@@ -19,7 +19,7 @@ export function ClientSelectList({ clients, selectedClientId = "", clientResult,
       const client = clients.find((client) => client._id === clientID);
       clientResult(client)
     }
-  }, [clientID]);
+  }, [clientID, clientResult, clients]);
 
   return (
     <>

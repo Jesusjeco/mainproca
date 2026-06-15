@@ -11,7 +11,7 @@ interface SingleProductOrderProps {
 }
 
 export function SingleProductOrder({ products, selectedProductOrder = undefined, productOrderResult, index = 0 }: SingleProductOrderProps) {
-  const [productOrder, _] = useState<ProductOrder | undefined>(selectedProductOrder)
+  const [productOrder] = useState<ProductOrder | undefined>(selectedProductOrder)
   useEffect(() => {
 
     if (productOrder) {
@@ -21,7 +21,7 @@ export function SingleProductOrder({ products, selectedProductOrder = undefined,
       setAlternativePrice(productOrder.price)
       setQuantity(productOrder.quantity)
     }
-  }, [productOrder])
+  }, [productOrder, products])
   //Single product
   const [product, setProduct] = useState<Product>(emptyProduct);
   const productResult = (newProduct: Product) => {
@@ -45,7 +45,7 @@ export function SingleProductOrder({ products, selectedProductOrder = undefined,
       price: alternativePrice,
       quantity: quantity
     })
-  }, [product, subTotal])
+  }, [product, subTotal, productOrderResult, index, alternativePrice, quantity])
 
   const quantityLimitReach: CSSProperties = {
     color: 'red',

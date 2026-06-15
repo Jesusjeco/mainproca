@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import "react-datepicker/dist/react-datepicker.css";
 import { ClientSelectList } from "../../components/clients/ClientSelectList";
 import { useClientsStore } from "../../store/clientStore";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { LoadingComponent } from "../../components/LoadingComponent";
 import { Client, emptyClient } from "../../interfaces/Client";
 import DatePicker from "react-datepicker";
@@ -68,16 +68,8 @@ function CreateSellOrder() {
   }
 
   //total price
-  const [subTotal, setSubTotal] = useState<number>(0.00);
-  useEffect(() => {
-    const newSubTotal = products.map(product => product.price * product.quantity)
-    setSubTotal(newSubTotal.reduce((acumulator, currentValue) => acumulator + currentValue, 0))
-  }, [products])
-
-  const [total, setTotal] = useState<number>(0)
-  useEffect(() => {
-    setTotal(subTotal * factura_iva)
-  }, [subTotal])
+  const subTotal = products.reduce((acc, product) => acc + (product.price * product.quantity), 0);
+  const total = subTotal * factura_iva;
 
   const [description, setDescription] = useState<string>("")
 
@@ -101,7 +93,7 @@ function CreateSellOrder() {
       const response = await createSellOrder(newSellOrder);
       //Redirecting user to clients page
       if (response.success) {
-        const newID = response.data._id;
+        const newID = (response.data as { _id: string })._id;
         // Reset the form after submission
         if (formRef.current)
           formRef.current.reset();

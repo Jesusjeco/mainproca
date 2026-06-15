@@ -44,6 +44,11 @@ function EditSellOrder() {
   const productsLoading = useProductsStore(state => state.loading);
 
   const [sellOrder, setSellOrder] = useState<SellOrder | undefined>(undefined)
+  const [client, setClient] = useState<Client | undefined>(undefined);
+  const [orderDate, setOrderDate] = useState<Date>(new Date());
+  const [address, setAddress] = useState<string>("");
+  const [products, setProducts] = useState<ProductOrder[]>([]);
+  const [description, setDescription] = useState<string>("")
 
   useEffect(() => {
     const fetchData = async (sellOrderId: string) => {
@@ -54,13 +59,6 @@ function EditSellOrder() {
     fetchData(sellOrderId);
   }, [getSellOrderById, sellOrderId])
 
-  const [client, setClient] = useState<Client | undefined>(undefined);
-  const [orderDate, setOrderDate] = useState<Date>(new Date());
-  const [address, setAddress] = useState<string>("");
-  const [products, setProducts] = useState<ProductOrder[]>([]);
-  const [subTotal, setSubTotal] = useState<number>(0.00);
-  const [total, setTotal] = useState<number>(0)
-
   useEffect(() => {
     const fetchData = async () => {
       if (sellOrder) {
@@ -68,8 +66,6 @@ function EditSellOrder() {
         setAddress(sellOrder.address)
         setProducts(sellOrder.products)
         setOrderDate(sellOrder.orderDate)
-        setSubTotal(sellOrder.subTotal)
-        setTotal(sellOrder.total)
         setDescription(sellOrder.description)
       }
     }//fetchData
@@ -100,16 +96,8 @@ function EditSellOrder() {
     setProducts(newProductsOrder);
   };
 
-  const [description, setDescription] = useState<string>("")
-
-  useEffect(() => {
-    const newTotalPrice = products.map(product => product.price * product.quantity);
-    setSubTotal(newTotalPrice.reduce((acumulator, currentValue) => acumulator + currentValue, 0));
-  }, [products]);
-
-  useEffect(() => {
-    setTotal(subTotal * factura_iva)
-  }, [subTotal])
+  const subTotal = products.reduce((acc, product) => acc + (product.price * product.quantity), 0);
+  const total = subTotal * factura_iva;
 
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

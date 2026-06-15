@@ -38,7 +38,7 @@ function CreatePurchaseOrder() {
   useEffect(() => {
     fetchClients()
     fetchProducts();
-  }, []);
+  }, [fetchClients, fetchProducts]);
 
   //orderNumber
   const [orderNumber, setOrderNumber] = useState<string>("")
@@ -90,7 +90,7 @@ function CreatePurchaseOrder() {
       const response = await createPurchaseOrder(newPurchaseOrder);
       //Redirecting user to clients page
       if (response.success) {
-        const newID = response.data._id;
+        const newID = (response.data as { _id: string })._id;
         // Reset the form after submission
         if (formRef.current)
           formRef.current.reset();
