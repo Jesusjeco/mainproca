@@ -15,7 +15,7 @@ export function ProductIdComponent({ productIdResult, initialProductId }: Produc
   const [productId, setProductId] = useState<string | undefined>(undefined)
   useEffect(() => {
     productIdResult(productId)
-  }, [productId])
+  }, [productId, productIdResult])
   return (
     <div>
       <label htmlFor="product" className="block text-gray-700 font-bold mb-2">Producto*</label>

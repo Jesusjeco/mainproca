@@ -18,7 +18,7 @@ export default function SellOrderByOrder({ sellOrder }: SellOrderByOrderProps) {
       setClient(await getClientById(sellOrder.client_id))
     }
     fetchData()
-  }, [sellOrder])
+  }, [sellOrder, getClientById])
   return (
     <>
       {sellOrder ?

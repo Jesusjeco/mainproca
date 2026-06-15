@@ -44,7 +44,7 @@ export default function ProductRecentSellOrder({ productId }: ProductRecentSellO
 
   useEffect(() => {
     fetchOrders(1)
-  }, [productId, getSellOrderByProductID])
+  }, [productId, getSellOrderByProductID, fetchOrders])
 
   return (
     <div className="w-full lg:w-4/5 mx-auto bg-white p-4 rounded-lg shadow-lg mt-4">

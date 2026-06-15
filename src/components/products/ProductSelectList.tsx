@@ -18,7 +18,7 @@ export function ProductSelectList({ products, selectedProductId, className, prod
     const product = products.find(product => product._id === productID);
     if (product)
       productResult(product)
-  }, [productID]);
+  }, [productID, productResult, products]);
 
   return (
     <>

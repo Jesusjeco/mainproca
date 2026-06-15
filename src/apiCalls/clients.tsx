@@ -43,7 +43,7 @@ export async function fetchClientById(clientId: string) {
     return singleClient;
   } catch (error) {
     console.error(error);
-  };
+  }
 }//fetchClientById
 
 //Creating a new client
@@ -64,7 +64,7 @@ export async function createClient(newClient: Client): Promise<Client | undefine
     return await response.json();
   } catch (error) {
     console.error(error);
-  };
+  }
 }//createClient
 
 //Edit client by Id
@@ -83,7 +83,7 @@ export async function editClientById(client: Client) {
     return await fetch(API_CLIENTS_URL + "/" + client._id, requestOptions);
   } catch (error) {
     console.error(error);
-  };
+  }
 }
 
 //Delete client by Id
@@ -97,5 +97,5 @@ export async function deleteClientById(clientId: string) {
     return await fetch(API_CLIENTS_URL + "/" + clientId, requestOptions);
   } catch (error) {
     console.error(error);
-  };
+  }
 }

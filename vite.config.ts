@@ -5,6 +5,12 @@ import { VitePWA } from "vite-plugin-pwa";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 export default defineConfig({
+	build: {
+		cssMinify: "esbuild",
+	},
+	css: {
+		transformer: "postcss",
+	},
 	plugins: [
 		TanStackRouterVite(),
 		react(),

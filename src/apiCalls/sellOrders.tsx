@@ -20,7 +20,7 @@ export async function fetchAllSellOrders(page: number = 1) {
     return await response.json();
   } catch (error) {
     console.error(error);
-  };
+  }
 }//fetchAllSellOrders
 
 //Fetching single sellOrder by id
@@ -40,7 +40,7 @@ export async function fetchSellOrderById(sellOrderId: string) {
     return await response.json();
   } catch (error) {
     console.error(error);
-  };
+  }
 }//fetchSellOrderById
 
 //Creating a new sellOrder
@@ -61,7 +61,7 @@ export async function createSellOrder(newSellOrder: SellOrder) {
     return await response.json();
   } catch (error) {
     console.error(error);
-  };
+  }
 }//createSellOrder
 
 //Edit sellOrder by Id
@@ -81,7 +81,7 @@ export async function editSellOrderById(sellOrder: SellOrder) {
     return await response.json();
   } catch (error) {
     console.error(error);
-  };
+  }
 }
 
 //Delete sellOrder by Id
@@ -95,7 +95,7 @@ export async function deleteSellOrderById(sellOrderId: string) {
     return await fetch(API_SELL_ORDER_URL + "/" + sellOrderId, requestOptions);
   } catch (error) {
     console.error(error);
-  };
+  }
 }
 
 //Get sell orders by productId in the ProductOrder
@@ -115,7 +115,7 @@ export async function getSellOrderByProductId(productId: string, page: number = 
     return await response.json();
   } catch (error) {
     console.error(error);
-  };
+  }
 }
 
 //Get sell orders by clientId in the ProductOrder
@@ -135,5 +135,5 @@ export async function getSellOrderByClientID(clientId: string) {
     return await response.json();
   } catch (error) {
     console.error(error);
-  };
+  }
 }

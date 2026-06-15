@@ -12,7 +12,7 @@ export function AddressSelectList({ client, selectedAddress = "", resultAddress,
   const [address, setAddress] = useState<string>(selectedAddress)
   useEffect(() => {
     resultAddress(address)
-  }, [address])
+  }, [address, resultAddress])
   return (
     <>
       {client._id !== "" ?

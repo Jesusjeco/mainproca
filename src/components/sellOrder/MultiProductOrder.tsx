@@ -18,7 +18,7 @@ export function MultiProductOrder({ products, initialProductOrders = [], resultP
 
   useEffect(() => {
     resultProducts(productsOrder);
-  }, [productsOrder]);
+  }, [productsOrder, resultProducts]);
 
   const addProductOrder = () => {
     const tempId = uuidv4();

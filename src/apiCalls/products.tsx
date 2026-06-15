@@ -22,7 +22,7 @@ export async function fetchAllProducts(): Promise<Product[]> {
   } catch (error) {
     console.error(error);
     return [];
-  };
+  }
 }//fetchAllProducts
 
 //Fetching single product by id
@@ -43,7 +43,7 @@ export async function fetchProductById(productId: string) {
     return singleProduct;
   } catch (error) {
     console.error(error);
-  };
+  }
 }//fetchProductById
 
 //Creating a new product
@@ -68,7 +68,7 @@ export async function createProduct(newProduct: Product) {
       success: false,
       message: "Error creating product",
     };
-  };
+  }
 }//createProduct
 
 //Edit product by Id
@@ -87,7 +87,7 @@ export async function editProductById(product: Product) {
     return await fetch(API_PRODUCTS_URL + "/" + product._id, requestOptions);
   } catch (error) {
     console.error(error);
-  };
+  }
 }//editProductById
 
 //Delete product by Id
@@ -101,5 +101,5 @@ export async function deleteProductById(productId: string) {
     return await fetch(API_PRODUCTS_URL + "/" + productId, requestOptions);
   } catch (error) {
     console.error(error);
-  };
+  }
 }//deleteProductById

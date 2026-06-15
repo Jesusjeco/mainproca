@@ -42,7 +42,7 @@ export function ProductOrderComponent({ setProductOrderResult, index, selectedPr
   //Sending ProductOrder
   useEffect(() => {
     setProductOrderResult(productOrder, index)
-  }, [productOrder])
+  }, [productOrder, setProductOrderResult, index])
 
   return (
     <div className="grid grid-cols-3 gap-4">
