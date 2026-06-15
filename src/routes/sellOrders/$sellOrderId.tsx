@@ -10,7 +10,7 @@ import { LoadingComponent } from '../../components/LoadingComponent';
 import { Client } from '../../interfaces/Client';
 import { useSellOrdersStore } from '../../store/sellOrderStore';
 import FooterSellOrder from '../../components/sellOrder/FooterSellOrder';
-import ReactToPrint from 'react-to-print';
+import { useReactToPrint } from 'react-to-print';
 import { FaEdit, FaPrint } from 'react-icons/fa';
 
 interface SingleSellOrderProps {
@@ -68,6 +68,10 @@ function SingleSellOrder() {
   //Reference used to print the component
   const componentRef = useRef(null);
 
+  const handlePrint = useReactToPrint({
+    contentRef: componentRef,
+  });
+
   return (
     <>
       {clientsLoading && productsLoading && sellOrdersLoading && !sellOrder && !client ? (
@@ -75,10 +79,12 @@ function SingleSellOrder() {
       ) : sellOrder && client ? (
         <>
           <div className="buttons">
-            <ReactToPrint
-              trigger={() => <button className="flex items-center gap-3 bg-green-500 text-white px-4 py-1 rounded-md">Imprimir <FaPrint /></button>}
-              content={() => componentRef.current}
-            />
+            <button
+              onClick={() => handlePrint()}
+              className="flex items-center gap-3 bg-green-500 text-white px-4 py-1 rounded-md"
+            >
+              Imprimir <FaPrint />
+            </button>
             <div>
               <Link to={'/sellOrders/edit/' + sellOrderId} className="flex items-center gap-3 bg-green-500 text-white px-4 py-1 rounded-md">
                 Editar orden <FaEdit />

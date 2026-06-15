@@ -45,7 +45,7 @@ function SinglePurchaseOrder() {
     fetchPurchaseOrders()
     fetchClients();
     fetchProducts();
-  }, []);
+  }, [fetchClients, fetchProducts, fetchPurchaseOrders]);
 
   const [purchaseOrder, setPurchaseOrder] = useState<PurchaseOrder | undefined>(undefined)
   useEffect(() => {

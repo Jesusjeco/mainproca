@@ -23,6 +23,11 @@ function EditClient() {
   const loading = useClientsStore(state => state.loading)
   const getClientById = useClientsStore(state => state.getClientById)
 
+  const [newClient, setNewClient] = useState<Client | undefined>(undefined)
+  const navigate = useNavigate();
+
+  const [offices, setOffices] = useState<ClientOffice[]>([]);
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await getClientById(clientId)
@@ -33,21 +38,16 @@ function EditClient() {
     }//fetchData
     fetchData()
   }, [clientId, getClientById])
-
-  const [newClient, setNewClient] = useState<Client | undefined>(undefined)
-  const navigate = useNavigate();
-
-  const [offices, setOffices] = useState<ClientOffice[]>([]);
   const setOfficesResult = (offices: ClientOffice[]) => {
     setOffices(offices);
   }
   useEffect(() => {
     if (newClient)
-      setNewClient(
+      setNewClient(prev => (prev ?
         {
-          ...newClient,
+          ...prev,
           offices: offices
-        }
+        } : undefined)
       );
   }, [offices]);
 

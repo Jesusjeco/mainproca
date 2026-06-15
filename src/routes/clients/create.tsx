@@ -31,12 +31,12 @@ function CreateClient() {
     setOffices(offices);
   }
   useEffect(() => {
-    setNewClient(
+    setNewClient(prev => (
       {
-        ...newClient,
+        ...prev,
         offices: offices
       }
-    );
+    ));
   }, [offices]);
 
   //Create client function

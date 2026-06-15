@@ -42,13 +42,15 @@ function EditPurchaseOrder() {
   const productsOrderLoading = useProductsStore(state => state.loading);
 
   const [purchaseOrder, setPurchaseOrder] = useState<PurchaseOrder | undefined>(undefined)
-
-  //orderNumber
   const [orderNumber, setOrderNumber] = useState<string>("")
+  const [client, setClient] = useState<Client | undefined>(undefined);
+  const [orderDate, setOrderDate] = useState<Date>(new Date());
+  const [productsOrder, setProductsOrder] = useState<ProductOrder[]>([])
+  const [description, setDescription] = useState<string>("")
 
   useEffect(() => {
     fetchPurchaseOrders();
-  }, []);
+  }, [fetchPurchaseOrders]);
 
   useEffect(() => {
     const fetchData = async (purchaseOrderId: string) => {
@@ -57,13 +59,6 @@ function EditPurchaseOrder() {
     }
     fetchData(purchaseOrderId);
   }, [getPurchaseOrderById, purchaseOrderId])
-
-  const [client, setClient] = useState<Client | undefined>(undefined);
-  const [orderDate, setOrderDate] = useState<Date>(new Date());
-
-
-  //productsOrder
-  const [productsOrder, setProductsOrder] = useState<ProductOrder[]>([])
   const setProductsOrderResult = (newProductsOrder: ProductOrder[]) => {
     if (newProductsOrder)
       setProductsOrder(newProductsOrder)
@@ -79,7 +74,7 @@ function EditPurchaseOrder() {
       setOrderDate(purchaseOrder.orderDate)
       setDescription(purchaseOrder.description)
     }
-  }, [purchaseOrder]);
+  }, [purchaseOrder, getFetchedClientById]);
 
   const clientResult = (newClient: Client | undefined) => {
     if (newClient) {
@@ -96,8 +91,6 @@ function EditPurchaseOrder() {
     if (newDate)
       setOrderDate(newDate);
   };
-
-  const [description, setDescription] = useState<string>("")
 
   const formHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

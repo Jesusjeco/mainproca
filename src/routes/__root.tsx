@@ -40,7 +40,7 @@ function MainComponent() {
       }
     }
     fetchData()
-  }, [])
+  }, [fetchClients, fetchProducts, fetchPurchaseOrders, fetchSellOrders])
   return (
     <>
       <LoadingComponent var1={productsLoading} var2={clientsLoading} var3={sellOrdersLoading} var4={purchaseOrdersLoading} />

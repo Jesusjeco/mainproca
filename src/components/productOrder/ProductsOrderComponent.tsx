@@ -40,7 +40,7 @@ export function ProductsOrderComponent({ initialProductsOrder = [], setProductsO
   useEffect(() => {
     if (productsOrder)
       setProductsOrderResult(productsOrder)
-  }, [productsOrder])
+  }, [productsOrder, setProductsOrderResult])
   return (
     <>
       <div className="flex justify-between items-center">
